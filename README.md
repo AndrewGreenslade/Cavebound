@@ -9,6 +9,6 @@ This game is focused around co-op PvPvE gameplay where several players fight eac
 
 ##### Features:
 - Randomly generated map (derived from some theme sets),
-- Online Muitplayerr Gameplay,
+- Online Muitplayer Gameplay,
 - Player customisation
 - Blockchain integration
