@@ -10536,6 +10536,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 7731816093065811088, guid: 56df1515eaa47734197bd8ef31fa3d94, type: 3}
+      propertyPath: m_Intensity
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 7731816093065811088, guid: 56df1515eaa47734197bd8ef31fa3d94, type: 3}
+      propertyPath: m_FalloffIntensity
+      value: 0.36
+      objectReference: {fileID: 0}
+    - target: {fileID: 7731816093065811088, guid: 56df1515eaa47734197bd8ef31fa3d94, type: 3}
+      propertyPath: m_LightVolumeIntensity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7731816093065811088, guid: 56df1515eaa47734197bd8ef31fa3d94, type: 3}
+      propertyPath: m_PointLightOuterRadius
+      value: 43.33
+      objectReference: {fileID: 0}
     - target: {fileID: 7731816093179140176, guid: 56df1515eaa47734197bd8ef31fa3d94, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -10583,6 +10599,10 @@ PrefabInstance:
     - target: {fileID: 7731816093179140177, guid: 56df1515eaa47734197bd8ef31fa3d94, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 7731816093702461982, guid: 56df1515eaa47734197bd8ef31fa3d94, type: 3}
+      propertyPath: orthographic size
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 56df1515eaa47734197bd8ef31fa3d94, type: 3}
