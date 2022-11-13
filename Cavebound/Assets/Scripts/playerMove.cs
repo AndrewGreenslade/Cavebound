@@ -1,10 +1,11 @@
+using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class playerMove : MonoBehaviour
+public class playerMove : NetworkBehaviour
 {
     public float speed = 10.0f;
 
@@ -21,15 +22,33 @@ public class playerMove : MonoBehaviour
     {
         cam = GetComponentInChildren<Camera>();
         camSizeDefault = cam.orthographicSize;
+
+        if (!isLocalPlayer)
+        {
+            Destroy(GetComponent<PlayerInput>());
+            cam.gameObject.SetActive(false);
+            this.enabled= false;
+            return;
+        }
     }
 
     private void FixedUpdate()
     {
+        if (!isLocalPlayer)
+        {
+            return;
+        }
+
         transform.position += new Vector3(movementX, movementY, 0);
     }
 
     private void Update()
     {
+        if (!isLocalPlayer)
+        {
+            return;
+        }
+
         camZoom();
     }
 

@@ -5,9 +5,11 @@ using UnityEditor.PackageManager.UI;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UIElements;
+using Mirror;
 
-public class MapGenerator : MonoBehaviour
+public class MapGenerator : NetworkBehaviour
 {
+    [SyncVar]
     public float seed = 0;
     public int MapWidth = 5;
     public int MapHieght = 5;
@@ -18,15 +20,21 @@ public class MapGenerator : MonoBehaviour
     public float NoiseScale = 1.0f;
     public int edgeSize = 10;
 
-    private void Awake()
+    private void Start()
     {
+        if (!isServer)
+        {
+            generateMap();
+            return;
+        }
+
+        seed = Random.Range(int.MinValue / 100, int.MaxValue / 100) / 100;
+
         generateMap();
     }
 
     public void generateMap()
     {
-        seed = Random.Range(int.MinValue / 100, int.MaxValue / 100) / 100;
-
         for (int y = 0; y < MapHieght; y++)
         {
             for (int x = 0; x < MapWidth; x++)
@@ -48,10 +56,5 @@ public class MapGenerator : MonoBehaviour
                 }
             }
         }
-    }
-
-    public void clearMap()
-    {
-        map.ClearAllTiles();
     }
 }
