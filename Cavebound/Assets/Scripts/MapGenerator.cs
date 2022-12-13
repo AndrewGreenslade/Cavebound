@@ -30,15 +30,57 @@ public class MapGenerator : NetworkBehaviour
 
     private void Start()
     {
+        //generate starting offsets for each player spawn room
+        Vector3Int bottomLeft = new Vector3Int(edgeSize, edgeSize);
+        Vector3Int topLeft = new Vector3Int(edgeSize, MapHieght - MapSpawnCircle);
+        Vector3Int bottomRight = new Vector3Int(MapWidth - MapSpawnCircle, edgeSize);
+        Vector3Int topRight = new Vector3Int(MapWidth - MapSpawnCircle, MapHieght - MapSpawnCircle);
+
         if (!isServer)
         {
             generateMap();
+
+            //set player spawn for each corner of map
+            setPlayerSpawn(bottomLeft);
+            setPlayerSpawn(bottomRight);
+
+            setPlayerSpawn(topLeft);
+            setPlayerSpawn(topRight);
+
             return;
         }
 
         seed = Random.Range(int.MinValue / 100, int.MaxValue / 100) / 100;
 
         generateMap();
+
+        //set player spawn for each corner of map
+        setPlayerSpawn(bottomLeft);
+        setPlayerSpawn(bottomRight);
+
+        setPlayerSpawn(topLeft);
+        setPlayerSpawn(topRight);
+
+        Vector3Int offsetAmount = new Vector3Int(MapSpawnCircle / 2, MapSpawnCircle / 2, 0);
+
+        MyNetworkManager manager = FindObjectOfType<MyNetworkManager>();
+
+        if (manager.ActivePlayerObjects.Count >= 1)
+        {
+            movePlayerToSpawnPos(bottomLeft + offsetAmount ,manager.ActivePlayerObjects[0]);
+        }
+        if (manager.ActivePlayerObjects.Count >= 2)
+        {
+            movePlayerToSpawnPos(bottomRight + offsetAmount, manager.ActivePlayerObjects[0]);
+        }
+        if (manager.ActivePlayerObjects.Count >= 3)
+        {
+            movePlayerToSpawnPos(topLeft + offsetAmount, manager.ActivePlayerObjects[0]);
+        }
+        if (manager.ActivePlayerObjects.Count == 4)
+        {
+            movePlayerToSpawnPos(topRight + offsetAmount, manager.ActivePlayerObjects[0]);
+        }
     }
 
     public void generateMap()
@@ -49,7 +91,7 @@ public class MapGenerator : NetworkBehaviour
             {
                 spawnMap.SetTile(new Vector3Int(x, y), BGSquare);
 
-                if (y <= edgeSize || y >= MapHieght - edgeSize || x <= edgeSize || x >= MapWidth - edgeSize)
+                if (y < edgeSize || y > MapHieght - edgeSize || x < edgeSize || x > MapWidth - edgeSize)
                 {
                     BorderMap.SetTile(new Vector3Int(x, y), borderSquare);
                     continue;
@@ -67,16 +109,7 @@ public class MapGenerator : NetworkBehaviour
             }
         }
 
-        //Bottom left player gen
-        Vector3Int bottomLeft = new Vector3Int(edgeSize, edgeSize);
-        Vector3Int topLeft = new Vector3Int(edgeSize, MapHieght - MapSpawnCircle);
-        Vector3Int bottomRight = new Vector3Int(MapWidth - MapSpawnCircle, edgeSize);
-        Vector3Int topRight = new Vector3Int(MapWidth - MapSpawnCircle, MapHieght - MapSpawnCircle);
 
-        setPlayerSpawn(bottomRight);
-        setPlayerSpawn(bottomLeft);
-        setPlayerSpawn(topLeft);
-        setPlayerSpawn(topRight);
     }
 
     public void setPlayerSpawn(Vector3Int coords)
@@ -95,5 +128,12 @@ public class MapGenerator : NetworkBehaviour
                 map.SetTile(new Vector3Int(coords.x + x, coords.y + y), null);
             }
         }
+    }
+    
+
+    public void movePlayerToSpawnPos(Vector3Int coords,GameObject t_player)
+    {
+        Vector2Int offsetAmount = new Vector2Int(MapSpawnCircle / 2, MapSpawnCircle / 2);
+        t_player.transform.position = coords;
     }
 }

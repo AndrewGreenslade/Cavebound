@@ -27,19 +27,9 @@ public class playerMove : NetworkBehaviour
         {
             Destroy(GetComponent<PlayerInput>());
             cam.gameObject.SetActive(false);
-            this.enabled= false;
+            this.enabled = false;
             return;
         }
-    }
-
-    private void FixedUpdate()
-    {
-        if (!isLocalPlayer)
-        {
-            return;
-        }
-
-        transform.position += new Vector3(movementX, movementY, 0);
     }
 
     private void Update()
@@ -48,7 +38,8 @@ public class playerMove : NetworkBehaviour
         {
             return;
         }
-
+     
+        transform.position += new Vector3(movementX, movementY, 0) * Time.deltaTime * speed;
         camZoom();
     }
 

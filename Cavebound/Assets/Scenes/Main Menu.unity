@@ -371,8 +371,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1811790743}
   - component: {fileID: 1811790741}
-  - component: {fileID: 1811790744}
   - component: {fileID: 1811790745}
+  - component: {fileID: 1811790744}
   m_Layer: 0
   m_Name: Menu Manager
   m_TagString: Untagged
@@ -417,7 +417,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1811790740}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 31.25, y: 17.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -433,7 +433,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1811790740}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 615e6c6589cf9e54cad646b5a11e0529, type: 3}
+  m_Script: {fileID: 11500000, guid: c938f8c9bc72e6f43abff8cea36330eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   dontDestroyOnLoad: 1
@@ -445,7 +445,7 @@ MonoBehaviour:
   onlineScene: Assets/Scenes/Room Scene.unity
   transport: {fileID: 1811790741}
   networkAddress: localhost
-  maxConnections: 4
+  maxConnections: 100
   authenticator: {fileID: 0}
   playerPrefab: {fileID: 7731816093179140177, guid: 542c16c0a0a256344b15e67dd6764c6c, type: 3}
   autoCreatePlayer: 1
@@ -453,13 +453,15 @@ MonoBehaviour:
   spawnPrefabs: []
   timeInterpolationGui: 0
   showRoomGUI: 1
-  minPlayers: 0
+  minPlayers: 1
   roomPlayerPrefab: {fileID: 2893225969251329626, guid: 0086868ab94857e42b3d746b374a9e09, type: 3}
   RoomScene: Assets/Scenes/Room Scene.unity
   GameplayScene: Assets/Scenes/Debug Game Scene.unity
   _allPlayersReady: 0
   roomSlots: []
   clientIndex: 0
+  RoomPlayerObjects: []
+  ActivePlayerObjects: []
 --- !u!114 &1811790745
 MonoBehaviour:
   m_ObjectHideFlags: 0
