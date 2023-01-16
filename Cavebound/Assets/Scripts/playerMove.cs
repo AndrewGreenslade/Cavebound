@@ -19,7 +19,6 @@ public class playerMove : NetworkBehaviour
     private CinemachineVirtualCamera myCam;
     private Rigidbody2D rb;
 
-    private float fireInput;
     private float jumpInput;
     public ParticleSystem JumpParticleSys;
 
@@ -85,11 +84,6 @@ public class playerMove : NetworkBehaviour
         }
 
         return false;
-    }
-
-    void OnFire(InputValue t_fireVal)
-    {
-        fireInput = t_fireVal.Get<float>();
     }
 
     void OnMove(InputValue t_movementVal)

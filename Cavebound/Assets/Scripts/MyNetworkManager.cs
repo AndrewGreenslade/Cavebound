@@ -21,7 +21,7 @@ public class MyNetworkManager : NetworkRoomManager
 
         roomPlayer.name = "Room player: " + conn.connectionId;
         gamePlayer.name = "Game player: " + conn.connectionId;
-
+        
         return base.OnRoomServerSceneLoadedForPlayer(conn, roomPlayer, gamePlayer);
     }
 }
