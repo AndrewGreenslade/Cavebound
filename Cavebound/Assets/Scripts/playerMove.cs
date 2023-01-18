@@ -1,10 +1,11 @@
-using Mirror;
+using FishNet;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine;
+using FishNet.Object;
 
 public class playerMove : NetworkBehaviour
 {
@@ -22,12 +23,14 @@ public class playerMove : NetworkBehaviour
     private float jumpInput;
     public ParticleSystem JumpParticleSys;
 
-    private void Start()
+    public override void OnStartClient()
     {
+        base.OnStartClient();
+
         rb = GetComponent<Rigidbody2D>();
         origionalScale = transform.localScale;
 
-        if (!isLocalPlayer)
+        if (!base.IsOwner)
         {
             Destroy(GetComponent<PlayerInput>());
             this.enabled = false;
@@ -39,7 +42,7 @@ public class playerMove : NetworkBehaviour
     }
 
     private void Update()
-    {
+    { 
         Debug.DrawRay(raycastPosition.position, Vector2.down * jumpRayCastDistance, Color.red);
 
         if(movementX > 0)
@@ -51,10 +54,8 @@ public class playerMove : NetworkBehaviour
             transform.localScale = new Vector2(-origionalScale.x, origionalScale.y);
         }
 
-
-        if (!isLocalPlayer)
+        if (!base.IsOwner)
         {
-
             return;
         }
         

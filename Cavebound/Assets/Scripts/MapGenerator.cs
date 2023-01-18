@@ -5,7 +5,10 @@ using UnityEditor.PackageManager.UI;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UIElements;
-using Mirror;
+using FishNet;
+using FishNet.Object;
+using FishNet.Object.Synchronizing;
+using FishNet.Managing;
 
 public class MapGenerator : NetworkBehaviour
 {
@@ -28,12 +31,12 @@ public class MapGenerator : NetworkBehaviour
     public float NoiseScale = 1.0f;
     public int edgeSize = 10;
 
-    Vector3Int bottomLeft;
-    Vector3Int topLeft;
-    Vector3Int bottomRight;
-    Vector3Int topRight;
+    public Vector3Int bottomLeft;
+    public Vector3Int topLeft;
+    public Vector3Int bottomRight;
+    public Vector3Int topRight;
 
-    private void Start()
+    void Start()
     {
         //generate starting offsets for each player spawn room
         bottomLeft = new Vector3Int(edgeSize, edgeSize);
@@ -41,7 +44,7 @@ public class MapGenerator : NetworkBehaviour
         bottomRight = new Vector3Int(MapWidth - MapSpawnCircle, edgeSize);
         topRight = new Vector3Int(MapWidth - MapSpawnCircle, MapHieght - MapSpawnCircle);
 
-        if (!isServer)
+        if (!IsServer)
         {
             generateMap();
 
@@ -65,8 +68,6 @@ public class MapGenerator : NetworkBehaviour
 
         setPlayerSpawn(topLeft);
         setPlayerSpawn(topRight);
-
-        movePlayerToSpawnPosCommand();
     }
 
     public void generateMap()
@@ -114,42 +115,5 @@ public class MapGenerator : NetworkBehaviour
                 map.SetTile(new Vector3Int(coords.x + x, coords.y + y), null);
             }
         }
-    }
-
-    [Command(requiresAuthority = false)]
-    public void movePlayerToSpawnPosCommand()
-    {
-        Vector3Int offsetAmount = new Vector3Int(MapSpawnCircle / 2, MapSpawnCircle / 2, 0);
-
-        MyNetworkManager manager = FindObjectOfType<MyNetworkManager>();
-
-        if (manager.ActivePlayerObjects.Count == 1)
-        {
-            movePlayerToSpawnPosRPC(bottomLeft + offsetAmount, manager.ActivePlayerObjects[0]);
-        }
-        if (manager.ActivePlayerObjects.Count == 2)
-        {
-            movePlayerToSpawnPosRPC(bottomLeft + offsetAmount, manager.ActivePlayerObjects[0]);
-            movePlayerToSpawnPosRPC(bottomRight + offsetAmount, manager.ActivePlayerObjects[1]);
-        }
-        if (manager.ActivePlayerObjects.Count == 3)
-        {
-            movePlayerToSpawnPosRPC(bottomLeft + offsetAmount, manager.ActivePlayerObjects[0]);
-            movePlayerToSpawnPosRPC(bottomRight + offsetAmount, manager.ActivePlayerObjects[1]);
-            movePlayerToSpawnPosRPC(topLeft + offsetAmount, manager.ActivePlayerObjects[2]);
-        }
-        if (manager.ActivePlayerObjects.Count == 4)
-        {
-            movePlayerToSpawnPosRPC(bottomLeft + offsetAmount, manager.ActivePlayerObjects[0]);
-            movePlayerToSpawnPosRPC(bottomRight + offsetAmount, manager.ActivePlayerObjects[1]);
-            movePlayerToSpawnPosRPC(topLeft + offsetAmount, manager.ActivePlayerObjects[2]);
-            movePlayerToSpawnPosRPC(topRight + offsetAmount, manager.ActivePlayerObjects[3]);
-        }
-    }
-
-    [ClientRpc]
-    public void movePlayerToSpawnPosRPC(Vector3Int coords,GameObject t_player)
-    {
-        t_player.transform.position = coords;
     }
 }

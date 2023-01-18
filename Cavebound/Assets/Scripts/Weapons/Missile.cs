@@ -1,4 +1,5 @@
-using Mirror;
+using FishNet;
+using FishNet.Object;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,15 +10,14 @@ public class Missile : NetworkBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        spawnExp();
+        spawnExp(Explosion);
         Destroy(gameObject);
     }
 
-    [Command(requiresAuthority = false)]
-    void spawnExp()
+    void spawnExp(GameObject t_obj)
     {
-        GameObject explosion = Instantiate(Explosion, transform.position, transform.rotation);
-        Destroy(explosion, 2.5f);
-        NetworkServer.Spawn(explosion);
+        GameObject explosion = Instantiate(t_obj, transform.position, Quaternion.identity);
+        Destroy(explosion, 4.0f);
+        InstanceFinder.ServerManager.Spawn(explosion);
     }
 }
