@@ -22,6 +22,7 @@ public class playerMove : NetworkBehaviour
 
     private float jumpInput;
     public ParticleSystem JumpParticleSys;
+    public SpriteRenderer playerSprite;
 
     public override void OnStartClient()
     {
@@ -47,11 +48,11 @@ public class playerMove : NetworkBehaviour
 
         if(movementX > 0)
         {
-            transform.localScale = new Vector2(origionalScale.x,origionalScale.y);
+            playerSprite.flipX = false;
         }
         else if (movementX < 0)
         {
-            transform.localScale = new Vector2(-origionalScale.x, origionalScale.y);
+            playerSprite.flipX = true;
         }
 
         if (!base.IsOwner)

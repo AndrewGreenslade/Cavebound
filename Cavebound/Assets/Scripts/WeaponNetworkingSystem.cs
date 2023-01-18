@@ -19,10 +19,11 @@ public class WeaponNetworkingSystem : NetworkBehaviour
         {
             return;
         }
-
+        
         FinalPos = Camera.main.ScreenToWorldPoint(Input.mousePosition) - myTurret.position;
         float angle = Mathf.Atan2(FinalPos.y, FinalPos.x) * Mathf.Rad2Deg;
         Quaternion rot = Quaternion.AngleAxis(angle, Vector3.forward);
+
         myTurret.rotation = Quaternion.Slerp(myTurret.rotation, rot, turretRotSpeed * Time.deltaTime);
     }
 
