@@ -1,8 +1,8 @@
 using FishNet;
+using FishNet.Connection;
 using FishNet.Object;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Timeline;
 using UnityEngine;
 
 public class WeaponNetworkingSystem : NetworkBehaviour
@@ -28,10 +28,10 @@ public class WeaponNetworkingSystem : NetworkBehaviour
     }
 
     [ServerRpc]
-    public void spawnObj(int t_roundType,Vector3 pos, Quaternion rot,float speed)
+    public void spawnObj(int t_roundType,Vector3 pos, Quaternion rot,float speed,NetworkConnection conn = null)
     {
         GameObject rocket = Instantiate(BulletRoundTypes[t_roundType], pos, rot);
         rocket.GetComponent<Rigidbody2D>().velocity = rocket.transform.up * speed;
-        InstanceFinder.ServerManager.Spawn(rocket, LocalConnection);
+        InstanceFinder.ServerManager.Spawn(rocket, conn);
     }
 }

@@ -1,7 +1,5 @@
-using FishNet;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine;
@@ -24,6 +22,8 @@ public class playerMove : NetworkBehaviour
     public ParticleSystem JumpParticleSys;
     public SpriteRenderer playerSprite;
 
+    public static playerMove instance;
+
     public override void OnStartClient()
     {
         base.OnStartClient();
@@ -36,6 +36,11 @@ public class playerMove : NetworkBehaviour
             Destroy(GetComponent<PlayerInput>());
             this.enabled = false;
             return;
+        }
+
+        if (instance == null)
+        {
+            instance = this;
         }
 
         myCam = FindObjectOfType<CinemachineVirtualCamera>();

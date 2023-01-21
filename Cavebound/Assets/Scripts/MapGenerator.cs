@@ -1,14 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.PackageManager.UI;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using UnityEngine.UIElements;
-using FishNet;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
-using FishNet.Managing;
 
 public class MapGenerator : NetworkBehaviour
 {
@@ -36,8 +31,15 @@ public class MapGenerator : NetworkBehaviour
     public Vector3Int bottomRight;
     public Vector3Int topRight;
 
+    public static MapGenerator instance;
+
     void Start()
     {
+        if(instance == null)
+        {
+            instance = this;
+        }
+
         //generate starting offsets for each player spawn room
         bottomLeft = new Vector3Int(edgeSize, edgeSize);
         topLeft = new Vector3Int(edgeSize, MapHieght - MapSpawnCircle);
