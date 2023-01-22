@@ -128,7 +128,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 606690806}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -255,7 +255,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1362096300}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -5131,9 +5131,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2836e36774ca1c4bbbee976e17b649c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 255
+  _componentIndexCache: 5
   _addedNetworkObject: {fileID: 2072991444799887362}
-  _networkObjectCache: {fileID: 0}
+  _networkObjectCache: {fileID: 2072991444799887362}
   _synchronizeParent: 0
   _packing:
     Position: 1
@@ -5253,7 +5253,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2046937505}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -5494,7 +5494,7 @@ MonoBehaviour:
   - {x: 20, y: -17, z: 0}
   m_ShapePathHash: -107612907
   m_Mesh: {fileID: 0}
-  m_InstanceId: 48626
+  m_InstanceId: 52510
 --- !u!1 &7731816093179140177
 GameObject:
   m_ObjectHideFlags: 0
@@ -5638,14 +5638,18 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 2072991444799887362}
   _networkObjectCache: {fileID: 2072991444799887362}
   speed: 10
-  jumpForce: 1.25
   raycastPosition: {fileID: 1231000399329953351}
   jumpRayCastDistance: 0.25
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
+  movementX: 0
+  JumpForce: 15
+  jetPackFuel: 100
+  FuelSpeed: 7.5
   JumpParticleSys: {fileID: 1707306020}
   playerSprite: {fileID: 205638061157861468}
+  hud: {fileID: 5709114964564211310, guid: e16bfe6da7eca6e40b2ad146f65f9afa, type: 3}
 --- !u!95 &3543277515914758688
 Animator:
   serializedVersion: 4
@@ -5680,12 +5684,12 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_GravityScale: 1
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!61 &1852640917781915737
 BoxCollider2D:
@@ -5751,6 +5755,8 @@ MonoBehaviour:
   - {fileID: 8704032914218392729}
   - {fileID: 4524016416994449651}
   - {fileID: 49153124845145760}
+  - {fileID: 0}
+  - {fileID: 4930878321840631969}
   <ParentNetworkObject>k__BackingField: {fileID: 0}
   <ChildNetworkObjects>k__BackingField: []
   _isNetworked: 1

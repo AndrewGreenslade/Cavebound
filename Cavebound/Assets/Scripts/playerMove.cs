@@ -4,23 +4,26 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine;
 using FishNet.Object;
+using FishNet.Object.Synchronizing;
 
 public class playerMove : NetworkBehaviour
 {
     public float speed = 10.0f;
-    public float jumpForce = 100.0f;
     public Transform raycastPosition;
     public float jumpRayCastDistance;
     public LayerMask groundLayer;
 
+    [SyncVar]
     private float movementX;
-    private Vector2 origionalScale;
+    public float JumpForce;
+    public float jetPackFuel;
+    public float FuelSpeed;
     private CinemachineVirtualCamera myCam;
-    private Rigidbody2D rb;
 
     private float jumpInput;
     public ParticleSystem JumpParticleSys;
     public SpriteRenderer playerSprite;
+    public GameObject hud;
 
     public static playerMove instance;
 
@@ -28,13 +31,10 @@ public class playerMove : NetworkBehaviour
     {
         base.OnStartClient();
 
-        rb = GetComponent<Rigidbody2D>();
-        origionalScale = transform.localScale;
-
         if (!base.IsOwner)
         {
             Destroy(GetComponent<PlayerInput>());
-            this.enabled = false;
+            //this.enabled = false;
             return;
         }
 
@@ -42,6 +42,8 @@ public class playerMove : NetworkBehaviour
         {
             instance = this;
         }
+
+        Instantiate(hud);
 
         myCam = FindObjectOfType<CinemachineVirtualCamera>();
         myCam.Follow = transform;
@@ -72,13 +74,24 @@ public class playerMove : NetworkBehaviour
             if (isGrounded())
             {
                 JumpParticleSys.enableEmission = true;
-                rb.AddForce(Vector2.up * jumpForce,ForceMode2D.Impulse);
+            }
+
+            if (jetPackFuel > 0)
+            {
+                transform.position += new Vector3(0, jumpInput, 0) * Time.deltaTime * JumpForce;
+                jetPackFuel -= Time.deltaTime * FuelSpeed;
             }
         }
 
         if (isGrounded() && jumpInput == 0)
         {
             JumpParticleSys.enableEmission = false;
+
+            jetPackFuel += Time.deltaTime * FuelSpeed;
+        }
+        else if (jetPackFuel > 100)
+        {
+            jetPackFuel = 100;
         }
     }
 
@@ -93,14 +106,20 @@ public class playerMove : NetworkBehaviour
         return false;
     }
 
+    [ServerRpc]
+    public void updateMovmentOnServerRPC(Vector2 input)
+    {
+        movementX = input.x;
+    }
+
     void OnMove(InputValue t_movementVal)
     {
         Vector2 moveVec = t_movementVal.Get<Vector2>();
-        movementX = moveVec.x;
+        updateMovmentOnServerRPC(moveVec);
     }
 
     void OnJump(InputValue t_jumpVal)
     {
-        jumpInput= t_jumpVal.Get<float>();
+        jumpInput = t_jumpVal.Get<float>();
     }
 }
