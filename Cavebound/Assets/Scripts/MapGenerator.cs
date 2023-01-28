@@ -1,9 +1,18 @@
-using System.Collections;
+using FishNet.Object;
+using FishNet.Object.Synchronizing;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using FishNet.Object;
-using FishNet.Object.Synchronizing;
+
+[System.Serializable]
+public struct ore
+{
+    public string name;
+    public Tile tile;
+    public float minRarity;
+    public float maxRarity;
+    public float noiseScaleMod;
+}
 
 public class MapGenerator : NetworkBehaviour
 {
@@ -12,24 +21,26 @@ public class MapGenerator : NetworkBehaviour
 
     public int MapWidth = 5;
     public int MapHieght = 5;
-    public int MapSpawnCircle = 5;
+    public int MapSpawnSize = 5;
 
-    public Tilemap map;
+    public Tilemap GroundMap;
     public Tilemap BorderMap;
-    public Tilemap spawnMap;
+    public Tilemap BackgroundMap;
+    public Tilemap OreMap;
 
-    public Tile WhiteSquare;
+    public Tile GroundSquare;
     public Tile borderSquare;
     public Tile BGSquare;
-    public Tile spawnSquare;
+
+    public List<ore> ores= new List<ore>();
 
     public float NoiseScale = 1.0f;
     public int edgeSize = 10;
 
-    public Vector3Int bottomLeft;
-    public Vector3Int topLeft;
-    public Vector3Int bottomRight;
-    public Vector3Int topRight;
+    private Vector3Int bottomLeft;
+    private Vector3Int topLeft;
+    private Vector3Int bottomRight;
+    private Vector3Int topRight;
 
     public static MapGenerator instance;
 
@@ -42,32 +53,41 @@ public class MapGenerator : NetworkBehaviour
 
         //generate starting offsets for each player spawn room
         bottomLeft = new Vector3Int(edgeSize, edgeSize);
-        topLeft = new Vector3Int(edgeSize, MapHieght - MapSpawnCircle);
-        bottomRight = new Vector3Int(MapWidth - MapSpawnCircle, edgeSize);
-        topRight = new Vector3Int(MapWidth - MapSpawnCircle, MapHieght - MapSpawnCircle);
+        topLeft = new Vector3Int(edgeSize, MapHieght - MapSpawnSize - edgeSize);
+        bottomRight = new Vector3Int(MapWidth - MapSpawnSize - edgeSize, edgeSize);
+        topRight = new Vector3Int(MapWidth - MapSpawnSize - edgeSize, MapHieght - MapSpawnSize - edgeSize);
 
         if (!IsServer)
         {
             generateMap();
+            
+            foreach (var m_ore in ores)
+            {
+                generateOre(m_ore);
+            }
 
             //set player spawn for each corner of map
             setPlayerSpawn(bottomLeft);
             setPlayerSpawn(bottomRight);
-
             setPlayerSpawn(topLeft);
             setPlayerSpawn(topRight);
 
             return;
         }
 
-        seed = Random.Range(int.MinValue / 100, int.MaxValue / 100) / 100;
+        seed = Random.Range(int.MinValue + 10000, int.MaxValue - 10000) / 100;
 
         generateMap();
+
+        foreach (var m_ore in ores)
+        {
+            generateOre(m_ore);
+        }
+
 
         //set player spawn for each corner of map
         setPlayerSpawn(bottomLeft);
         setPlayerSpawn(bottomRight);
-
         setPlayerSpawn(topLeft);
         setPlayerSpawn(topRight);
     }
@@ -78,7 +98,7 @@ public class MapGenerator : NetworkBehaviour
         {
             for (int x = 0; x < MapWidth; x++)
             {
-                spawnMap.SetTile(new Vector3Int(x, y), BGSquare);
+                BackgroundMap.SetTile(new Vector3Int(x, y), BGSquare);
 
                 if (y < edgeSize || y > MapHieght - edgeSize || x < edgeSize || x > MapWidth - edgeSize)
                 {
@@ -93,28 +113,52 @@ public class MapGenerator : NetworkBehaviour
 
                 if (sample >= 0.45f && sample <= 0.75f)
                 {
-                    map.SetTile(new Vector3Int(x, y), WhiteSquare);
+                    GroundMap.SetTile(new Vector3Int(x, y), GroundSquare);
                 }
             }
         }
+    }
 
+    public void generateOre(ore t_Ore)
+    {
+        for (int y = 0; y < MapHieght; y++)
+        {
+            for (int x = 0; x < MapWidth; x++)
+            {
+                float xCoord = (seed + x) / MapWidth * (NoiseScale / t_Ore.noiseScaleMod);
+                float yCoord = (seed + y) / MapWidth * (NoiseScale / t_Ore.noiseScaleMod);
 
+                float sample = Mathf.PerlinNoise(xCoord, yCoord);
+
+                if (sample >= t_Ore.minRarity && sample <= t_Ore.maxRarity)
+                {
+                    if (GroundMap.GetTile(new Vector3Int(x, y)) != null)
+                    {
+                        if (OreMap.GetTile(new Vector3Int(x, y)) == null)
+                        {
+                            OreMap.SetTile(new Vector3Int(x, y), t_Ore.tile);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public void setPlayerSpawn(Vector3Int coords)
     { 
-        for (int y = 0; y < MapSpawnCircle; y++)
+        for (int y = 0; y < MapSpawnSize; y++)
         {
-            for (int x = 0; x < MapSpawnCircle; x++)
+            for (int x = 0; x < MapSpawnSize; x++)
             {
-                if(x == 0 || y == 0 || x == MapSpawnCircle - 1 || y == MapSpawnCircle - 1)
+                if(x == 0 || y == 0 || x == MapSpawnSize - 1 || y == MapSpawnSize - 1)
                 {
-                    map.SetTile(new Vector3Int(coords.x + x, coords.y + y), WhiteSquare);
+                    GroundMap.SetTile(new Vector3Int(coords.x + x, coords.y + y), GroundSquare);
                     continue;
                 }
 
-                spawnMap.SetTile(new Vector3Int(coords.x + x, coords.y + y), spawnSquare);
-                map.SetTile(new Vector3Int(coords.x + x, coords.y + y), null);
+                BackgroundMap.SetTile(new Vector3Int(coords.x + x, coords.y + y), BGSquare);
+                GroundMap.SetTile(new Vector3Int(coords.x + x, coords.y + y), null);
+                OreMap.SetTile(new Vector3Int(coords.x + x, coords.y + y), null);
             }
         }
     }

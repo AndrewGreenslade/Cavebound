@@ -43,7 +43,8 @@ public class Missile : NetworkBehaviour
             {
                 Vector3Int finalPos = newLoc + new Vector3Int(x, y, 0);
 
-                MapGenerator.instance.map.SetTile(finalPos, null);
+                MapGenerator.instance.GroundMap.SetTile(finalPos, null);
+                MapGenerator.instance.OreMap.SetTile(finalPos, null);
 
                 if (finalPos.y > MapGenerator.instance.edgeSize && finalPos.y < MapGenerator.instance.MapHieght - MapGenerator.instance.edgeSize && finalPos.x > MapGenerator.instance.edgeSize && finalPos.x < MapGenerator.instance.MapWidth - MapGenerator.instance.edgeSize)
                 {

@@ -34,7 +34,6 @@ public class playerMove : NetworkBehaviour
         if (!base.IsOwner)
         {
             Destroy(GetComponent<PlayerInput>());
-            //this.enabled = false;
             return;
         }
 
