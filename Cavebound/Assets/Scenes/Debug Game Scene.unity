@@ -1536,6 +1536,10 @@ PrefabInstance:
       propertyPath: m_GeometryType
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2571300187652907975, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
+      propertyPath: m_OffsetDistance
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2571300187652907976, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
       propertyPath: m_BodyType
       value: 1
@@ -1705,6 +1709,26 @@ PrefabInstance:
       value: 0.66
       objectReference: {fileID: 0}
     - target: {fileID: 5292342402729022472, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
+      propertyPath: ores.Array.data[0].valueWorth
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5292342402729022472, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
+      propertyPath: ores.Array.data[1].valueWorth
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5292342402729022472, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
+      propertyPath: ores.Array.data[2].valueWorth
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5292342402729022472, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
+      propertyPath: ores.Array.data[3].valueWorth
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5292342402729022472, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
+      propertyPath: ores.Array.data[4].valueWorth
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5292342402729022472, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
       propertyPath: ores.Array.data[0].noiseScaleMod
       value: 3
       objectReference: {fileID: 0}
@@ -1724,6 +1748,26 @@ PrefabInstance:
       propertyPath: ores.Array.data[4].noiseScaleMod
       value: 1.25
       objectReference: {fileID: 0}
+    - target: {fileID: 5292342402729022472, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
+      propertyPath: ores.Array.data[0].droppedGameobject
+      value: 
+      objectReference: {fileID: 4461545674090413513, guid: 18aee08ea26fb5e428b2dc56edcc2a5d, type: 3}
+    - target: {fileID: 5292342402729022472, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
+      propertyPath: ores.Array.data[1].droppedGameobject
+      value: 
+      objectReference: {fileID: 113006816914748760, guid: 18ebee95a93ddf14d8079ef218c583fd, type: 3}
+    - target: {fileID: 5292342402729022472, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
+      propertyPath: ores.Array.data[2].droppedGameobject
+      value: 
+      objectReference: {fileID: 8699390574724831320, guid: b24a769f7ea44444f974def4058a4fa1, type: 3}
+    - target: {fileID: 5292342402729022472, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
+      propertyPath: ores.Array.data[3].droppedGameobject
+      value: 
+      objectReference: {fileID: 8490246395693796532, guid: 2f15ee5ba9ed66c46a8b9e710da1596d, type: 3}
+    - target: {fileID: 5292342402729022472, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
+      propertyPath: ores.Array.data[4].droppedGameobject
+      value: 
+      objectReference: {fileID: 6052214463593041084, guid: 19b247bd0121559468f825df0226e27f, type: 3}
     - target: {fileID: 5292342403997068025, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
       propertyPath: m_SortingLayer
       value: 2

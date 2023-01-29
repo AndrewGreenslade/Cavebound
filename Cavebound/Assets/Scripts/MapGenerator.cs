@@ -9,6 +9,8 @@ public struct ore
 {
     public string name;
     public Tile tile;
+    public GameObject droppedGameobject;
+    public float valueWorth;
     public float minRarity;
     public float maxRarity;
     public float noiseScaleMod;
@@ -33,6 +35,8 @@ public class MapGenerator : NetworkBehaviour
     public Tile BGSquare;
 
     public List<ore> ores= new List<ore>();
+    
+    public int[,] OreMapIndexs = new int[0,0];
 
     public float NoiseScale = 1.0f;
     public int edgeSize = 10;
@@ -57,13 +61,15 @@ public class MapGenerator : NetworkBehaviour
         bottomRight = new Vector3Int(MapWidth - MapSpawnSize - edgeSize, edgeSize);
         topRight = new Vector3Int(MapWidth - MapSpawnSize - edgeSize, MapHieght - MapSpawnSize - edgeSize);
 
+        OreMapIndexs = new int[MapWidth, MapHieght];
+
         if (!IsServer)
         {
             generateMap();
             
-            foreach (var m_ore in ores)
+            for (int i = 0;i < ores.Count;i++)
             {
-                generateOre(m_ore);
+                generateOre(ores[i],i);
             }
 
             //set player spawn for each corner of map
@@ -79,11 +85,10 @@ public class MapGenerator : NetworkBehaviour
 
         generateMap();
 
-        foreach (var m_ore in ores)
+        for (int i = 0; i < ores.Count; i++)
         {
-            generateOre(m_ore);
+            generateOre(ores[i], i);
         }
-
 
         //set player spawn for each corner of map
         setPlayerSpawn(bottomLeft);
@@ -119,7 +124,7 @@ public class MapGenerator : NetworkBehaviour
         }
     }
 
-    public void generateOre(ore t_Ore)
+    public void generateOre(ore t_Ore, int index)
     {
         for (int y = 0; y < MapHieght; y++)
         {
@@ -137,6 +142,7 @@ public class MapGenerator : NetworkBehaviour
                         if (OreMap.GetTile(new Vector3Int(x, y)) == null)
                         {
                             OreMap.SetTile(new Vector3Int(x, y), t_Ore.tile);
+                            OreMapIndexs[x, y] = index;
                         }
                     }
                 }

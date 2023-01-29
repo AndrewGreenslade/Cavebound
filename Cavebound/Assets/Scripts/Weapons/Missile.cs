@@ -1,8 +1,6 @@
 using FishNet;
 using FishNet.Connection;
 using FishNet.Object;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Missile : NetworkBehaviour
@@ -12,15 +10,16 @@ public class Missile : NetworkBehaviour
     public override void OnStartClient()
     {
         base.OnStartClient();
-        Debug.Log(OwnerId);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(IsServer)
+        if (IsServer)
         {
             spawnExp(Explosion, playerMove.instance.LocalConnection);
-            modifyTilemap(transform.position);
+            Vector3Int newLoc = new Vector3Int(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y), Mathf.RoundToInt(transform.position.z));
+            spawnOre(newLoc,LocalConnection);
+            modifyTilemap(newLoc);
             Destroy(gameObject);
         }
     }
@@ -33,15 +32,14 @@ public class Missile : NetworkBehaviour
     }
 
     [ObserversRpc(RunLocally = true)]
-    void modifyTilemap(Vector3 pos)
+    void modifyTilemap(Vector3Int pos)
     {
-        Vector3Int newLoc = new Vector3Int(Mathf.RoundToInt(pos.x), Mathf.RoundToInt(pos.y), Mathf.RoundToInt(pos.z));
-        
+
         for (int y = -2; y < 3; y++)
         {
             for (int x = -2; x < 3; x++)
             {
-                Vector3Int finalPos = newLoc + new Vector3Int(x, y, 0);
+                Vector3Int finalPos = pos + new Vector3Int(x, y, 0);
 
                 MapGenerator.instance.GroundMap.SetTile(finalPos, null);
                 MapGenerator.instance.OreMap.SetTile(finalPos, null);
@@ -49,6 +47,26 @@ public class Missile : NetworkBehaviour
                 if (finalPos.y > MapGenerator.instance.edgeSize && finalPos.y < MapGenerator.instance.MapHieght - MapGenerator.instance.edgeSize && finalPos.x > MapGenerator.instance.edgeSize && finalPos.x < MapGenerator.instance.MapWidth - MapGenerator.instance.edgeSize)
                 {
                     MapGenerator.instance.BorderMap.SetTile(finalPos, null);
+                }
+            }
+        }
+    }
+
+    void spawnOre(Vector3Int pos,NetworkConnection conn)
+    {
+        for (int x = -2; x < 3; x++)
+        {
+            for (int y = -2; y < 3; y++)
+            {
+
+                Vector3Int finalPos = pos + new Vector3Int(x, y, 0);
+
+                if (MapGenerator.instance.OreMap.GetTile(finalPos) != null)
+                {
+                    int index = MapGenerator.instance.OreMapIndexs[finalPos.x,finalPos.y];
+                    Quaternion rot = Quaternion.Euler(0, 0, Random.Range(0, 360));
+                    GameObject Ore = Instantiate(MapGenerator.instance.ores[index].droppedGameobject, finalPos, rot);
+                    InstanceFinder.ServerManager.Spawn(Ore, conn);
                 }
             }
         }
