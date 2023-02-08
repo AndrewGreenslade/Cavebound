@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -6147244663497152050}
   - component: {fileID: -2700380556746993879}
   m_Layer: 0
-  m_Name: CopperOreChunk
+  m_Name: CopperChunk
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -127,7 +127,7 @@ MonoBehaviour:
   <PrefabId>k__BackingField: 6
   _scenePathHash: 0
   <SceneId>k__BackingField: 0
-  <AssetPathHash>k__BackingField: 7584992800592750619
+  <AssetPathHash>k__BackingField: 13192806761361005455
   _sceneNetworkObjects: []
 --- !u!50 &-2700380556746993879
 Rigidbody2D:

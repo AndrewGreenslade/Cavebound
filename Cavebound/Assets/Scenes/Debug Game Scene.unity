@@ -1629,6 +1629,46 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 636924a06a361884dab236e237521d61, type: 2}
     - target: {fileID: 5292342402729022472, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
+      propertyPath: ores.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 0af8d59873dc73d4ab914e049ef09602, type: 2}
+    - target: {fileID: 5292342402729022472, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
+      propertyPath: ores.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: b93175337e59b9948b27dd3134338230, type: 2}
+    - target: {fileID: 5292342402729022472, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
+      propertyPath: ores.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 851f6022fec3dc541815eef61d8645e8, type: 2}
+    - target: {fileID: 5292342402729022472, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
+      propertyPath: ores.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: 0eaaea62926c6f2459761a451a207eb1, type: 2}
+    - target: {fileID: 5292342402729022472, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
+      propertyPath: ores.Array.data[4]
+      value: 
+      objectReference: {fileID: 11400000, guid: a82ba0bac7a8c57489d047f6f8a16232, type: 2}
+    - target: {fileID: 5292342402729022472, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
+      propertyPath: ores.Array.data[5]
+      value: 
+      objectReference: {fileID: 11400000, guid: a82ba0bac7a8c57489d047f6f8a16232, type: 2}
+    - target: {fileID: 5292342402729022472, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
+      propertyPath: ores.Array.data[6]
+      value: 
+      objectReference: {fileID: 11400000, guid: a82ba0bac7a8c57489d047f6f8a16232, type: 2}
+    - target: {fileID: 5292342402729022472, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
+      propertyPath: ores.Array.data[7]
+      value: 
+      objectReference: {fileID: 11400000, guid: a82ba0bac7a8c57489d047f6f8a16232, type: 2}
+    - target: {fileID: 5292342402729022472, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
+      propertyPath: ores.Array.data[8]
+      value: 
+      objectReference: {fileID: 11400000, guid: a82ba0bac7a8c57489d047f6f8a16232, type: 2}
+    - target: {fileID: 5292342402729022472, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
+      propertyPath: ores.Array.data[9]
+      value: 
+      objectReference: {fileID: 11400000, guid: a82ba0bac7a8c57489d047f6f8a16232, type: 2}
+    - target: {fileID: 5292342402729022472, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
       propertyPath: ores.Array.data[0].name
       value: Copper
       objectReference: {fileID: 0}

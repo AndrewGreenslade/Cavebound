@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c564a98869067a44a113f0e2c65d0f5, type: 3}
+  m_Name: ore_Gold
+  m_EditorClassIdentifier: 
+  OreName: Gold
+  OreTile: {fileID: 11400000, guid: 636924a06a361884dab236e237521d61, type: 2}
+  droppedOre: {fileID: 8490246395693796532, guid: 2f15ee5ba9ed66c46a8b9e710da1596d, type: 3}
+  valueWorth: 4
+  minRarity: 0.7
+  maxRarity: 0.75
+  noiseScaleMod: 1.5

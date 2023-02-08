@@ -4,18 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-[System.Serializable]
-public struct ore
-{
-    public string name;
-    public Tile tile;
-    public GameObject droppedGameobject;
-    public float valueWorth;
-    public float minRarity;
-    public float maxRarity;
-    public float noiseScaleMod;
-}
-
 public class MapGenerator : NetworkBehaviour
 {
     [SyncVar]
@@ -34,7 +22,7 @@ public class MapGenerator : NetworkBehaviour
     public Tile borderSquare;
     public Tile BGSquare;
 
-    public List<ore> ores= new List<ore>();
+    public List<Ore> ores= new List<Ore>();
     
     public int[,] OreMapIndexs = new int[0,0];
 
@@ -48,9 +36,11 @@ public class MapGenerator : NetworkBehaviour
 
     public static MapGenerator instance;
 
-    void Start()
+    public override void OnStartClient()
     {
-        if(instance == null)
+        base.OnStartClient();
+
+        if (instance == null)
         {
             instance = this;
         }
@@ -62,26 +52,6 @@ public class MapGenerator : NetworkBehaviour
         topRight = new Vector3Int(MapWidth - MapSpawnSize - edgeSize, MapHieght - MapSpawnSize - edgeSize);
 
         OreMapIndexs = new int[MapWidth, MapHieght];
-
-        if (!IsServer)
-        {
-            generateMap();
-            
-            for (int i = 0;i < ores.Count;i++)
-            {
-                generateOre(ores[i],i);
-            }
-
-            //set player spawn for each corner of map
-            setPlayerSpawn(bottomLeft);
-            setPlayerSpawn(bottomRight);
-            setPlayerSpawn(topLeft);
-            setPlayerSpawn(topRight);
-
-            return;
-        }
-
-        seed = Random.Range(int.MinValue + 10000, int.MaxValue - 10000) / 100;
 
         generateMap();
 
@@ -95,6 +65,12 @@ public class MapGenerator : NetworkBehaviour
         setPlayerSpawn(bottomRight);
         setPlayerSpawn(topLeft);
         setPlayerSpawn(topRight);
+    }
+
+    public override void OnStartServer()
+    {
+        base.OnStartServer();
+        seed = Random.Range(int.MinValue + 10000, int.MaxValue - 10000) / 100;
     }
 
     public void generateMap()
@@ -124,7 +100,7 @@ public class MapGenerator : NetworkBehaviour
         }
     }
 
-    public void generateOre(ore t_Ore, int index)
+    public void generateOre(Ore t_Ore, int index)
     {
         for (int y = 0; y < MapHieght; y++)
         {
@@ -141,7 +117,7 @@ public class MapGenerator : NetworkBehaviour
                     {
                         if (OreMap.GetTile(new Vector3Int(x, y)) == null)
                         {
-                            OreMap.SetTile(new Vector3Int(x, y), t_Ore.tile);
+                            OreMap.SetTile(new Vector3Int(x, y), t_Ore.OreTile);
                             OreMapIndexs[x, y] = index;
                         }
                     }

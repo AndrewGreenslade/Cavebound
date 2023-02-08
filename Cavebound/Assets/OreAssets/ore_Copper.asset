@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c564a98869067a44a113f0e2c65d0f5, type: 3}
+  m_Name: ore_Copper
+  m_EditorClassIdentifier: 
+  OreName: Copper
+  OreTile: {fileID: 11400000, guid: 8644c5b8c5cf4f240a61152e18d7ba8d, type: 2}
+  droppedOre: {fileID: 4461545674090413513, guid: 18aee08ea26fb5e428b2dc56edcc2a5d, type: 3}
+  valueWorth: 1
+  minRarity: 0.65
+  maxRarity: 0.75
+  noiseScaleMod: 3
