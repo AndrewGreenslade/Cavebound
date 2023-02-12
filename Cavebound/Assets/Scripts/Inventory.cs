@@ -4,10 +4,15 @@ using UnityEditor;
 using UnityEngine;
 using System.Linq;
 using FishNet.Object;
+using FishNet.Object.Synchronizing;
+using FishNet;
 
+/// <summary>
+/// This should only show on host, so player has no access to his Inventory on his client
+/// </summary>
 [System.Serializable]
 public class OreRecord
-{
+{ 
     public Ore prefab;
     public int amount;
 }
@@ -28,8 +33,9 @@ public class Inventory : NetworkBehaviour
         }
     }
 
-    void Start()
+    public override void OnStartServer()
     {
+        base.OnStartServer();
         AddOresToList();
     }
 
@@ -51,6 +57,18 @@ public class Inventory : NetworkBehaviour
                 {
                     oresRetrieved.Add(new OreRecord {prefab = asset,amount = 0});
                 }
+            }
+        }
+    }
+
+    public void AddOresToInventory(NetworkObject oreObject)
+    {
+        foreach(OreRecord item in oresRetrieved)
+        {
+            if(item.prefab.OreName == oreObject.GetComponent<OreChunk>().oreName)
+            {
+                item.amount++;
+                oreObject.Despawn();
             }
         }
     }

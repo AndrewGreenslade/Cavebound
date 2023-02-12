@@ -1,3 +1,5 @@
+using FishNet.Object;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +8,7 @@ using UnityEngine.UI;
 
 //allows me to create a new ore in unity
 [CreateAssetMenu(fileName = "Ore", menuName = "Ore/OreAsset", order = 1)]
+[Serializable]
 public class Ore : ScriptableObject
 {
     public string OreName;

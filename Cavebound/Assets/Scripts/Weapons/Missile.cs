@@ -17,7 +17,7 @@ public class Missile : NetworkBehaviour
         if (IsServer)
         {
             spawnExp(Explosion, playerMove.instance.LocalConnection);
-            Vector3Int newLoc = new Vector3Int(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.y), Mathf.RoundToInt(transform.position.z));
+            Vector3Int newLoc = new Vector3Int((int)(transform.position.x), (int)(transform.position.y), (int)(transform.position.z));
             spawnOre(newLoc,LocalConnection);
             modifyTilemap(newLoc);
             Destroy(gameObject);
@@ -65,8 +65,9 @@ public class Missile : NetworkBehaviour
                 {
                     int index = MapGenerator.instance.OreMapIndexs[finalPos.x,finalPos.y];
                     Quaternion rot = Quaternion.Euler(0, 0, Random.Range(0, 360));
-                    GameObject Ore = Instantiate(MapGenerator.instance.ores[index].droppedOre, finalPos, rot);
-                    InstanceFinder.ServerManager.Spawn(Ore, conn);
+                    GameObject ore = Instantiate(MapGenerator.instance.ores[index].droppedOre, finalPos, rot);
+                    ore.GetComponent<OreChunk>().oreName = MapGenerator.instance.ores[index].OreName;
+                    InstanceFinder.ServerManager.Spawn(ore, conn);
                 }
             }
         }
