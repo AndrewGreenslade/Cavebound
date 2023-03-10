@@ -5494,7 +5494,7 @@ MonoBehaviour:
   - {x: 20, y: -17, z: 0}
   m_ShapePathHash: -107612907
   m_Mesh: {fileID: 0}
-  m_InstanceId: 32024
+  m_InstanceId: 42576
 --- !u!1 &7731816093179140177
 GameObject:
   m_ObjectHideFlags: 0
@@ -5558,6 +5558,8 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 2072991444799887362}
   _networkObjectCache: {fileID: 2072991444799887362}
   oresRetrieved: []
+  oreUIPrefab: {fileID: 8275220220259197166, guid: 916b68003e6f25841a5c792299f7fd22, type: 3}
+  oreUIPanel: {fileID: 0}
 --- !u!114 &4966048196461474338
 MonoBehaviour:
   m_ObjectHideFlags: 0
