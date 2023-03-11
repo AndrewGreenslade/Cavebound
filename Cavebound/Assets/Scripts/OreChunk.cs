@@ -1,3 +1,4 @@
+using FishNet.Connection;
 using FishNet.Object;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,13 +14,13 @@ public class OreChunk : NetworkBehaviour
         if(collision.tag == "Player" && !isDespawning)
         {
             isDespawning = true;
-            getInventoryObj(GetComponent<NetworkObject>(), collision.GetComponent<NetworkObject>());
+            getInventoryObj(collision.GetComponent<NetworkObject>().LocalConnection ,GetComponent<NetworkObject>(), collision.GetComponent<NetworkObject>());
         }
     }
 
     [ServerRpc(RequireOwnership = false)]
-    public void getInventoryObj(NetworkObject ore, NetworkObject player)
+    public void getInventoryObj(NetworkConnection conn, NetworkObject ore, NetworkObject player)
     {
-        player.GetComponent<Inventory>().AddOresToInventory(ore);
+        player.GetComponent<Inventory>().AddOresToInventory(conn,ore);
     }
 }

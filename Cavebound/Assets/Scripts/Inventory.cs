@@ -6,6 +6,8 @@ using System.Linq;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
 using FishNet;
+using FishNet.Connection;
+using static UnityEditor.Progress;
 
 /// <summary>
 /// This should only show on host, so player has no access to his Inventory on his client
@@ -37,24 +39,24 @@ public class Inventory : NetworkBehaviour
         }
     }
 
-    public override void OnStartServer()
-    {
-        base.OnStartServer();
-        AddOresToList();
-    }
-
     public override void OnStartClient()
     {
         base.OnStartClient();
-        oreUIPanel = GameObject.FindGameObjectWithTag("OreUI").transform;
+     
+        AddOresToList();
 
-        foreach (OreRecord item in oresRetrieved)
+        if (GameObject.FindGameObjectWithTag("OreUI").transform.childCount <= 0)
         {
-            GameObject ui = Instantiate(oreUIPrefab, oreUIPanel);
-            oreHud hud = ui.GetComponent<oreHud>();
+            oreUIPanel = GameObject.FindGameObjectWithTag("OreUI").transform;
 
-            oreHudList.Add(hud);
-            hud.setVars(item.prefab.OreName, item.prefab.droppedOre.GetComponent<SpriteRenderer>().color);
+            foreach (OreRecord item in oresRetrieved)
+            {
+                GameObject ui = Instantiate(oreUIPrefab, oreUIPanel);
+                oreHud hud = ui.GetComponent<oreHud>();
+
+                oreHudList.Add(hud);
+                hud.setVars(item.prefab.OreName, item.prefab.droppedOre.GetComponent<SpriteRenderer>().color);
+            }
         }
     }
 
@@ -80,23 +82,28 @@ public class Inventory : NetworkBehaviour
         }
     }
 
-    public void AddOresToInventory(NetworkObject oreObject)
+    public void AddOresToInventory(NetworkConnection conn, NetworkObject oreObject)
     {
         foreach(OreRecord item in oresRetrieved)
         {
             if(item.prefab.OreName == oreObject.GetComponent<OreChunk>().oreName)
             {
-                foreach (var hudItem in oreHudList)
-                {
-                    if(hudItem.oreName == item.prefab.OreName)
-                    {
-                        hudItem.AddOreToAmount();
-                        break;
-                    }
-                }
-
+                addOreToUI(conn, item.prefab.OreName);
                 item.amount++;
                 oreObject.Despawn();
+            }
+        }
+    }
+    
+    [TargetRpc]
+    private void addOreToUI(NetworkConnection conn, string itemName)
+    {
+        foreach (var hudItem in oreHudList)
+        {
+            if (hudItem.oreName == itemName)
+            {
+                hudItem.AddOreToAmount();
+                break;
             }
         }
     }

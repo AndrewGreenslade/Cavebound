@@ -5,17 +5,17 @@ using UnityEngine.UI;
 
 public class JetpackFuelUI : MonoBehaviour
 {
-    private Slider slider;
+    private Image slider;
 
     // Start is called before the first frame update
     void Start()
     {
-        slider = GetComponent<Slider>();
+        slider = GetComponent<Image>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        slider.value = playerMove.instance.jetPackFuel;
+        slider.fillAmount = playerMove.instance.jetPackFuel / 100.0f;
     }
 }
