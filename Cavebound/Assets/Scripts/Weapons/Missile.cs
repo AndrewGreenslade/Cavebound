@@ -65,7 +65,7 @@ public class Missile : NetworkBehaviour
                 {
                     int index = MapGenerator.instance.OreMapIndexs[finalPos.x,finalPos.y];
                     Quaternion rot = Quaternion.Euler(0, 0, Random.Range(0, 360));
-                    GameObject ore = Instantiate(MapGenerator.instance.ores[index].droppedOre, finalPos, rot);
+                    GameObject ore = Instantiate(MapGenerator.instance.ores[index].droppedOre, finalPos + new Vector3(0.5f,0.5f), rot);
                     ore.GetComponent<OreChunk>().oreName = MapGenerator.instance.ores[index].OreName;
                     InstanceFinder.ServerManager.Spawn(ore, conn);
                 }

@@ -60,6 +60,8 @@ public class MapGenerator : NetworkBehaviour
             generateOre(ores[i], i);
         }
 
+        generateColliders();
+
         //set player spawn for each corner of map
         setPlayerSpawn(bottomLeft);
         setPlayerSpawn(bottomRight);
@@ -80,10 +82,14 @@ public class MapGenerator : NetworkBehaviour
             for (int x = 0; x < MapWidth; x++)
             {
                 BackgroundMap.SetTile(new Vector3Int(x, y), BGSquare);
+                int range = Random.Range(0, 4);
+                BackgroundMap.SetTransformMatrix(new Vector3Int(x, y), Matrix4x4.Rotate(Quaternion.Euler(0, 0, 90f * range)));
 
                 if (y < edgeSize || y > MapHieght - edgeSize || x < edgeSize || x > MapWidth - edgeSize)
                 {
                     BorderMap.SetTile(new Vector3Int(x, y), borderSquare);
+                    range = Random.Range(0, 4);
+                    BorderMap.SetTransformMatrix(new Vector3Int(x, y), Matrix4x4.Rotate(Quaternion.Euler(0, 0, 90f * range)));
                     continue;
                 }
 
@@ -95,6 +101,8 @@ public class MapGenerator : NetworkBehaviour
                 if (sample >= 0.45f && sample <= 0.75f)
                 {
                     GroundMap.SetTile(new Vector3Int(x, y), GroundSquare);
+                    range = Random.Range(0, 4);
+                    GroundMap.SetTransformMatrix(new Vector3Int(x, y), Matrix4x4.Rotate(Quaternion.Euler(0, 0, 90f * range)));
                 }
             }
         }
@@ -118,6 +126,11 @@ public class MapGenerator : NetworkBehaviour
                         if (OreMap.GetTile(new Vector3Int(x, y)) == null)
                         {
                             OreMap.SetTile(new Vector3Int(x, y), t_Ore.OreTile);
+
+                            int range = Random.Range(0, 4);
+
+                            OreMap.SetTransformMatrix(new Vector3Int(x, y), Matrix4x4.Rotate(Quaternion.Euler(0, 0, 90f * range)));
+
                             OreMapIndexs[x, y] = index;
                         }
                     }
@@ -143,5 +156,11 @@ public class MapGenerator : NetworkBehaviour
                 OreMap.SetTile(new Vector3Int(coords.x + x, coords.y + y), null);
             }
         }
+    }
+
+    public void generateColliders()
+    {
+        //GroundMap.GetComponent<CompositeCollider2D>().GenerateGeometry();
+        //BorderMap.GetComponent<CompositeCollider2D>().GenerateGeometry();
     }
 }

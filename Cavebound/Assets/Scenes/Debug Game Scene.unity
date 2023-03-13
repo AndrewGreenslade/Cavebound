@@ -1661,7 +1661,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 235466320, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
       propertyPath: m_EdgeRadius
-      value: 0.225
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 235466320, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
       propertyPath: m_GeometryType
@@ -1669,11 +1669,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 235466320, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
       propertyPath: m_OffsetDistance
-      value: 0
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 235466321, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
       propertyPath: m_BodyType
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 235466321, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
       propertyPath: m_Simulated
@@ -1681,6 +1681,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 235466321, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
       propertyPath: m_GravityScale
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 235466322, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
+      propertyPath: m_ExtrusionFactor
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 235466322, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
+      propertyPath: m_UsedByComposite
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 235466323, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
@@ -1717,19 +1725,23 @@ PrefabInstance:
       objectReference: {fileID: 5292342402729022472}
     - target: {fileID: 2571300187652907975, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
       propertyPath: m_EdgeRadius
-      value: 0.225
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2571300187652907975, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
       propertyPath: m_GeometryType
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2571300187652907975, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
-      propertyPath: m_OffsetDistance
+      propertyPath: m_GenerationType
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2571300187652907975, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
+      propertyPath: m_OffsetDistance
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 2571300187652907976, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
       propertyPath: m_BodyType
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2571300187652907976, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
       propertyPath: m_Simulated
@@ -1741,6 +1753,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2571300187652907976, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
       propertyPath: m_GravityScale
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2571300187652907977, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
+      propertyPath: m_ExtrusionFactor
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2571300187652907977, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
+      propertyPath: m_UsedByComposite
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5292342402729022472, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
@@ -1758,7 +1778,11 @@ PrefabInstance:
     - target: {fileID: 5292342402729022472, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
       propertyPath: BGSquare
       value: 
-      objectReference: {fileID: 11400000, guid: 336a68a3132ddf441800fc64eed77665, type: 2}
+      objectReference: {fileID: 11400000, guid: 329377310893bb34e9b71d961f2a1fa4, type: 2}
+    - target: {fileID: 5292342402729022472, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
+      propertyPath: edgeSize
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 5292342402729022472, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
       propertyPath: GroundMap
       value: 
@@ -1778,7 +1802,7 @@ PrefabInstance:
     - target: {fileID: 5292342402729022472, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
       propertyPath: GroundSquare
       value: 
-      objectReference: {fileID: 11400000, guid: d5ad810e778886e4682b1e5d90b1c25a, type: 2}
+      objectReference: {fileID: 11400000, guid: 0e2ec155aa87bd74ab329f1adf7aa646, type: 2}
     - target: {fileID: 5292342402729022472, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
       propertyPath: MapSpawnSize
       value: 26
@@ -1786,7 +1810,7 @@ PrefabInstance:
     - target: {fileID: 5292342402729022472, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
       propertyPath: borderSquare
       value: 
-      objectReference: {fileID: 11400000, guid: d5ad810e778886e4682b1e5d90b1c25a, type: 2}
+      objectReference: {fileID: 11400000, guid: 0e2ec155aa87bd74ab329f1adf7aa646, type: 2}
     - target: {fileID: 5292342402729022472, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
       propertyPath: BackgroundMap
       value: 
@@ -2003,6 +2027,10 @@ PrefabInstance:
       propertyPath: m_SortingLayerID
       value: -2133780237
       objectReference: {fileID: 0}
+    - target: {fileID: 5292342403997068025, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
+      propertyPath: m_DetectChunkCullingBounds
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5292342403997068027, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
       propertyPath: m_Name
       value: Ground Tilemap
@@ -2010,6 +2038,10 @@ PrefabInstance:
     - target: {fileID: 5292342403997068027, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5292342403997068038, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
+      propertyPath: m_TileOrientation
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5577705325714808414, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
       propertyPath: m_RootOrder
@@ -2071,7 +2103,9 @@ PrefabInstance:
       propertyPath: m_SortingLayerID
       value: 1779492779
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 235466320, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
+    - {fileID: 2571300187652907975, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
 --- !u!4 &5292342402729022471 stripped
 Transform:
