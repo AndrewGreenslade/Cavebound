@@ -24,6 +24,7 @@ public class playerMove : NetworkBehaviour
     public ParticleSystem JumpParticleSys;
     public SpriteRenderer playerSprite;
     public GameObject hud;
+    private Rigidbody2D rb;
 
     public static playerMove instance;
 
@@ -43,7 +44,7 @@ public class playerMove : NetworkBehaviour
         }
 
         Instantiate(hud);
-
+        rb = GetComponent<Rigidbody2D>();
         myCam = FindObjectOfType<CinemachineVirtualCamera>();
         myCam.Follow = transform;
     }
@@ -77,7 +78,8 @@ public class playerMove : NetworkBehaviour
 
             if (jetPackFuel > 0)
             {
-                transform.position += new Vector3(0, jumpInput, 0) * Time.deltaTime * JumpForce;
+                rb.AddForce(Vector2.up * jumpInput * Time.deltaTime * JumpForce,ForceMode2D.Impulse);
+
                 jetPackFuel -= Time.deltaTime * FuelSpeed;
             }
         }
@@ -85,7 +87,6 @@ public class playerMove : NetworkBehaviour
         if (isGrounded() && jumpInput == 0)
         {
             JumpParticleSys.enableEmission = false;
-
             jetPackFuel += Time.deltaTime * FuelSpeed;
         }
         else if (jetPackFuel > 100)
