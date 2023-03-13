@@ -66,7 +66,7 @@ public class playerMove : NetworkBehaviour
             return;
         }
         
-        transform.position += new Vector3(movementX, 0, 0) * Time.deltaTime * speed;
+        transform.Translate(new Vector3(movementX, 0, 0) * Time.deltaTime * speed);
         
         if(jumpInput > 0)
         {

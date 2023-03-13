@@ -1659,6 +1659,18 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 235466320, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
+      propertyPath: m_EdgeRadius
+      value: 0.225
+      objectReference: {fileID: 0}
+    - target: {fileID: 235466320, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
+      propertyPath: m_GeometryType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 235466320, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
+      propertyPath: m_OffsetDistance
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 235466321, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
       propertyPath: m_BodyType
       value: 1
@@ -1703,6 +1715,10 @@ PrefabInstance:
       propertyPath: _sceneNetworkObjects.Array.data[0]
       value: 
       objectReference: {fileID: 5292342402729022472}
+    - target: {fileID: 2571300187652907975, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
+      propertyPath: m_EdgeRadius
+      value: 0.225
+      objectReference: {fileID: 0}
     - target: {fileID: 2571300187652907975, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
       propertyPath: m_GeometryType
       value: 0
