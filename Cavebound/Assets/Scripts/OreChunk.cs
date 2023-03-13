@@ -8,6 +8,22 @@ public class OreChunk : NetworkBehaviour
 {
     public string oreName;
     private bool isDespawning = false;
+    private float despawnTimer = 0;
+    public float TodespawnTime = 10.0f;
+
+    public void Update()
+    {
+        if (IsServer)
+        {
+            despawnTimer += Time.deltaTime;
+
+            if (despawnTimer > TodespawnTime)
+            {
+                despawnTimer = 0;
+                Despawn();
+            }
+        }
+    }
 
     void OnTriggerEnter2D(Collider2D collision)
     {

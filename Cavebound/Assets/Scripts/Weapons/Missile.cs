@@ -39,7 +39,7 @@ public class Missile : NetworkBehaviour
         {
             for (int x = -2; x < 3; x++)
             {
-                Vector3Int finalPos = new Vector3Int(Mathf.CeilToInt(pos.x), Mathf.CeilToInt(pos.y), 0) + new Vector3Int(x,y, 0);
+                Vector3Int finalPos = new Vector3Int(Mathf.CeilToInt(pos.x), pos.y , 0) + new Vector3Int(x,y, 0);
 
                 MapGenerator.instance.GroundMap.SetTile(finalPos, null);
                 MapGenerator.instance.OreMap.SetTile(finalPos, null);
