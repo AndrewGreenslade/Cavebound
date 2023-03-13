@@ -14,7 +14,7 @@ public class playerMove : NetworkBehaviour
     public LayerMask groundLayer;
 
     [SyncVar]
-    private float movementX;
+    public float movementX;
     public float JumpForce;
     public float jetPackFuel;
     public float FuelSpeed;
@@ -27,6 +27,7 @@ public class playerMove : NetworkBehaviour
     private Rigidbody2D rb;
 
     public static playerMove instance;
+    public Animator animController;
 
     public override void OnStartClient()
     {
@@ -45,6 +46,7 @@ public class playerMove : NetworkBehaviour
 
         Instantiate(hud);
         rb = GetComponent<Rigidbody2D>();
+        animController = GetComponent<Animator>();
         myCam = FindObjectOfType<CinemachineVirtualCamera>();
         myCam.Follow = transform;
     }
@@ -66,19 +68,25 @@ public class playerMove : NetworkBehaviour
         {
             return;
         }
-        
-        transform.Translate(new Vector3(movementX, 0, 0) * Time.deltaTime * speed);
-        
-        if(jumpInput > 0)
-        {
-            if (isGrounded())
-            {
-                JumpParticleSys.enableEmission = true;
-            }
 
+        // transform.Translate(new Vector3(movementX, 0, 0) * Time.deltaTime * speed);
+        Vector3 direction = transform.right * movementX;
+        direction.x *= speed;
+        direction.y = rb.velocity.y;
+        rb.velocity = direction;
+
+        animController.SetBool("IsGrounded", isGrounded());
+        
+        if (isGrounded())
+        {
+            JumpParticleSys.enableEmission = true;
+        }
+
+        if (jumpInput > 0)
+        {
             if (jetPackFuel > 0)
             {
-                rb.AddForce(Vector2.up * jumpInput * Time.deltaTime * JumpForce,ForceMode2D.Impulse);
+                rb.AddForce(Vector2.up * jumpInput * Time.deltaTime * JumpForce, ForceMode2D.Impulse);
 
                 jetPackFuel -= Time.deltaTime * FuelSpeed;
             }
@@ -107,15 +115,15 @@ public class playerMove : NetworkBehaviour
     }
 
     [ServerRpc]
-    public void updateMovmentOnServerRPC(Vector2 input)
+    public void updateMovmentOnServerRPC(float inputX)
     {
-        movementX = input.x;
+        movementX = inputX;
     }
 
     void OnMove(InputValue t_movementVal)
     {
         Vector2 moveVec = t_movementVal.Get<Vector2>();
-        updateMovmentOnServerRPC(moveVec);
+        updateMovmentOnServerRPC(moveVec.x);
     }
 
     void OnJump(InputValue t_jumpVal)

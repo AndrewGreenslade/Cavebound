@@ -315,7 +315,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1707306018}
   serializedVersion: 8
-  lengthInSec: 1
+  lengthInSec: 0.3
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
@@ -390,7 +390,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.5
+      scalar: 0.3
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -1259,20 +1259,20 @@ ParticleSystem:
         - serializedVersion: 3
           time: 0
           value: 1
-          inSlope: -1
-          outSlope: -1
+          inSlope: -0.8052567
+          outSlope: -0.8052567
           tangentMode: 34
           weightedMode: 0
           inWeight: 0
-          outWeight: 0
+          outWeight: 0.33333334
         - serializedVersion: 3
-          time: 1
-          value: 0
-          inSlope: -1
-          outSlope: -1
+          time: 0.9901123
+          value: 0.20270538
+          inSlope: -0.8052567
+          outSlope: -0.8052567
           tangentMode: 34
           weightedMode: 0
-          inWeight: 0
+          inWeight: 0.33333334
           outWeight: 0
         m_PreInfinity: 2
         m_PostInfinity: 2
@@ -1580,7 +1580,7 @@ ParticleSystem:
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 0.18324637, b: 0, a: 1}
-        key1: {r: 1, g: 0.51692367, b: 0, a: 1}
+        key1: {r: 1, g: 0.51692367, b: 0, a: 0}
         key2: {r: 0, g: 0, b: 0, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}
@@ -1595,7 +1595,7 @@ ParticleSystem:
         ctime5: 0
         ctime6: 0
         ctime7: 0
-        atime0: 0
+        atime0: 45875
         atime1: 65535
         atime2: 0
         atime3: 0
@@ -5494,7 +5494,7 @@ MonoBehaviour:
   - {x: 20, y: -17, z: 0}
   m_ShapePathHash: -107612907
   m_Mesh: {fileID: 0}
-  m_InstanceId: 50808
+  m_InstanceId: 69286
 --- !u!1 &7731816093179140177
 GameObject:
   m_ObjectHideFlags: 0
@@ -5509,12 +5509,11 @@ GameObject:
   - component: {fileID: 3636938103894170282}
   - component: {fileID: 3543277515914758688}
   - component: {fileID: -4469637518980678403}
-  - component: {fileID: 1852640917781915737}
-  - component: {fileID: 3591200037395677599}
   - component: {fileID: 8704032914218392729}
   - component: {fileID: 2072991444799887362}
   - component: {fileID: 4524016416994449651}
   - component: {fileID: 49153124845145760}
+  - component: {fileID: 3732762678000969775}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -5664,12 +5663,13 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   movementX: 0
-  JumpForce: 25
+  JumpForce: 30
   jetPackFuel: 100
   FuelSpeed: 7.5
   JumpParticleSys: {fileID: 1707306020}
   playerSprite: {fileID: 205638061157861468}
   hud: {fileID: 5709114964564211310, guid: e16bfe6da7eca6e40b2ad146f65f9afa, type: 3}
+  animController: {fileID: 0}
 --- !u!95 &3543277515914758688
 Animator:
   serializedVersion: 4
@@ -5707,62 +5707,10 @@ Rigidbody2D:
   m_AngularDrag: 0
   m_GravityScale: 1
   m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
+  m_Interpolate: 1
+  m_SleepingMode: 0
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!61 &1852640917781915737
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7731816093179140177}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.3, y: 1}
-  m_EdgeRadius: 0
---- !u!61 &3591200037395677599
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7731816093179140177}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.12266414}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.8, y: 0.77813923}
-  m_EdgeRadius: 0
 --- !u!114 &8704032914218392729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5877,6 +5825,22 @@ MonoBehaviour:
   _interpolation: 2
   _clientAuthoritative: 1
   _sendToOwner: 0
+--- !u!70 &3732762678000969775
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7731816093179140177}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0.06}
+  m_Size: {x: 0.77, y: 1.15}
+  m_Direction: 0
 --- !u!1 &7969623203191001730
 GameObject:
   m_ObjectHideFlags: 0
