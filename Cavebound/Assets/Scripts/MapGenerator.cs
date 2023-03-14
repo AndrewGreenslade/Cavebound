@@ -3,6 +3,7 @@ using FishNet.Object.Synchronizing;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using Pathfinding;
 
 public class MapGenerator : NetworkBehaviour
 {
@@ -67,6 +68,18 @@ public class MapGenerator : NetworkBehaviour
         setPlayerSpawn(bottomRight);
         setPlayerSpawn(topLeft);
         setPlayerSpawn(topRight);
+
+       // InvokeRepeating("triggerAStarScan", 1.0f, 10.0f);    
+    }
+
+    public void triggerAStarScan()
+    {
+        Debug.Log("Triggering A* Scan");
+
+        foreach (Progress progress in AstarPath.active.ScanAsync())
+        {
+            Debug.Log("Scanning... " + progress.description + " - " + (progress.progress * 100).ToString("0") + "%");
+        }
     }
 
     public override void OnStartServer()
