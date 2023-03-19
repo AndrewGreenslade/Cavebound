@@ -19,7 +19,7 @@ public class EnemyAI : NetworkBehaviour
     public bool lineOfSight;
 
     public LayerMask mask;
-
+    public Animator animator;
     private void Start()
     {
         // FindObjectsOfType(PlayerController);
@@ -59,7 +59,8 @@ public class EnemyAI : NetworkBehaviour
             FindPath();
             Move();
         }
-        //FindPath();
+
+        animator.SetBool("IsFollowing", lineOfSight);
     }
 
     void LineOfSightCheck()
