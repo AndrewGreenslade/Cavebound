@@ -3,7 +3,7 @@ using FishNet.Object.Synchronizing;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using Pathfinding;
+using System.Collections;
 
 public class MapGenerator : NetworkBehaviour
 {
@@ -36,6 +36,7 @@ public class MapGenerator : NetworkBehaviour
     private Vector3Int topRight;
 
     public static MapGenerator instance;
+    public bool onBlockSpawn = false;
 
     public override void OnStartClient()
     {
@@ -68,18 +69,6 @@ public class MapGenerator : NetworkBehaviour
         setPlayerSpawn(bottomRight);
         setPlayerSpawn(topLeft);
         setPlayerSpawn(topRight);
-
-       // InvokeRepeating("triggerAStarScan", 1.0f, 10.0f);    
-    }
-
-    public void triggerAStarScan()
-    {
-        Debug.Log("Triggering A* Scan");
-
-        foreach (Progress progress in AstarPath.active.ScanAsync())
-        {
-            Debug.Log("Scanning... " + progress.description + " - " + (progress.progress * 100).ToString("0") + "%");
-        }
     }
 
     public override void OnStartServer()
@@ -175,5 +164,41 @@ public class MapGenerator : NetworkBehaviour
     {
         //GroundMap.GetComponent<CompositeCollider2D>().GenerateGeometry();
         //BorderMap.GetComponent<CompositeCollider2D>().GenerateGeometry();
+    }
+
+    public Vector3 FindSafeSpawn()
+    {
+        int x = Random.Range(edgeSize + 2, MapWidth - (edgeSize + 2));
+        int y = Random.Range(edgeSize + 2, MapHieght - (edgeSize + 2));
+
+        if (!onBlockSpawn)
+        {
+            if (GroundMap.GetTile(new Vector3Int(x, y)) == null)
+            {
+                return new Vector3(x + .5f, y + .5f, 0);
+            }
+            else
+            {
+                return FindSafeSpawn();
+            }
+        }
+        else
+        {
+            if (GroundMap.GetTile(new Vector3Int(x, y)) != null)
+            {
+                if (GroundMap.GetTile(new Vector3Int(x, y + 1)) == null)
+                {
+                    return new Vector3(x + .5f, y + 1 + .5f, 0);
+                }
+                else
+                {
+                    return FindSafeSpawn();
+                }
+            }
+            else
+            {
+                return FindSafeSpawn();
+            }
+        }
     }
 }

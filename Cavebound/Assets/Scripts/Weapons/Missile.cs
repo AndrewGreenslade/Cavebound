@@ -20,6 +20,7 @@ public class Missile : NetworkBehaviour
             Vector3Int newLoc = new Vector3Int((int)(transform.position.x), (int)(transform.position.y), (int)(transform.position.z));
             spawnOre(newLoc,LocalConnection);
             modifyTilemap(newLoc);
+            modifyNodes(newLoc);
             Destroy(gameObject);
         }
     }
@@ -48,6 +49,20 @@ public class Missile : NetworkBehaviour
                 {
                     MapGenerator.instance.BorderMap.SetTile(finalPos, null);
                 }
+            }
+        }
+    }
+
+    void modifyNodes(Vector3Int pos)
+    {
+
+        for (int y = -2; y < 3; y++)
+        {
+            for (int x = -2; x < 3; x++)
+            {
+                Vector3Int finalPos = new Vector3Int(Mathf.CeilToInt(pos.x), pos.y, 0) + new Vector3Int(x, y, 0);
+
+                AiNav.instance.nodes[finalPos.x, finalPos.y].RaycastDown();
             }
         }
     }
