@@ -168,8 +168,8 @@ public class MapGenerator : NetworkBehaviour
 
     public Vector3 FindSafeSpawn()
     {
-        int x = Random.Range(edgeSize + 2, MapWidth - (edgeSize + 2));
-        int y = Random.Range(edgeSize + 2, MapHieght - (edgeSize + 2));
+        int x = Random.Range(MapSpawnSize + edgeSize + 2, MapWidth - MapSpawnSize - (edgeSize + 2));
+        int y = Random.Range(MapSpawnSize + edgeSize + 2, MapHieght - MapSpawnSize - (edgeSize + 2));
 
         if (!onBlockSpawn)
         {

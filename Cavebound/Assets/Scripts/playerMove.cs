@@ -76,27 +76,30 @@ public class playerMove : NetworkBehaviour
         rb.velocity = direction;
 
         animController.SetBool("IsGrounded", isGrounded());
-        
-        if (isGrounded())
-        {
-            JumpParticleSys.enableEmission = true;
-        }
+       
 
         if (jumpInput > 0)
         {
             if (jetPackFuel > 0)
             {
+                JumpParticleSys.enableEmission = true;
+
                 rb.AddForce(Vector2.up * jumpInput * Time.deltaTime * JumpForce, ForceMode2D.Impulse);
 
                 jetPackFuel -= Time.deltaTime * FuelSpeed;
             }
         }
 
-        if (isGrounded() && jumpInput == 0)
+        if(jumpInput <= 0 || jetPackFuel <= 0)
         {
             JumpParticleSys.enableEmission = false;
+        }
+
+        if (isGrounded())
+        {
             jetPackFuel += Time.deltaTime * FuelSpeed;
         }
+
         else if (jetPackFuel > 100)
         {
             jetPackFuel = 100;

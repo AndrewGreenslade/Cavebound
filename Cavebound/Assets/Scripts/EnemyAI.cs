@@ -3,6 +3,7 @@ using FishNet.Object;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.Timeline.Actions;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -20,21 +21,10 @@ public class EnemyAI : NetworkBehaviour
 
     public LayerMask mask;
     public Animator animator;
-    private void Start()
+    
+    void Start()
     {
-        // FindObjectsOfType(PlayerController);
-        //transform.position = MapGen.instance.FindSafeSpawn();
-    }
-
-    public override void OnStartClient()
-    {
-        base.OnStartClient();
-
-        if (IsServer)
-        {
-            target = GameObject.FindGameObjectWithTag("Player").transform;
-            Invoke("FindMySpawn",2.0f);
-        }
+        InvokeRepeating("findNearestPlayer", 1, 20);
     }
 
     private void FindMySpawn()
@@ -42,8 +32,37 @@ public class EnemyAI : NetworkBehaviour
         transform.position = MapGenerator.instance.FindSafeSpawn();
     }
 
+    private void findNearestPlayer()
+    {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+        if (players.Length > 0)
+        {
+            target = players[0].transform;
+
+            foreach (GameObject player in players)
+            {
+                if (Vector3.Distance(player.transform.position, transform.position) < Vector3.Distance(target.position, transform.position))
+                {
+                    target = player.transform;
+                }
+            }
+        }
+    }
+
     private void Update()
     {
+        if(target == null) 
+        {
+            if (NetworkManager.ClientManager.Clients.Count > 0)
+            {
+                findNearestPlayer();
+                Invoke("FindMySpawn", 2.0f);
+            }
+
+            return;
+        }
+
         if (!IsServer)
         {
             return;
@@ -170,11 +189,14 @@ public class EnemyAI : NetworkBehaviour
 
     private void OnDrawGizmos()
     {
-        Debug.DrawRay(transform.position, (target.position - transform.position).normalized * (lineOfSight? sightRange * 2 : sightRange), Color.red);
-        for (int i = 0; i < path.Count; i++)
+        if (target != null)
         {
-            if (i <= path.Count-2)
-                Debug.DrawLine(path[i].transform.position, path[i + 1].transform.position);
+            Debug.DrawRay(transform.position, (target.position - transform.position).normalized * (lineOfSight ? sightRange * 2 : sightRange), Color.red);
+            for (int i = 0; i < path.Count; i++)
+            {
+                if (i <= path.Count - 2)
+                    Debug.DrawLine(path[i].transform.position, path[i + 1].transform.position);
+            }
         }
     }
 }
