@@ -13,15 +13,24 @@ public class EnemyAI : NetworkBehaviour
 
     public List<Node> path = new List<Node>();
 
+    public float StopDistance = 2;
     public float sightRange = 16;
     public float speed = 1;
     public float jumpForce = 5;
+    public float bulletSpeed = 5;
 
     public bool lineOfSight;
 
     public LayerMask mask;
     public Animator animator;
-    
+
+    public GameObject laser;
+    public Transform ShootPos;
+
+    private float shootTimer;
+    public float timeToShoot;
+
+
     void Start()
     {
         InvokeRepeating("findNearestPlayer", 1, 20);
@@ -75,6 +84,15 @@ public class EnemyAI : NetworkBehaviour
         }
         else
         {
+            updateLaserFirPoint();
+
+            shootTimer += Time.fixedDeltaTime;
+
+            if(shootTimer > timeToShoot)
+            {
+                Shoot();
+            }
+
             FindPath();
             Move();
         }
@@ -96,6 +114,26 @@ public class EnemyAI : NetworkBehaviour
             Invoke("LineOfSightCheck", 5.0f);
     }
 
+    [Server]
+    void Shoot()
+    {
+        GameObject firedLaser = Instantiate( laser, ShootPos.position, ShootPos.rotation);
+        firedLaser.GetComponent<Rigidbody2D>().velocity = firedLaser.transform.right *  bulletSpeed;
+        Destroy(firedLaser, 10.0f);
+        ServerManager.Spawn(firedLaser);
+        shootTimer = 0;
+    }
+
+    [Server]
+    private void updateLaserFirPoint()
+    {
+        Vector3 FinalPos = target.transform.position - ShootPos.position;
+        float angle = Mathf.Atan2(FinalPos.y, FinalPos.x) * Mathf.Rad2Deg;
+        Quaternion rot = Quaternion.AngleAxis(angle, Vector3.forward);
+
+        ShootPos.rotation = Quaternion.Slerp(ShootPos.rotation, rot, 2.0f * Time.deltaTime);
+    }
+
     void Move()
     {
         Vector3 newPos = new Vector3(path[0].localX + 0.5f, path[0].localY + 0.5f, 0) - transform.position;
@@ -104,7 +142,11 @@ public class EnemyAI : NetworkBehaviour
         //    GetComponent<Rigidbody2D>().AddForce(transform.up * newPos.y * jumpForce, ForceMode2D.Impulse);
         //}
         //newPos.y = 0;
-        GetComponent<Rigidbody2D>().MovePosition(transform.position + newPos.normalized * Time.fixedDeltaTime * speed);
+
+        if (Vector3.Distance(target.transform.position, transform.position) >= StopDistance)
+        {
+            GetComponent<Rigidbody2D>().MovePosition(transform.position + newPos.normalized * Time.fixedDeltaTime * speed);
+        } 
     }
 
     void FindPath(int distance = 0)
