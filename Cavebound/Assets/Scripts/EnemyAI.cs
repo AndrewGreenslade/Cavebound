@@ -1,17 +1,19 @@
 using FishNet.Connection;
 using FishNet.Object;
+using FishNet.Object.Synchronizing;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.Timeline.Actions;
+using TMPro;
 using UnityEngine;
-using UnityEngine.Tilemaps;
-
+ 
 public class EnemyAI : NetworkBehaviour
 {
     public Transform target;
 
     public List<Node> path = new List<Node>();
+
+    [SyncVar]
+    public float health = 100;
 
     public float StopDistance = 2;
     public float sightRange = 16;
@@ -30,6 +32,8 @@ public class EnemyAI : NetworkBehaviour
     private float shootTimer;
     public float timeToShoot;
 
+    public GameObject damageNumber;
+    public GameObject damageNumberSpawnPoint;
 
     void Start()
     {
@@ -38,6 +42,7 @@ public class EnemyAI : NetworkBehaviour
 
     private void FindMySpawn()
     {
+
         transform.position = MapGenerator.instance.FindSafeSpawn();
     }
 
@@ -97,6 +102,11 @@ public class EnemyAI : NetworkBehaviour
             Move();
         }
 
+        if (health <= 0)
+        {
+            ServerManager.Despawn(gameObject);
+        }
+
         animator.SetBool("IsFollowing", lineOfSight);
     }
 
@@ -123,6 +133,17 @@ public class EnemyAI : NetworkBehaviour
         ServerManager.Spawn(firedLaser);
         shootTimer = 0;
     }
+
+    [Server]
+    public void damageAI(float t_damage)
+    {
+        health -= t_damage;
+
+        GameObject damageText = Instantiate(damageNumber, damageNumberSpawnPoint.transform.position, Quaternion.identity);
+        damageText.GetComponent<TextMeshPro>().text = "-" + t_damage.ToString();
+        ServerManager.Spawn(damageText);
+    }
+
 
     [Server]
     private void updateLaserFirPoint()

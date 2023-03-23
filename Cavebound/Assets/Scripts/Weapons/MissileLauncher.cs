@@ -42,6 +42,6 @@ public class MissileLauncher : MonoBehaviour
 
     void spawnRocket()
     {
-        wepNetworking.spawnObj(0, firePoint.position, firePoint.rotation, speed, playerMove.instance.LocalConnection);
+        wepNetworking.spawnObj(0, firePoint.position, firePoint.rotation, speed, PlayerScript.instance.LocalConnection);
     }
 }

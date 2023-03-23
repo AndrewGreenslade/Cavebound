@@ -29,12 +29,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3481786355494272488}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 155.1203, y: 86.18599, z: -1.6131263}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8068594451076724959}
   - {fileID: 1537833811249953698}
+  - {fileID: 783571808992162921}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -55,6 +56,8 @@ MonoBehaviour:
   _networkObjectCache: {fileID: 807931162292925801}
   target: {fileID: 0}
   path: []
+  health: 100
+  StopDistance: 8
   sightRange: 16
   speed: 8
   jumpForce: 5
@@ -67,6 +70,8 @@ MonoBehaviour:
   laser: {fileID: 7478032408896567186, guid: 5f6159292d1f2f94598037177f4cad9e, type: 3}
   ShootPos: {fileID: 1537833811249953698}
   timeToShoot: 2
+  damageNumber: {fileID: 8604918474234276871, guid: 928a41f963352014ab7088d50690c5d4, type: 3}
+  damageNumberSpawnPoint: {fileID: 4660737486658471506}
 --- !u!114 &807931162292925801
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -153,6 +158,42 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!1 &4660737486658471506
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 783571808992162921}
+  m_Layer: 5
+  m_Name: TextSpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &783571808992162921
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4660737486658471506}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3481786355494272491}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 1}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &8157047523755472149
 GameObject:
   m_ObjectHideFlags: 0

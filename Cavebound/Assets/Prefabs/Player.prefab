@@ -5662,6 +5662,7 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
+  health: 100
   movementX: 0
   JumpForce: 30
   jetPackFuel: 100
@@ -5669,7 +5670,7 @@ MonoBehaviour:
   JumpParticleSys: {fileID: 1707306020}
   playerSprite: {fileID: 205638061157861468}
   hud: {fileID: 5709114964564211310, guid: e16bfe6da7eca6e40b2ad146f65f9afa, type: 3}
-  animController: {fileID: 0}
+  animController: {fileID: 3543277515914758688}
 --- !u!95 &3543277515914758688
 Animator:
   serializedVersion: 4
@@ -5838,8 +5839,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.06}
-  m_Size: {x: 0.77, y: 1.15}
+  m_Offset: {x: 0, y: 0.21}
+  m_Size: {x: 0.93, y: 1.51}
   m_Direction: 0
 --- !u!1 &7969623203191001730
 GameObject:
@@ -5896,7 +5897,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9000127521522141465}
   m_LocalRotation: {x: -0, y: -0, z: -0.7071064, w: 0.7071072}
-  m_LocalPosition: {x: 1.7857144, y: 0.054285645, z: 0}
+  m_LocalPosition: {x: 0.53, y: 0.054285645, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

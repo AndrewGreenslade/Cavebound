@@ -132,7 +132,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -164,6 +164,7 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 3093753170188024797}
   _networkObjectCache: {fileID: 3093753170188024797}
   Explosion: {fileID: 6284556778412864047, guid: 6d27b2d39ef7e53409e41006384bb278, type: 3}
+  Damage: 50
 --- !u!50 &1650655901101827209
 Rigidbody2D:
   serializedVersion: 4

@@ -16,6 +16,6 @@ public class JetpackFuelUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        slider.fillAmount = playerMove.instance.jetPackFuel / 100.0f;
+        slider.fillAmount = PlayerScript.instance.jetPackFuel / 100.0f;
     }
 }

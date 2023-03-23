@@ -6,19 +6,30 @@ using UnityEngine;
 public class Missile : NetworkBehaviour
 {
     public GameObject Explosion;
+    public float Damage = 50.0f;
 
     public override void OnStartClient()
     {
         base.OnStartClient();
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if (IsServer)
         {
-            spawnExp(Explosion, playerMove.instance.LocalConnection);
+            if (collision.gameObject.CompareTag("AI"))
+            {
+                collision.gameObject.GetComponent<EnemyAI>().damageAI(Damage);
+            }
+
+            if (collision.gameObject.CompareTag("Player") && collision.gameObject.GetComponent<NetworkBehaviour>().IsOwner)
+            {
+                return;
+            }
+
+            spawnExp(Explosion, PlayerScript.instance.LocalConnection);
             Vector3Int newLoc = new Vector3Int((int)(transform.position.x), (int)(transform.position.y), (int)(transform.position.z));
-            spawnOre(newLoc,LocalConnection);
+            spawnOre(newLoc, LocalConnection);
             modifyTilemap(newLoc);
             modifyNodes(newLoc);
             Destroy(gameObject);
