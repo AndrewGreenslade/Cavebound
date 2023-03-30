@@ -27,23 +27,11 @@ public class Inventory : NetworkBehaviour
     public GameObject oreUIPrefab;
     public Transform oreUIPanel;
 
-    [MenuItem("Andrews Custom Functions/Find Ores in Project")]
-    static void FindOresInFolder()
-    {
-        // Find all assets that start with ore_ and are of type "Ore"'
-        string[] guids1 = AssetDatabase.FindAssets("ore_ t:Ore", new[] { "Assets/OreAssets" });
-
-        foreach (string guid1 in guids1)
-        {
-            Debug.Log(AssetDatabase.GUIDToAssetPath(guid1));
-        }
-    }
-
     public override void OnStartClient()
     {
         base.OnStartClient();
-     
-        AddOresToList();
+
+        oresRetrieved = emptyPlayer.instance.GetComponent<StoredInventory>().oresRetrieved;
 
         if (GameObject.FindGameObjectWithTag("OreUI").transform.childCount <= 0)
         {
@@ -56,28 +44,6 @@ public class Inventory : NetworkBehaviour
 
                 oreHudList.Add(hud);
                 hud.setVars(item.prefab.OreName, item.prefab.droppedOre.GetComponent<SpriteRenderer>().color);
-            }
-        }
-    }
-
-    public void AddOresToList()
-    {
-        string[] guids1 = AssetDatabase.FindAssets("ore_ t:Ore", new[] { "Assets/OreAssets" });
-
-        foreach (string guid1 in guids1)
-        {
-            Debug.Log("ore Asset Found: " + AssetDatabase.GUIDToAssetPath(guid1));
-
-            string assetPath = AssetDatabase.GUIDToAssetPath(guid1);
-
-            if (assetPath != null)
-            {
-                Ore asset = AssetDatabase.LoadAssetAtPath<Ore>(assetPath);
-
-                if (asset != null)
-                {
-                    oresRetrieved.Add(new OreRecord {prefab = asset,amount = 0});
-                }
             }
         }
     }

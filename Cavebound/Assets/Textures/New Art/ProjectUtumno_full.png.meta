@@ -61,7 +61,7 @@ TextureImporter:
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
-  ignorePngGamma: 0
+  ignorePngGamma: 1
   applyGammaDecoding: 0
   cookieLightType: 0
   platformSettings:
@@ -127659,9 +127659,9 @@ TextureImporter:
       ProjectUtumno_full_3728: -368591322
       ProjectUtumno_full_4863: -928835629
       ProjectUtumno_full_2129: 1450138227
-      ProjectUtumno_full_300: -459085439
       ProjectUtumno_full_1648: -1120792301
       ProjectUtumno_full_1280: 1679868728
+      ProjectUtumno_full_300: -459085439
       ProjectUtumno_full_190: -424008295
       ProjectUtumno_full_3995: 1681382428
       ProjectUtumno_full_1663: 2056726833

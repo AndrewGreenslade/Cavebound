@@ -22,6 +22,7 @@ public class MapGenerator : NetworkBehaviour
     public Tile GroundSquare;
     public Tile borderSquare;
     public Tile BGSquare;
+    public GameObject playerHubPrefab;
 
     public List<Ore> ores= new List<Ore>();
     
@@ -142,7 +143,7 @@ public class MapGenerator : NetworkBehaviour
     }
 
     public void setPlayerSpawn(Vector3Int coords)
-    { 
+    {
         for (int y = 0; y < MapSpawnSize; y++)
         {
             for (int x = 0; x < MapSpawnSize; x++)
@@ -158,6 +159,8 @@ public class MapGenerator : NetworkBehaviour
                 OreMap.SetTile(new Vector3Int(coords.x + x, coords.y + y), null);
             }
         }
+
+        Instantiate(playerHubPrefab, new Vector3(coords.x + MapSpawnSize / 2 , coords.y + 2, 0), Quaternion.identity);
     }
 
     public void generateColliders()
