@@ -32,6 +32,8 @@ public class PlayerScript : NetworkBehaviour
 
     public static PlayerScript instance;
     public Animator animController;
+    public bool isLocalPlayer = false;
+    public bool isInMenu = false;
 
     public override void OnStartClient()
     {
@@ -48,6 +50,7 @@ public class PlayerScript : NetworkBehaviour
             instance = this;
         }
 
+        isLocalPlayer = true;
         Instantiate(hud);
         rb = GetComponent<Rigidbody2D>();
         animController = GetComponent<Animator>();

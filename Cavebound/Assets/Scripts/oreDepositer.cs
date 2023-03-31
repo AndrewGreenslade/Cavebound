@@ -1,18 +1,45 @@
+using FishNet.Object;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class oreDepositer : MonoBehaviour
+public class oreDepositer : NetworkBehaviour
 {
     public GameObject playerObject;
     public bool isPlayerIn;
 
+    public GameObject oreStoredGameobject;
+
+    private void Update()
+    {
+        if (oreStoredGameobject != null)
+        {
+            if (isPlayerIn)
+            {
+                oreStoredGameobject.SetActive(true);
+            }
+            else
+            {
+                oreStoredGameobject.SetActive(false);
+            }
+        }
+    }
+    
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            playerObject = collision.gameObject;
-            isPlayerIn = true;
+            if (collision.GetComponent<PlayerScript>().isLocalPlayer)
+            {
+                if (oreStoredGameobject == null)
+                {
+                    oreStoredGameobject = collision.GetComponent<Inventory>().oreStoredUIPanel.transform.parent.gameObject;
+                }
+
+                collision.GetComponent<PlayerScript>().isInMenu= true;
+                playerObject = collision.gameObject;
+                isPlayerIn = true;
+            }
         }
     }
 
@@ -20,8 +47,12 @@ public class oreDepositer : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            playerObject = null;
-            isPlayerIn = false;
+            if (collision.GetComponent<PlayerScript>().isLocalPlayer)
+            {
+                collision.GetComponent<PlayerScript>().isInMenu = false;
+                playerObject = null;
+                isPlayerIn = false;
+            }
         }
     }
 }

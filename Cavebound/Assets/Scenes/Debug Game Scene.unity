@@ -2457,13 +2457,25 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0.099975586
       objectReference: {fileID: 0}
+    - target: {fileID: 7660627977015225222, guid: 1702f59a93211004f8bf461b3248e725, type: 3}
+      propertyPath: m_TagString
+      value: StoredOreUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 7660627977015225275, guid: 1702f59a93211004f8bf461b3248e725, type: 3}
+      propertyPath: m_Color.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7660627977056291608, guid: 1702f59a93211004f8bf461b3248e725, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7660627977713657350, guid: 1702f59a93211004f8bf461b3248e725, type: 3}
       propertyPath: m_Name
       value: OreDesposit Canvas
       objectReference: {fileID: 0}
     - target: {fileID: 7660627977713657350, guid: 1702f59a93211004f8bf461b3248e725, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7660627977713657402, guid: 1702f59a93211004f8bf461b3248e725, type: 3}
       propertyPath: m_Pivot.x

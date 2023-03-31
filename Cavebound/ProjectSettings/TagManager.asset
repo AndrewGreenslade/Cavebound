@@ -6,6 +6,7 @@ TagManager:
   tags:
   - OreUI
   - AI
+  - StoredOreUI
   layers:
   - Default
   - TransparentFX

@@ -5495,6 +5495,9 @@ MonoBehaviour:
   m_ShapePathHash: -107612907
   m_Mesh: {fileID: 0}
   m_InstanceId: 53218
+  m_LocalBounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
 --- !u!1 &7731816093179140177
 GameObject:
   m_ObjectHideFlags: 0
@@ -5653,9 +5656,10 @@ MonoBehaviour:
   playerSprite: {fileID: 205638061157861468}
   hud: {fileID: 5709114964564211310, guid: e16bfe6da7eca6e40b2ad146f65f9afa, type: 3}
   animController: {fileID: 3543277515914758688}
+  isLocalPlayer: 0
 --- !u!95 &3543277515914758688
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -5672,7 +5676,8 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!50 &-4469637518980678403
 Rigidbody2D:
   serializedVersion: 4
@@ -5842,6 +5847,8 @@ MonoBehaviour:
   oresRetrieved: []
   oreUIPrefab: {fileID: 8275220220259197166, guid: 916b68003e6f25841a5c792299f7fd22, type: 3}
   oreUIPanel: {fileID: 0}
+  oreStoredUIPrefab: {fileID: 6776467150850261766, guid: 82e1d229816aff0448312981ba080cf7, type: 3}
+  oreStoredUIPanel: {fileID: 0}
 --- !u!1 &7969623203191001730
 GameObject:
   m_ObjectHideFlags: 0
