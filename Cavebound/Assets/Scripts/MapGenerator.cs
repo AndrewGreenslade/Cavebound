@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Collections;
+using FishNet.Managing.Server;
 
 public class MapGenerator : NetworkBehaviour
 {
@@ -160,7 +161,8 @@ public class MapGenerator : NetworkBehaviour
             }
         }
 
-        Instantiate(playerHubPrefab, new Vector3(coords.x + MapSpawnSize / 2 , coords.y + 2, 0), Quaternion.identity);
+        GameObject hubObj = Instantiate(playerHubPrefab, new Vector3(coords.x + MapSpawnSize / 2 , coords.y + 2, 0), Quaternion.identity);
+        ServerManager.Spawn(hubObj);
     }
 
     public void generateColliders()
