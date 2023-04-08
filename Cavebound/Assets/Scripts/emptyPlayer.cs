@@ -14,7 +14,7 @@ public class emptyPlayer : NetworkBehaviour
     public override void OnStartClient()
     {
         base.OnStartClient();
-        
+
         instance = this.gameObject;
         playerID = GetComponent<NetworkObject>().OwnerId;
 

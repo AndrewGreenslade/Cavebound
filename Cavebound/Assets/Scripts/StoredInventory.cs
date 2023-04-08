@@ -50,17 +50,12 @@ public class StoredInventory : NetworkBehaviour
         }
     }
 
-    public void StoreOreinInventory(NetworkConnection conn, string oreName, int amount)
+    [ServerRpc]
+    public void StoreOreinInventory(string oreName, int amount)
     {
         Inventory playerInv = GetComponent<emptyPlayer>().SpawnedPlayer.GetComponent<Inventory>();
 
-        foreach (OreRecord item in oresRetrieved)
-        {
-            if(item.prefab.OreName == oreName)
-            {
-                item.amount += amount;
-                playerInv.oresRetrieved.Find(x => x.prefab.OreName == oreName).amount -= amount;
-            }
-        }
+        playerInv.oresRetrieved.Find(x => x.prefab.OreName == oreName).amount -= amount;
+        oresRetrieved.Find(x => x.prefab.OreName == oreName).amount += amount;
     }
 }

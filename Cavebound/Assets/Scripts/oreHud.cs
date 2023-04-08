@@ -37,6 +37,12 @@ public class oreHud : MonoBehaviour
         oreAmountText.text = oreAmount.ToString();
     }
 
+    public void RemoveOreFromAmount(int t_amount)
+    {
+        oreAmount -= t_amount;
+        oreAmountText.text = oreAmount.ToString();
+    }
+
     public void Update()
     {
         oreFillMGImage.fillAmount = oreAmount / 1000.0f; 
