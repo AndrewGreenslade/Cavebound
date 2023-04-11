@@ -1,14 +1,12 @@
-using FishNet.Object;
-using FishNet.Object.Synchronizing;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Collections;
-using FishNet.Managing.Server;
+using UnityEngine.Rendering;
+using FishNet.Object;
 
-public class MapGenerator : NetworkBehaviour
+public class MapGenUI : MonoBehaviour
 {
-    [SyncVar]
     public float seed = 0;
 
     public int MapWidth = 5;
@@ -25,37 +23,20 @@ public class MapGenerator : NetworkBehaviour
     public Tile BGSquare;
     public GameObject playerHubPrefab;
 
-    public List<Ore> ores= new List<Ore>();
-    
-    public int[,] OreMapIndexs = new int[0,0];
+    public List<Ore> ores = new List<Ore>();
+
+    public int[,] OreMapIndexs = new int[0, 0];
 
     public float NoiseScale = 1.0f;
     public int edgeSize = 10;
 
-    private Vector3Int bottomLeft;
-    private Vector3Int topLeft;
-    private Vector3Int bottomRight;
-    private Vector3Int topRight;
-
     public static MapGenerator instance;
     public bool onBlockSpawn = false;
 
-    public override void OnStartClient()
+    public void Start()
     {
-        base.OnStartClient();
-
-        if (instance == null)
-        {
-            instance = this;
-        }
-
-        //generate starting offsets for each player spawn room
-        bottomLeft = new Vector3Int(edgeSize, edgeSize);
-        topLeft = new Vector3Int(edgeSize, MapHieght - MapSpawnSize - edgeSize);
-        bottomRight = new Vector3Int(MapWidth - MapSpawnSize - edgeSize, edgeSize);
-        topRight = new Vector3Int(MapWidth - MapSpawnSize - edgeSize, MapHieght - MapSpawnSize - edgeSize);
-
         OreMapIndexs = new int[MapWidth, MapHieght];
+        seed = Random.Range(int.MinValue + 10000, int.MaxValue - 10000) / 100;
 
         generateMap();
 
@@ -63,20 +44,6 @@ public class MapGenerator : NetworkBehaviour
         {
             generateOre(ores[i], i);
         }
-
-        generateColliders();
-
-        //set player spawn for each corner of map
-        setPlayerSpawn(bottomLeft);
-        setPlayerSpawn(bottomRight);
-        setPlayerSpawn(topLeft);
-        setPlayerSpawn(topRight);
-    }
-
-    public override void OnStartServer()
-    {
-        base.OnStartServer();
-        seed = Random.Range(int.MinValue + 10000, int.MaxValue - 10000) / 100;
     }
 
     public void clearMap()
@@ -147,70 +114,6 @@ public class MapGenerator : NetworkBehaviour
                         }
                     }
                 }
-            }
-        }
-    }
-
-    public void setPlayerSpawn(Vector3Int coords)
-    {
-        for (int y = 0; y < MapSpawnSize; y++)
-        {
-            for (int x = 0; x < MapSpawnSize; x++)
-            {
-                if(x == 0 || y == 0 || x == MapSpawnSize - 1 || y == MapSpawnSize - 1)
-                {
-                    GroundMap.SetTile(new Vector3Int(coords.x + x, coords.y + y), GroundSquare);
-                    continue;
-                }
-
-                BackgroundMap.SetTile(new Vector3Int(coords.x + x, coords.y + y), BGSquare);
-                GroundMap.SetTile(new Vector3Int(coords.x + x, coords.y + y), null);
-                OreMap.SetTile(new Vector3Int(coords.x + x, coords.y + y), null);
-            }
-        }
-
-        GameObject hubObj = Instantiate(playerHubPrefab, new Vector3(coords.x + MapSpawnSize / 2 , coords.y + 2, 0), Quaternion.identity);
-        ServerManager.Spawn(hubObj);
-    }
-
-    public void generateColliders()
-    {
-        //GroundMap.GetComponent<CompositeCollider2D>().GenerateGeometry();
-        //BorderMap.GetComponent<CompositeCollider2D>().GenerateGeometry();
-    }
-
-    public Vector3 FindSafeSpawn()
-    {
-        int x = Random.Range(MapSpawnSize + edgeSize + 2, MapWidth - MapSpawnSize - (edgeSize + 2));
-        int y = Random.Range(MapSpawnSize + edgeSize + 2, MapHieght - MapSpawnSize - (edgeSize + 2));
-
-        if (!onBlockSpawn)
-        {
-            if (GroundMap.GetTile(new Vector3Int(x, y)) == null)
-            {
-                return new Vector3(x + .5f, y + .5f, 0);
-            }
-            else
-            {
-                return FindSafeSpawn();
-            }
-        }
-        else
-        {
-            if (GroundMap.GetTile(new Vector3Int(x, y)) != null)
-            {
-                if (GroundMap.GetTile(new Vector3Int(x, y + 1)) == null)
-                {
-                    return new Vector3(x + .5f, y + 1 + .5f, 0);
-                }
-                else
-                {
-                    return FindSafeSpawn();
-                }
-            }
-            else
-            {
-                return FindSafeSpawn();
             }
         }
     }

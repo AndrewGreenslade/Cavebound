@@ -28,6 +28,8 @@ public class PlayerScript : NetworkBehaviour
     public ParticleSystem JumpParticleSys;
     public SpriteRenderer playerSprite;
     public GameObject hud;
+    public GameObject SpawneHud;
+
     private Rigidbody2D rb;
 
     public static PlayerScript instance;
@@ -45,13 +47,10 @@ public class PlayerScript : NetworkBehaviour
             return;
         }
 
-        if (instance == null)
-        {
-            instance = this;
-        }
+        instance = this;
 
         isLocalPlayer = true;
-        Instantiate(hud);
+        SpawneHud = Instantiate(hud);
         rb = GetComponent<Rigidbody2D>();
         animController = GetComponent<Animator>();
         myCam = FindObjectOfType<CinemachineVirtualCamera>();
