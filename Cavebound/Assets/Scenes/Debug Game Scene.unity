@@ -3355,6 +3355,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2367799599483138201, guid: 31b78ba824bfd464d8300c97d08c76f8, type: 3}
+      propertyPath: borderSquare
+      value: 
+      objectReference: {fileID: 11400000, guid: cd48c53ee982a0d43a4c4dd05708573a, type: 2}
+    - target: {fileID: 2367799599483138201, guid: 31b78ba824bfd464d8300c97d08c76f8, type: 3}
       propertyPath: _networkObjectCache
       value: 
       objectReference: {fileID: 0}
@@ -3642,7 +3646,7 @@ PrefabInstance:
     - target: {fileID: 5292342402729022472, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
       propertyPath: borderSquare
       value: 
-      objectReference: {fileID: 11400000, guid: 0e2ec155aa87bd74ab329f1adf7aa646, type: 2}
+      objectReference: {fileID: 11400000, guid: cd48c53ee982a0d43a4c4dd05708573a, type: 2}
     - target: {fileID: 5292342402729022472, guid: 20cf4a5fd57e51b4390cafbfd65a4d8a, type: 3}
       propertyPath: BackgroundMap
       value: 

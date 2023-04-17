@@ -28,7 +28,7 @@ public class PlayerScript : NetworkBehaviour
     public ParticleSystem JumpParticleSys;
     public SpriteRenderer playerSprite;
     public GameObject hud;
-    public GameObject SpawneHud;
+    public GameObject SpawnedHud;
 
     private Rigidbody2D rb;
 
@@ -50,7 +50,7 @@ public class PlayerScript : NetworkBehaviour
         instance = this;
 
         isLocalPlayer = true;
-        SpawneHud = Instantiate(hud);
+        SpawnedHud = Instantiate(hud);
         rb = GetComponent<Rigidbody2D>();
         animController = GetComponent<Animator>();
         myCam = FindObjectOfType<CinemachineVirtualCamera>();

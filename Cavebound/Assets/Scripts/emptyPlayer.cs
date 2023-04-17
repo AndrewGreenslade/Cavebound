@@ -56,7 +56,17 @@ public class emptyPlayer : NetworkBehaviour
         {
             if (PlayerScript.instance.health <= 0)
             {
-                Destroy(PlayerScript.instance.SpawneHud);
+                foreach (OreRecord item in PlayerScript.instance.GetComponent<Inventory>().oresRetrieved)
+                {
+                    item.amount = 0;
+                }
+
+                foreach (Transform item in PlayerScript.instance.GetComponent<Inventory>().oreUIPanel.transform)
+                {
+                    item.GetComponent<oreHud>().Reset();
+                }
+
+                Destroy(PlayerScript.instance.SpawnedHud);
                 ServerManager.Despawn(SpawnedPlayer);
                 spawnMyPlayer();
             }

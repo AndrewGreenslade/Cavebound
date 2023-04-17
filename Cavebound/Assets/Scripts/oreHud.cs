@@ -30,7 +30,13 @@ public class oreHud : MonoBehaviour
         oreNameText.text = oreName;
         oreImage.color= oreColor;
     }
-    
+
+    public void Reset()
+    {
+        oreAmount = 0;
+        oreAmountText.text = oreAmount.ToString();
+    }
+
     public void AddOreToAmount()
     {
         oreAmount++;
