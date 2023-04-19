@@ -1,3 +1,4 @@
+using Codice.Client.BaseCommands.BranchExplorer;
 using FishNet.Connection;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
@@ -28,22 +29,22 @@ public class OreChunk : NetworkBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "Player" && !isDespawning)
+        if(collision.tag == "Player" && !isDespawning && collision.GetComponent<PlayerScript>().isLocalPlayer)
         {
-            setToDespawn();
-            getInventoryObj(collision.GetComponent<NetworkObject>().LocalConnection ,GetComponent<NetworkObject>(), collision.GetComponent<NetworkObject>());
+            getInventoryObj(gameObject, collision.gameObject);
         }
     }
-
+    
     [ServerRpc(RequireOwnership = false)]
     public void setToDespawn()
     {
-        isDespawning = true;
+        Despawn();
     }
 
-    [ServerRpc(RequireOwnership = false)]
-    public void getInventoryObj(NetworkConnection conn, NetworkObject ore, NetworkObject player)
+    public void getInventoryObj(GameObject ore, GameObject player)
     {
-        player.GetComponent<Inventory>().AddOresToInventory(conn,ore);
+        player.GetComponent<Inventory>().addOreToUI(oreName);
+        player.GetComponent<Inventory>().AddOresToInventory(oreName);
+        setToDespawn();
     }
 }

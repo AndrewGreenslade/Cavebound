@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 using FishNet.Object;
+using FishNet.Connection;
 
 public class StoredOreHud : MonoBehaviour
 {
@@ -39,16 +40,19 @@ public class StoredOreHud : MonoBehaviour
 
         OreRecord record = PlayerScript.instance.GetComponent<Inventory>().oresRetrieved.Find(x => x.prefab.OreName == oreName);
         int amount = record.amount;
+        Inventory playerInv = emptyPlayer.instance.SpawnedPlayer.GetComponent<Inventory>();
 
         if (amount >= 100)
         {
             Debug.Log("Depositing " + oreName + " x" + 100.ToString());
-            emptyPlayer.instance.GetComponent<StoredInventory>().StoreOreinInventory(emptyPlayer.instance.GetComponent<NetworkBehaviour>().LocalConnection ,oreName, 100);
+            emptyPlayer.instance.GetComponent<StoredInventory>().StoreOreinInventory(oreName, 100);
+            playerInv.oresRetrieved.Find(x => x.prefab.OreName == oreName).amount -= amount;
         }
         else
         {
             Debug.Log("Depositing " + oreName + " x" + amount.ToString());
-            emptyPlayer.instance.GetComponent<StoredInventory>().StoreOreinInventory(emptyPlayer.instance.GetComponent<NetworkBehaviour>().LocalConnection ,oreName, amount);
+            emptyPlayer.instance.GetComponent<StoredInventory>().StoreOreinInventory(oreName, amount);
+            playerInv.oresRetrieved.Find(x => x.prefab.OreName == oreName).amount -= amount;
         }
 
         List<oreHud> hudList = FindObjectsOfType<oreHud>().ToList();

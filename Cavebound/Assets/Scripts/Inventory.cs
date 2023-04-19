@@ -1,17 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using FishNet.Object;
-using FishNet.Connection;
-
-/// <summary>
-/// This should only show on host, so player has no access to his Inventory on his client
-/// </summary>
-[System.Serializable]
-public class OreRecord
-{ 
-    public Ore prefab;
-    public int amount;
-}
 
 public class Inventory : NetworkBehaviour
 {
@@ -29,12 +18,12 @@ public class Inventory : NetworkBehaviour
     {
         base.OnStartClient();
 
-        if (!IsOwner) 
-        { 
-            return; 
-        }
-
         oresRetrieved = emptyPlayer.instance.GetComponent<StoredInventory>().oresRetrieved;
+        
+        if (!IsOwner)
+        {
+            return;
+        }
 
         if (GameObject.FindGameObjectWithTag("OreUI").transform.childCount <= 0)
         {
@@ -71,21 +60,19 @@ public class Inventory : NetworkBehaviour
         }
     }
 
-    public void AddOresToInventory(NetworkConnection conn, NetworkObject oreObject)
+    [ServerRpc(RequireOwnership = false)]
+    public void AddOresToInventory(string name)
     {
         foreach(OreRecord item in oresRetrieved)
         {
-            if(item.prefab.OreName == oreObject.GetComponent<OreChunk>().oreName)
+            if(item.prefab.OreName == name)
             {
-                addOreToUI(conn, item.prefab.OreName);
                 item.amount++;
-                oreObject.Despawn();
             }
         }
     }
     
-    [TargetRpc]
-    private void addOreToUI(NetworkConnection conn, string itemName)
+    public void addOreToUI(string itemName)
     {
         foreach (var hudItem in oreHudList)
         {

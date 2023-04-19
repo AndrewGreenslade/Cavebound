@@ -6,19 +6,26 @@ using UnityEngine;
 
 public class StoredInventory : NetworkBehaviour
 {
+    public List<GameObject> oresAssetsRecords = new List<GameObject>();
     public List<OreRecord> oresRetrieved = new List<OreRecord>();
 
-    [ServerRpc]
-    public void StoreOreinInventory(NetworkConnection conn, string oreName, int amount)
+    private void Start()
     {
-        oresRetrieved.Find(x => x.prefab.OreName == oreName).amount += amount;
-        removeores(conn,oreName,amount);
+        spawnOres();
     }
 
-    [TargetRpc]
-    void removeores(NetworkConnection conn ,string oreName, int amount)
+    public void spawnOres()
     {
-        Inventory playerInv = GetComponent<emptyPlayer>().SpawnedPlayer.GetComponent<Inventory>();
-        playerInv.oresRetrieved.Find(x => x.prefab.OreName == oreName).amount -= amount;
+        foreach (var item in oresAssetsRecords)
+        {
+            oresRetrieved.Add(item.GetComponent<OreRecord>());
+        }
     }
+
+    [ServerRpc]
+    public void StoreOreinInventory(string oreName, int amount)
+    {
+        oresRetrieved.Find(x => x.prefab.OreName == oreName).amount += amount;
+    }
+
 }
