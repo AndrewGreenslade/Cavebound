@@ -135,11 +135,11 @@ namespace FishNet.CodeGenerating.Processing
                  * user data passed into prediction methods. Because of this
                  * other RPCs should use the modified version and reader/writers
                  * made for prediction. */
-                modified |= base.GetClass<NetworkBehaviourPredictionProcessor>().Process(td, ref rpcCount);
+                modified |= base.GetClass<PredictionProcessor>().Process(td, ref rpcCount);
                 //25ms 
 
                 /* RPCs. */
-                modified |= base.GetClass<RpcProcessor>().Process(td, ref rpcCount);
+                modified |= base.GetClass<RpcProcessor>().ProcessLocal(td, ref rpcCount);
                 //30ms
                 /* //perf rpcCounts can be optimized by having different counts
                  * for target, observers, server, replicate, and reoncile rpcs. Since
@@ -479,11 +479,11 @@ namespace FishNet.CodeGenerating.Processing
                     NETWORKINITIALIZE_LATE_INTERNAL_NAME;
 
                 TypeDefinition td = amd.AwakeMethodDef.DeclaringType;
-                MethodReference initializeMr = td.GetMethodReference(base.Session, methodName);
+                MethodReference networkInitMr = td.GetMethodReference(base.Session, methodName);
 
                 ILProcessor processor = amd.AwakeMethodDef.Body.GetILProcessor();
                 processor.Emit(OpCodes.Ldarg_0);
-                processor.Emit(OpCodes.Callvirt, initializeMr);
+                processor.Emit(networkInitMr.GetCallOpCode(base.Session), networkInitMr);
             }
         }
 
@@ -534,9 +534,9 @@ namespace FishNet.CodeGenerating.Processing
 
             void CallMethod(string name)
             {
-                MethodReference mr = networkInitializeIfDisabledMd.DeclaringType.GetMethodReference(base.Session, name);
+                MethodReference initIfDisabledMr = networkInitializeIfDisabledMd.DeclaringType.GetMethodReference(base.Session, name);
                 processor.Emit(OpCodes.Ldarg_0);
-                processor.Emit(OpCodes.Callvirt, mr);
+                processor.Emit(initIfDisabledMr.GetCallOpCode(base.Session), initIfDisabledMr);
             }
         }
 

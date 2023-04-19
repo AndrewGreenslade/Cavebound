@@ -66,7 +66,12 @@ public class EnemyAI : NetworkBehaviour
 
     private void Update()
     {
-        if(target == null) 
+        if (!IsServer)
+        {
+            return;
+        }
+
+        if (target == null) 
         {
             if (NetworkManager.ClientManager.Clients.Count > 0)
             {
@@ -74,11 +79,6 @@ public class EnemyAI : NetworkBehaviour
                 Invoke("FindMySpawn", 2.0f);
             }
 
-            return;
-        }
-
-        if (!IsServer)
-        {
             return;
         }
 

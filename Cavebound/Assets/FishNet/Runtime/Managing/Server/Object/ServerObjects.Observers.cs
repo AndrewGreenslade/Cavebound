@@ -56,20 +56,19 @@ namespace FishNet.Managing.Server
             TransportManager transportManager = NetworkManager.TransportManager;
             /* Try to iterate all timed observers every half a second.
              * This value will increase as there's more observers. */
-            int completionTicks = Mathf.Max(1, (base.NetworkManager.TimeManager.TickRate * 2));
+            int completionTicks = (base.NetworkManager.TimeManager.TickRate * 2);
             /* Multiply required ticks based on connection count and nob count. This will
              * reduce how quickly observers update slightly but will drastically
              * improve performance. */
             float tickMultiplier = 1f + (float)(
                 (serverManager.Clients.Count * 0.005f) +
-                (serverManager.Objects.Spawned.Count * 0.0005f)
+                (_timedNetworkObservers.Count * 0.0005f)
                 );
             /* Add an additional iteration to prevent
              * 0 iterations */
             int iterations = (observersCount / (int)(completionTicks * tickMultiplier)) + 1;
             if (iterations > observersCount)
                 iterations = observersCount;
-
 
             PooledWriter everyoneWriter = WriterPool.GetWriter();
             PooledWriter ownerWriter = WriterPool.GetWriter();
@@ -109,13 +108,13 @@ namespace FishNet.Managing.Server
                         {
                             everyoneWriter.Reset();
                             ownerWriter.Reset();
-                            WriteSpawn(nob, conn, ref everyoneWriter, ref ownerWriter);
+                            base.WriteSpawn_Server(nob, conn, everyoneWriter, ownerWriter);
                             CacheObserverChange(nob, ref cacheIndex);
                         }
                         else if (osc == ObserverStateChange.Removed)
                         {
                             everyoneWriter.Reset();
-                            WriteDespawn(nob, nob.GetDefaultDespawnType(), ref everyoneWriter);
+                            WriteDespawn(nob, nob.GetDefaultDespawnType(), everyoneWriter);
 
                         }
                         else
@@ -372,13 +371,14 @@ namespace FishNet.Managing.Server
                     {
                         everyoneWriter.Reset();
                         ownerWriter.Reset();
-                        WriteSpawn(n, connection, ref everyoneWriter, ref ownerWriter);
+                        base.WriteSpawn_Server(n, connection, everyoneWriter, ownerWriter);
                         CacheObserverChange(n, ref observerCacheIndex);
                     }
                     else if (osc == ObserverStateChange.Removed)
                     {
+                        connection.LevelOfDetails.Remove(n);
                         everyoneWriter.Reset();
-                        WriteDespawn(n, n.GetDefaultDespawnType(), ref everyoneWriter);
+                        WriteDespawn(n, n.GetDefaultDespawnType(), everyoneWriter);
                     }
                     else
                     {
@@ -428,11 +428,18 @@ namespace FishNet.Managing.Server
                 //If observer state changed then write changes.
                 ObserverStateChange osc = nob.RebuildObservers(conn, false);
                 if (osc == ObserverStateChange.Added)
-                    WriteSpawn(nob, conn, ref everyoneWriter, ref ownerWriter);
+                { 
+                    base.WriteSpawn_Server(nob, conn, everyoneWriter, ownerWriter);
+                }
                 else if (osc == ObserverStateChange.Removed)
-                    WriteDespawn(nob, nob.GetDefaultDespawnType(), ref everyoneWriter);
+                {
+                    conn.LevelOfDetails.Remove(nob);
+                    WriteDespawn(nob, nob.GetDefaultDespawnType(), everyoneWriter);
+                }
                 else
+                { 
                     continue;
+                }
 
                 /* Only use ownerWriter if an add, and if owner. Owner
                  * doesn't matter if not being added because no owner specific
@@ -463,7 +470,7 @@ namespace FishNet.Managing.Server
         /// Rebuilds observers for all connections for a NetworkObject.
         /// </summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal void RebuildObservers(NetworkObject nob)
+        public void RebuildObservers(NetworkObject nob)
         {
             ListCache<NetworkConnection> cache = ListCaches.GetNetworkConnectionCache();
             foreach (NetworkConnection item in NetworkManager.ServerManager.Clients.Values)

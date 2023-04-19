@@ -57,39 +57,36 @@ namespace FishNet.CodeGenerating.ILCore
             //Check WillProcess again; somehow certain editor scripts skip the WillProcess check.
             if (!WillProcess(compiledAssembly))
                 return null;
-            
+
             CodegenSession session = new CodegenSession();
             if (!session.Initialize(assemblyDef.MainModule))
                 return null;
 
             bool modified = false;
 
-            if (IsFishNetAssembly(compiledAssembly))
-            {
+            bool fnAssembly = IsFishNetAssembly(compiledAssembly);
+            if (fnAssembly)
                 modified |= ModifyMakePublicMethods(session);
-            }
-            else
-            {
-                /* If one or more scripts use RPCs but don't inherit NetworkBehaviours
-                 * then don't bother processing the rest. */
-                if (session.GetClass<NetworkBehaviourProcessor>().NonNetworkBehaviourHasInvalidAttributes(session.Module.Types))
-                    return new ILPostProcessResult(null, session.Diagnostics);
+            /* If one or more scripts use RPCs but don't inherit NetworkBehaviours
+             * then don't bother processing the rest. */
+            if (session.GetClass<NetworkBehaviourProcessor>().NonNetworkBehaviourHasInvalidAttributes(session.Module.Types))
+                return new ILPostProcessResult(null, session.Diagnostics);
 
-                //before 226ms, after 17ms                   
-                modified |= CreateDeclaredSerializerDelegates(session);
-                //before 5ms, after 5ms
-                modified |= CreateDeclaredSerializers(session);
-                //before 30ms, after 26ms
-                modified |= CreateIBroadcast(session);
-                //before 140ms, after 10ms
-                modified |= CreateQOLAttributes(session);
-                //before 75ms, after 6ms
-                modified |= CreateNetworkBehaviours(session);
-                //before 260ms, after 215ms 
-                modified |= CreateGenericReadWriteDelegates(session);
-                //before 52ms, after 27ms
-                //Total at once
-                //before 761, after 236ms
+            modified |= session.GetClass<WriterProcessor>().Process();
+            modified |= session.GetClass<ReaderProcessor>().Process();
+            modified |= CreateDeclaredSerializerDelegates(session);
+            modified |= CreateDeclaredSerializers(session);
+            modified |= CreateDeclaredComparerDelegates(session);
+            modified |= CreateIBroadcast(session);
+            modified |= CreateQOLAttributes(session);
+            modified |= CreateNetworkBehaviours(session);
+            modified |= CreateGenericReadWriteDelegates(session);
+
+            if (fnAssembly)
+            {
+                AssemblyNameReference anr = session.Module.AssemblyReferences.FirstOrDefault<AssemblyNameReference>(x => x.FullName == session.Module.Assembly.FullName);
+                if (anr != null)
+                    session.Module.AssemblyReferences.Remove(anr);
             }
 
             /* If there are warnings about SyncVars being in different assemblies.
@@ -179,8 +176,6 @@ namespace FishNet.CodeGenerating.ILCore
         /// <summary>
         /// Creates serializers for custom types within user declared serializers.
         /// </summary>
-        /// <param name="moduleDef"></param>
-        /// <param name="diagnostics"></param>
         private bool CreateDeclaredSerializers(CodegenSession session)
         {
             bool modified = false;
@@ -200,6 +195,25 @@ namespace FishNet.CodeGenerating.ILCore
         }
 
         /// <summary>
+        /// Creates delegates for user declared comparers.
+        /// </summary>
+        internal bool CreateDeclaredComparerDelegates(CodegenSession session)
+        {
+            bool modified = false;
+            List<TypeDefinition> allTypeDefs = session.Module.Types.ToList();
+            foreach (TypeDefinition td in allTypeDefs)
+            {
+                if (session.GetClass<GeneralHelper>().IgnoreTypeDefinition(td))
+                    continue;
+
+                modified |= session.GetClass<CustomSerializerProcessor>().CreateComparerDelegates(td);
+            }
+
+            return modified;
+        }
+
+
+        /// <summary>
         /// Creaters serializers and calls for IBroadcast.
         /// </summary>
         /// <param name="moduleDef"></param>
@@ -209,9 +223,6 @@ namespace FishNet.CodeGenerating.ILCore
             bool modified = false;
 
             string networkBehaviourFullName = session.GetClass<NetworkBehaviourHelper>().FullName;
-            bool fnRuntime = (session.Module.Name == "FishNet.Runtime.dll");
-            if (fnRuntime)
-                session.LogWarning(session.Module.Name);
             HashSet<TypeDefinition> typeDefs = new HashSet<TypeDefinition>();
             foreach (TypeDefinition td in session.Module.Types)
             {
@@ -480,11 +491,10 @@ namespace FishNet.CodeGenerating.ILCore
         /// <param name="diagnostics"></param>
         private bool CreateGenericReadWriteDelegates(CodegenSession session)
         {
-            bool modified = false;
-            modified |= session.GetClass<WriterHelper>().CreateGenericDelegates();
-            modified |= session.GetClass<ReaderHelper>().CreateGenericDelegates();
+            session.GetClass<WriterProcessor>().CreateStaticMethodDelegates();
+            session.GetClass<ReaderProcessor>().CreateStaticMethodDelegates();
 
-            return modified;
+            return true;
         }
 
         internal static bool IsFishNetAssembly(ICompiledAssembly assembly) => (assembly.Name == FishNetILPP.RUNTIME_ASSEMBLY_NAME);

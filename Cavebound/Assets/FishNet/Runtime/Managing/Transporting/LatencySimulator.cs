@@ -1,4 +1,5 @@
-﻿using FishNet.Transporting;
+﻿using FishNet.Connection;
+using FishNet.Transporting;
 using FishNet.Utility.Performance;
 using System;
 using System.Collections.Generic;
@@ -198,6 +199,29 @@ namespace FishNet.Managing.Transporting
             _toClientUnreliable.Clear();
         }
 
+        /// <summary>
+        /// Removes pending or held packets for a connection.
+        /// </summary>
+        /// <param name="conn">Connection to remove pending packets for.</param>
+        public void RemovePendingForConnection(int connectionId)
+        {
+            RemoveFromCollection(_toServerUnreliable);
+            RemoveFromCollection(_toServerUnreliable);
+            RemoveFromCollection(_toClientReliable);
+            RemoveFromCollection(_toClientUnreliable);
+
+            void RemoveFromCollection(List<Message> c)
+            {
+                for (int i = 0; i < c.Count; i++)
+                {
+                    if (c[i].ConnectionId == connectionId)
+                    {
+                        c.RemoveAt(i);
+                        i--;
+                    }
+                }
+            }
+        }
 
         #region Simulation
         /// <summary>
@@ -252,7 +276,7 @@ namespace FishNet.Managing.Transporting
             {
                 if (c == Channel.Reliable)
                 {
-                    latency += latency; //add extra for resend.
+                    latency += (latency * 0.3f); //add extra for resend.
                 }
                 //If not reliable then return the segment array to pool.
                 else

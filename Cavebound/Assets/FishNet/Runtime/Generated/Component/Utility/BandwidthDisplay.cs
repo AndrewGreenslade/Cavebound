@@ -62,9 +62,13 @@ namespace FishNet.Component.Utility
         /// </summary>
         private GUIStyle _style = new GUIStyle();
         /// <summary>
-        /// Text to display OnGui.
+        /// Text to show for client in/out data.
         /// </summary>
-        private string _displayedText;
+        private string _clientText;
+        /// <summary>
+        /// Text to show for server in/out data.
+        /// </summary>
+        private string _serverText;
         /// <summary>
         /// First found NetworkTrafficStatistics.
         /// </summary>
@@ -74,7 +78,10 @@ namespace FishNet.Component.Utility
         private void Start()
         {
             _networkTrafficStatistics = InstanceFinder.NetworkManager.StatisticsManager.NetworkTraffic;
+            //Subscribe to both traffic updates.
             _networkTrafficStatistics.OnClientNetworkTraffic += NetworkTraffic_OnClientNetworkTraffic;
+            _networkTrafficStatistics.OnServerNetworkTraffic += NetworkTraffic_OnServerNetworkTraffic;
+
             if (!_networkTrafficStatistics.UpdateClient && !_networkTrafficStatistics.UpdateServer)
                 Debug.LogWarning($"StatisticsManager.NetworkTraffic is not updating for client nor server. To see results ensure your NetworkManager has a StatisticsManager component added with the NetworkTraffic values configured.");
         }
@@ -82,7 +89,10 @@ namespace FishNet.Component.Utility
         private void OnDestroy()
         {
             if (_networkTrafficStatistics != null)
+            {
                 _networkTrafficStatistics.OnClientNetworkTraffic -= NetworkTraffic_OnClientNetworkTraffic;
+                _networkTrafficStatistics.OnServerNetworkTraffic -= NetworkTraffic_OnClientNetworkTraffic;
+            }
         }
 
 
@@ -94,12 +104,28 @@ namespace FishNet.Component.Utility
             string nl = System.Environment.NewLine;
             string result = string.Empty;
             if (_showIncoming)
-                result += $"In: {NetworkTraficStatistics.FormatBytesToLargest(obj.FromServerBytes)}/s{nl}";
+                result += $"Client In: {NetworkTraficStatistics.FormatBytesToLargest(obj.FromServerBytes)}/s{nl}";
             if (_showOutgoing)
-                result += $"Out: {NetworkTraficStatistics.FormatBytesToLargest(obj.ToServerBytes)}/s{nl}";
+                result += $"Client Out: {NetworkTraficStatistics.FormatBytesToLargest(obj.ToServerBytes)}/s{nl}";
 
-            _displayedText = result;
+            _clientText = result;
         }
+
+        /// <summary>
+        /// Called when client network traffic is updated.
+        /// </summary>
+        private void NetworkTraffic_OnServerNetworkTraffic(NetworkTrafficArgs obj)
+        {
+            string nl = System.Environment.NewLine;
+            string result = string.Empty;
+            if (_showIncoming)
+                result += $"Server In: {NetworkTraficStatistics.FormatBytesToLargest(obj.ToServerBytes)}/s{nl}";
+            if (_showOutgoing)
+                result += $"Server Out: {NetworkTraficStatistics.FormatBytesToLargest(obj.FromServerBytes)}/s{nl}";
+
+            _serverText = result;
+        }
+
 
 
         private void OnGUI()
@@ -111,12 +137,22 @@ namespace FishNet.Component.Utility
 
             _style.normal.textColor = _color;
             _style.fontSize = 15;
+
             float width = 100f;
             float height = 0f;
             if (_showIncoming)
                 height += 15f;
             if (_showOutgoing)
                 height += 15f;
+
+            bool isClient = InstanceFinder.IsClient;
+            bool isServer = InstanceFinder.IsServer;
+            if (!isClient)
+                _clientText = string.Empty;
+            if (!isServer)
+                _serverText = string.Empty;
+            if (isServer && isClient)
+                height *= 2f;
 
             float edge = 10f;
 
@@ -127,24 +163,28 @@ namespace FishNet.Component.Utility
             {
                 horizontal = 10f;
                 vertical = 10f;
+                _style.alignment = TextAnchor.UpperLeft;
             }
             else if (_placement == Corner.TopRight)
             {
                 horizontal = Screen.width - width - edge;
                 vertical = 10f;
+                _style.alignment = TextAnchor.UpperRight;
             }
             else if (_placement == Corner.BottomLeft)
             {
                 horizontal = 10f;
                 vertical = Screen.height - height - edge;
+                _style.alignment = TextAnchor.LowerLeft;
             }
             else
             {
                 horizontal = Screen.width - width - edge;
                 vertical = Screen.height - height - edge;
+                _style.alignment = TextAnchor.LowerRight;
             }
 
-            GUI.Label(new Rect(horizontal, vertical, width, height), _displayedText, _style);
+            GUI.Label(new Rect(horizontal, vertical, width, height), (_clientText + _serverText), _style);
         }
     }
 

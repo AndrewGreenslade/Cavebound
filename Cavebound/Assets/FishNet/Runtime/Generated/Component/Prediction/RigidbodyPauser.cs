@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using FishNet.Managing;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -31,6 +32,10 @@ namespace FishNet.Component.Prediction
             /// Scene of this rigidbody when being set kinematic.
             /// </summary>
             public Scene SimulatedScene;
+            /// <summary>
+            /// True if the rigidbody was kinematic prior to being paused.
+            /// </summary>
+            public bool IsKinematic;
 
             public RigidbodyData(Rigidbody rb)
             {
@@ -39,6 +44,7 @@ namespace FishNet.Component.Prediction
                 Velocity = Vector3.zero;
                 AngularVelocity = Vector3.zero;
                 SimulatedScene = rb.gameObject.scene;
+                IsKinematic = rb.isKinematic;
             }
 
             public void Update(Rigidbody rb)
@@ -46,6 +52,7 @@ namespace FishNet.Component.Prediction
                 Velocity = rb.velocity;
                 AngularVelocity = rb.angularVelocity;
                 SimulatedScene = rb.gameObject.scene;
+                IsKinematic = rb.isKinematic;
             }
         }
         /// <summary>
@@ -69,6 +76,10 @@ namespace FishNet.Component.Prediction
             /// Scene of this rigidbody when being set kinematic.
             /// </summary>
             public Scene SimulatedScene;
+            /// <summary>
+            /// True if the rigidbody was simulated prior to being paused.
+            /// </summary>
+            public bool Simulated;
 
             public Rigidbody2DData(Rigidbody2D rb)
             {
@@ -77,6 +88,7 @@ namespace FishNet.Component.Prediction
                 Velocity = Vector2.zero;
                 AngularVelocity = 0f;
                 SimulatedScene = rb.gameObject.scene;
+                Simulated = rb.simulated;
             }
 
             public void Update(Rigidbody2D rb)
@@ -84,6 +96,7 @@ namespace FishNet.Component.Prediction
                 Velocity = rb.velocity;
                 AngularVelocity = rb.angularVelocity;
                 SimulatedScene = rb.gameObject.scene;
+                Simulated = rb.simulated;
             }
         }
         #endregion
@@ -104,14 +117,6 @@ namespace FishNet.Component.Prediction
         /// Rigidbody2D datas for found rigidbodies;
         /// </summary>
         private List<Rigidbody2DData> _rigidbody2dDatas = new List<Rigidbody2DData>();
-        ///// <summary>
-        ///// Colliders to disable and enable.
-        ///// </summary>
-        //private List<Collider> _colliders = new List<Collider>();
-        ///// <summary>
-        ///// Colliders2D to eable and disable.
-        ///// </summary>
-        //private List<Collider2D> _colliders2d = new List<Collider2D>();
         /// <summary>
         /// Type of prediction movement which is being used.
         /// </summary>
@@ -132,13 +137,21 @@ namespace FishNet.Component.Prediction
                 return _kinematicSceneCache;
             }
         }
+        /// <summary>
+        /// Parent of GraphicalObject prior to unparenting.
+        /// </summary>
+        private Transform _graphicalParent;
+        /// <summary>
+        /// GraphicalObject to unparent when pausing.
+        /// </summary>
+        private Transform _graphicalObject;
         #endregion
 
         /// <summary>
         /// Assigns rigidbodies.
         /// </summary>
         /// <param name="rbs">Rigidbodies2D to use.</param>
-        public void UpdateRigidbodies(Transform t, RigidbodyType rbType, bool getInChildren)
+        public void UpdateRigidbodies(Transform t, RigidbodyType rbType, bool getInChildren, Transform graphicalObject)
         {
             _rigidbodyType = rbType;
             _rigidbodyDatas.Clear();
@@ -146,7 +159,7 @@ namespace FishNet.Component.Prediction
 
             //3D.
             if (rbType == RigidbodyType.Rigidbody)
-            {
+            {   
                 if (getInChildren)
                 {
                     Rigidbody[] rbs = t.GetComponentsInChildren<Rigidbody>();
@@ -158,6 +171,16 @@ namespace FishNet.Component.Prediction
                     Rigidbody rb = t.GetComponent<Rigidbody>();
                     if (rb != null)
                         _rigidbodyDatas.Add(new RigidbodyData(rb));
+                }
+
+                //Make sure all added datas are not the graphical object.
+                for (int i = 0; i < _rigidbodyDatas.Count; i++)
+                {
+                    if (_rigidbodyDatas[i].Rigidbody.transform == graphicalObject)
+                    {
+                        NetworkManager.StaticLogError($"GameObject {t.name} has it's GraphicalObject as a child or on the same object as a Rigidbody object. The GraphicalObject must be a child of root, and not sit beneath or on any rigidbodies.");
+                        graphicalObject = null;
+                    }
                 }
             }
             //2D.
@@ -175,6 +198,22 @@ namespace FishNet.Component.Prediction
                     if (rb != null)
                         _rigidbody2dDatas.Add(new Rigidbody2DData(rb));
                 }
+
+                //Make sure all added datas are not the graphical object.
+                for (int i = 0; i < _rigidbody2dDatas.Count; i++)
+                {
+                    if (_rigidbody2dDatas[i].Rigidbody2d.transform == graphicalObject)
+                    {
+                        NetworkManager.StaticLogError($"GameObject {t.name} has it's GraphicalObject as a child or on the same object as a Rigidbody object. The GraphicalObject must be a child of root, and not sit beneath or on any rigidbodies.");
+                        graphicalObject = null;
+                    }
+                }
+            }
+
+            if (graphicalObject != null)
+            {
+                _graphicalObject = graphicalObject;
+                _graphicalParent = graphicalObject.parent;
             }
         }
 
@@ -209,6 +248,7 @@ namespace FishNet.Component.Prediction
 
                     rb.velocity = rbData.Velocity;
                     rb.angularVelocity = rbData.AngularVelocity;
+                    rb.isKinematic = rbData.IsKinematic;
                     SceneManager.MoveGameObjectToScene(rb.transform.root.gameObject, rbData.SimulatedScene);
                     return true;
                 }
@@ -235,10 +275,18 @@ namespace FishNet.Component.Prediction
 
                     rb.velocity = rbData.Velocity;
                     rb.angularVelocity = rbData.AngularVelocity;
+                    rb.simulated = rbData.Simulated;
+                    rb.isKinematic = !rbData.Simulated;
                     SceneManager.MoveGameObjectToScene(rb.transform.root.gameObject, rbData.SimulatedScene);
                     return true;
                 }
             }
+
+            //Parent went null, then graphicalObject needs to be destroyed.
+            if (_graphicalParent == null && _graphicalObject != null)
+                MonoBehaviour.Destroy(_graphicalObject.gameObject);
+            else
+                _graphicalObject?.SetParent(_graphicalParent);
 
         }
 
@@ -251,6 +299,7 @@ namespace FishNet.Component.Prediction
                 return;
             Paused = true;
 
+            _graphicalObject?.SetParent(null);
             Scene kinematicScene = _kinematicScene;
 
             //3D.
