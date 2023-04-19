@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Cavebound Showcase</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
+  <script src="https://kit.fontawesome.com/4b2603fc33.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+  <!-- Side Navigation -->
+  <nav class="w3-sidebar w3-bar-block w3-card w3-animate-left w3-center" style="display:none" id="mySidebar">
+    <button class="w3-bar-item w3-button" onclick="w3_close()">Close <i class="fa fa-remove"></i></button>
+    <h1 class="w3-xxxlarge w3-text-theme">External Links</h1>
+    <a href="https://github.com/AndrewGreenslade" class="w3-bar-item w3-button">My Github</a>
+    <a href="https://ie.linkedin.com/in/andrew-greenslade" class="w3-bar-item w3-button">My Linked-In</a>
+  </nav>
+
+  <!-- Header -->
+  <header class="w3-container w3-theme w3-padding" id="myHeader">
+    <i onclick="w3_open()" class="fa fa-bars w3-xlarge w3-button w3-theme"></i>
+    <div class="w3-center">
+      <h4>Andrew greenslade's</h4>
+      <h1 class="w3-xxxlarge w3-animate-bottom">Cavebound Showcase</h1>
+    </div>
+  </header>
+
+  <!-- Modal -->
+  <div id="id01" class="w3-modal">
+    <div class="w3-modal-content w3-card-4 w3-animate-top">
+      <header class="w3-container w3-theme-l1">
+        <span onclick="document.getElementById('id01').style.display='none'"
+          class="w3-button w3-display-topright">×</span>
+        <h4>Oh snap! We just showed you a modal..</h4>
+        <h5>Because we can <i class="fa fa-smile-o"></i></h5>
+      </header>
+      <div class="w3-padding">
+        <p>Cool huh? Ok, enough teasing around..</p>
+        <p>Go to our <a class="w3-btn" href="/w3css/default.asp">W3.CSS Tutorial</a> to learn more!</p>
+      </div>
+      <footer class="w3-container w3-theme-l1">
+        <p>Modal footer</p>
+      </footer>
+    </div>
+  </div>
+
+  <h4 class="w3-margin-bottom w3-center w3-text-theme w3-xxxlarge">Technology's used</h4>
+
+  <div class="w3-row-padding w3-center w3-margin-top">
+    <div class="w3-third">
+      <div class="w3-card w3-container" style="min-height:460px">
+        <h3>Unity</h3><br>
+        <i class="fa-brands fa-unity fa-10x"></i>
+        <p>Game engine</p>
+        <p>Easy to learn</p>
+        <p>Great for rapid production</p>
+        <p>Great community</p>
+      </div>
+    </div>
+
+    <div class="w3-third">
+      <div class="w3-card w3-container" style="min-height:460px">
+        <h3>C#</h3><br>
+        <i class="fa-solid fa-code fa-10x"></i>
+        <p>Programming language in Unity</p>
+        <p>Advanced features e.g. Linq</p>
+        <p>Fast compiliation time with Visual studio and Unity</p>
+      </div>
+    </div>
+
+    <div class="w3-third">
+      <div class="w3-card w3-container" style="min-height:460px">
+        <h3>Fish-Net: Networking Evolved</h3><br>
+        <i class="fa-solid fa-fish-fins fa-10x"></i>
+        <p>Great features like force disconnecting if it suspects data manipulation</p>
+        <p>Easy to programme around</p>
+        <p>Free</p>
+        <p>Great discord community</p>
+      </div>
+    </div>
+  </div>
+
+  <br><br>
+
+  <div class="w3-row w3-border">
+    <div class="w3-half w3-container w3-black w3-border" style="min-height:100px;">
+      <h5 class="w3-text-white">What is the project</h5>
+      <p class="w3-text-white">The game I am creating is a multiplayer online mining PVPVE game that is integrated with
+        blockchain technologies and specifically an ecosystem and SDK provided by Enjin.</p>
+      <p class="w3-text-white">I decided to create this game because I have a keen interest in blockchain technology
+        including crypto-currencies and NFT’s, <br>
+        and it is somewhere that I haven’t explored in terms of integrating a game into these two technologies, <br>
+        so therefore I would learn a vast amount of invaluable knowledge from this project</p>
+    </div>
+    <div class="w3-half w3-container">
+    </div>
+  </div>
+  <br>
+
+  <div class="w3-row w3-border">
+    <div class="w3-half w3-container">
+    </div>
+
+    <div class="w3-half w3-container w3-black w3-border" style="min-height:100px;">
+      <h5 class="w3-text-white">A little narrative</h5>
+      <p class="w3-text-white">Here is some background story about the game, enjoy reading!</p>
+      <p class="w3-text-white">The game, Cavebound is set in a different universe in the year 2042, where big
+        corporations hire miners to drain a planets resource’s (ores) for money. Your goal is to mine the most ores in a
+        set amount of time and store them in your mining ship. You can also choose to allow others to do this and steal
+        their resources by eliminating them.</p>
+    </div>
+  </div>
+  <br>
+
+  <br><br>
+
+  <h4 class="w3-margin-bottom w3-center w3-text-theme w3-xxxlarge">Features of the game</h4>
+
+  <br><br>
+
+  <div class="w3-row w3-border">
+    <div class="w3-half w3-container w3-black w3-border" style="min-height:100px;">
+      <h5 class="w3-text-white">Destructable Terrain/Mining Ores</h5>
+      <p class="w3-text-white">Using perlin noise i have randomly generated the terrain, and its ores to
+        allow for more variaty in custmization to the developer, so they can specify rarity and allow for diffrent patterns in the generation phase</p>
+    </div>
+    <div class="w3-half w3-container">
+      <img style="min-height:100px;" src="./Gif_1.gif">
+    </div>
+  </div>
+  <br>
+
+  <div class="w3-row w3-border">
+    <div class="w3-half w3-container">
+      <img style="min-height:100px; float:right" src="./Gif_2.gif">
+    </div>
+
+    <div class="w3-half w3-container w3-black w3-border" style="min-height:100px;">
+      <h5 class="w3-text-white">Custom A-star implimentation</h5>
+      <p class="w3-text-white">The custom a-star implimentation allows for the destructible terrain to update the ai's playspace, so the more the player destroys terrain, the more the Ai can move more freely</p>
+      <p class="w3-text-white">The Ai also hunts the players when they get too close and will start firing at them when within range</p>
+    </div>
+  </div>
+  <br>
+
+  <!-- Footer -->
+  <footer class="w3-container w3-theme-dark w3-padding-16">
+    <p>By Andrew Greenslade</p>
+    <div style="position:relative;bottom:55px;" class="w3-tooltip w3-right">
+      <span class="w3-text w3-theme-light w3-padding">Go To Top</span> 
+      <a class="w3-text-white" href="#myHeader"><span class="w3-xlarge">
+          <i class="fa fa-chevron-circle-up"></i></span></a>
+    </div>
+  </footer>
+
+  <!-- Script for Sidebar, Tabs, Accordions, Progress bars and slideshows -->
+  <script>
+    // Side navigation
+    function w3_open() {
+      var x = document.getElementById("mySidebar");
+      x.style.width = "100%";
+      x.style.fontSize = "40px";
+      x.style.paddingTop = "10%";
+      x.style.display = "block";
+    }
+    function w3_close() {
+      document.getElementById("mySidebar").style.display = "none";
+    }
+
+    // Tabs
+    function openCity(evt, cityName) {
+      var i;
+      var x = document.getElementsByClassName("city");
+      for (i = 0; i < x.length; i++) {
+        x[i].style.display = "none";
+      }
+      var activebtn = document.getElementsByClassName("testbtn");
+      for (i = 0; i < x.length; i++) {
+        activebtn[i].className = activebtn[i].className.replace(" w3-dark-grey", "");
+      }
+      document.getElementById(cityName).style.display = "block";
+      evt.currentTarget.className += " w3-dark-grey";
+    }
+  </script>
+
+</body>
+
+</html>
