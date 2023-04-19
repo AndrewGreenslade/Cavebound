@@ -27,9 +27,6 @@ public class emptyPlayer : NetworkBehaviour
 
             userName = FindObjectOfType<EnjinManager>().playerID;
 
-
-
-
             FindObjectOfType<MapGenUI>().clearMap();
         }
     }
@@ -38,7 +35,6 @@ public class emptyPlayer : NetworkBehaviour
     public void spawnMyPlayer(string name, Vector3 pos, NetworkConnection conn)
     {
         GameObject localPlayer = Instantiate(player, pos, Quaternion.identity);
-        SpawnedPlayer = localPlayer;
         localPlayer.transform.GetComponentInChildren<TextMeshProUGUI>().text = name;
         ServerManager.Spawn(localPlayer,conn );
     }
@@ -73,6 +69,17 @@ public class emptyPlayer : NetworkBehaviour
             }
         }
 
+
+        if (SpawnedPlayer == null)
+        {
+            foreach (var p in GameObject.FindGameObjectsWithTag("Player"))
+            {
+                if (p.GetComponent<PlayerScript>().isLocalPlayer)
+                {
+                    SpawnedPlayer = p;
+                }
+            }
+        }
 
         if (PlayerScript.instance != null)
         {

@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using FishNet.Object;
 
 public class StoredOreHud : MonoBehaviour
 {
@@ -42,12 +43,12 @@ public class StoredOreHud : MonoBehaviour
         if (amount >= 100)
         {
             Debug.Log("Depositing " + oreName + " x" + 100.ToString());
-            emptyPlayer.instance.GetComponent<StoredInventory>().StoreOreinInventory(oreName, 100);
+            emptyPlayer.instance.GetComponent<StoredInventory>().StoreOreinInventory(emptyPlayer.instance.GetComponent<NetworkBehaviour>().LocalConnection ,oreName, 100);
         }
         else
         {
             Debug.Log("Depositing " + oreName + " x" + amount.ToString());
-            emptyPlayer.instance.GetComponent<StoredInventory>().StoreOreinInventory(oreName, amount);
+            emptyPlayer.instance.GetComponent<StoredInventory>().StoreOreinInventory(emptyPlayer.instance.GetComponent<NetworkBehaviour>().LocalConnection ,oreName, amount);
         }
 
         List<oreHud> hudList = FindObjectsOfType<oreHud>().ToList();

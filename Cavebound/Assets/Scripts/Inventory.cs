@@ -29,6 +29,11 @@ public class Inventory : NetworkBehaviour
     {
         base.OnStartClient();
 
+        if (!IsOwner) 
+        { 
+            return; 
+        }
+
         oresRetrieved = emptyPlayer.instance.GetComponent<StoredInventory>().oresRetrieved;
 
         if (GameObject.FindGameObjectWithTag("OreUI").transform.childCount <= 0)

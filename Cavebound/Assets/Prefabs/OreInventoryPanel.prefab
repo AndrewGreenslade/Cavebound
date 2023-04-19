@@ -545,7 +545,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6776467150850261761}
-  - component: {fileID: 6776467150850261763}
   - component: {fileID: 190824552}
   - component: {fileID: 190824553}
   m_Layer: 5
@@ -579,14 +578,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
---- !u!222 &6776467150850261763
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6776467150850261766}
-  m_CullTransparentMesh: 1
 --- !u!114 &190824552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -627,7 +618,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 6776467149755720231}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
@@ -656,6 +647,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   oreName: 
+  OreDepositor: {fileID: 0}
   oreNameText: {fileID: 6776467150333120460}
   oreAmountText: {fileID: 6776467150512899521}
   oreImage: {fileID: 6776467149076805332}

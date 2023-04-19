@@ -78,7 +78,7 @@ public class Missile : NetworkBehaviour
         }
     }
 
-    void spawnOre(Vector3Int pos,NetworkConnection conn)
+    void spawnOre(Vector3Int pos, NetworkConnection conn)
     {
         for (int x = -2; x < 3; x++)
         {

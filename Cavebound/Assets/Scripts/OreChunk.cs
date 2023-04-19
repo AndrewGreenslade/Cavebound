@@ -1,10 +1,13 @@
 using FishNet.Connection;
 using FishNet.Object;
+using FishNet.Object.Synchronizing;
 using UnityEngine;
 
 public class OreChunk : NetworkBehaviour
 {
+    [SyncVar]
     public string oreName;
+    [SyncVar]
     private bool isDespawning = false;
     private float despawnTimer = 0;
     public float TodespawnTime = 10.0f;
@@ -27,9 +30,15 @@ public class OreChunk : NetworkBehaviour
     {
         if(collision.tag == "Player" && !isDespawning)
         {
-            isDespawning = true;
+            setToDespawn();
             getInventoryObj(collision.GetComponent<NetworkObject>().LocalConnection ,GetComponent<NetworkObject>(), collision.GetComponent<NetworkObject>());
         }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void setToDespawn()
+    {
+        isDespawning = true;
     }
 
     [ServerRpc(RequireOwnership = false)]
