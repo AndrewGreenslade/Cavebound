@@ -9,6 +9,7 @@ using Enjin.SDK.Models;
 using Enjin.SDK.Shared;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Networking;
 
 public class EnjinManager : MonoBehaviour
 {
@@ -22,6 +23,8 @@ public class EnjinManager : MonoBehaviour
     ProjectClient client = null;
     public TMP_InputField nameField;
     public TextMeshProUGUI nameDisplay;
+    public Image qrImage;
+    public TextMeshProUGUI LinkCodeText;
 
     string uuid = "e05dfff6-6836-45cb-af1c-660f72d19651";
     string secret = "ljO9M2hjpFPMj9bFF0LFw4SVuwda57TlnLeYS0YW";
@@ -118,6 +121,9 @@ public class EnjinManager : MonoBehaviour
 
                 code = linkingInfo.Code;
                 qr = linkingInfo.Qr;
+                StartCoroutine(DownloadImage(qr));
+                LinkCodeText.enabled= true;
+                LinkCodeText.text = "Link Code: " + code; 
             }
             
             nameDisplay.text = "Welcome: " + playerID;
@@ -125,5 +131,19 @@ public class EnjinManager : MonoBehaviour
             EnjinCanvas.SetActive(false);
             ConnectCanvas.SetActive(true);
         }
+    }
+
+    IEnumerator DownloadImage(string MediaUrl)
+    {
+        qrImage.enabled = true;
+
+        UnityWebRequest request = UnityWebRequestTexture.GetTexture(MediaUrl);
+        yield return request.SendWebRequest();
+        if (request.isNetworkError || request.isHttpError)
+            Debug.Log(request.error);
+        else {
+            Texture2D texture = ((DownloadHandlerTexture)request.downloadHandler).texture;
+            qrImage.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2());
+        } 
     }
 }

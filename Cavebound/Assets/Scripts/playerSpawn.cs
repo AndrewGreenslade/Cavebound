@@ -7,11 +7,20 @@ public class playerSpawn : NetworkBehaviour
     public Transform pos;
     [SyncVar]
     public int playerID;
+    [SyncVar]
+    public bool isSet = false;
 
     public override void OnStartClient()
     {
         base.OnStartClient();
 
-        pos = this.transform;
+        pos = transform;
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void setSpawn(int t_id)
+    {
+        playerID= t_id;
+        isSet = true;
     }
 }

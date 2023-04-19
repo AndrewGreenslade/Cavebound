@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.Collections;
 using FishNet.Managing.Server;
+using static log4net.Appender.ColoredConsoleAppender;
 
 public class MapGenerator : NetworkBehaviour
 {
@@ -169,7 +170,15 @@ public class MapGenerator : NetworkBehaviour
             }
         }
 
-        GameObject hubObj = Instantiate(playerHubPrefab, new Vector3(coords.x + MapSpawnSize / 2 , coords.y + 2, 0), Quaternion.identity);
+        if (IsServer)
+        {
+            spawnHub(coords);
+        }
+    }
+
+    void spawnHub(Vector3 coords)
+    {
+        GameObject hubObj = Instantiate(playerHubPrefab, new Vector3(coords.x + MapSpawnSize / 2, coords.y + 2, 0), Quaternion.identity);
         ServerManager.Spawn(hubObj);
     }
 

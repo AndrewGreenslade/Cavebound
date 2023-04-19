@@ -1,5 +1,7 @@
 using FishNet.Object;
 using UnityEngine;
+using TMPro;
+using FishNet.Connection;
 
 public class emptyPlayer : NetworkBehaviour
 {
@@ -7,42 +9,38 @@ public class emptyPlayer : NetworkBehaviour
     public int playerID;
     public GameObject SpawnedPlayer;
 
+    public bool spawnSet = false;
     public Transform spawn;
-    public static GameObject instance;
+    public static emptyPlayer instance;
+    public string userName;
+    spawnerManager manager;
 
     public override void OnStartClient()
     {
         base.OnStartClient();
 
-        instance = this.gameObject;
         playerID = GetComponent<NetworkObject>().OwnerId;
-
-        spawnerManager manager = FindObjectOfType<spawnerManager>();
-
-        manager.setPlayerID(playerID);
-
-        foreach (var item in manager.spawns)
-        {
-            if(item.playerID == playerID)
-            {
-                spawn = item.pos;
-                break;
-            }
-        }
-
-        spawnMyPlayer();
 
         if (IsOwner)
         {
+            instance = this;
+
+            userName = FindObjectOfType<EnjinManager>().playerID;
+
+
+
+
             FindObjectOfType<MapGenUI>().clearMap();
         }
     }
 
-    public void spawnMyPlayer()
+    [ServerRpc]
+    public void spawnMyPlayer(string name, Vector3 pos, NetworkConnection conn)
     {
-        GameObject localPlayer = Instantiate(player, spawn.position, Quaternion.identity);
+        GameObject localPlayer = Instantiate(player, pos, Quaternion.identity);
         SpawnedPlayer = localPlayer;
-        ServerManager.Spawn(localPlayer, GetComponent<NetworkObject>().LocalConnection);
+        localPlayer.transform.GetComponentInChildren<TextMeshProUGUI>().text = name;
+        ServerManager.Spawn(localPlayer,conn );
     }
 
     void Update()
@@ -51,6 +49,30 @@ public class emptyPlayer : NetworkBehaviour
         {
             return;
         }
+
+        if (manager == null)
+        {
+            manager = FindObjectOfType<spawnerManager>();
+            
+            if (!spawnSet && manager != null)
+            {
+                manager.setPlayerID(playerID);
+            }
+        }
+        else if(!spawnSet)
+        {
+            foreach (var item in manager.spawns)
+            {
+                if (item.playerID == playerID)
+                {
+                    spawn = item.pos;
+                    spawnSet = true;
+                    spawnMyPlayer(userName, spawn.position, GetComponent<NetworkObject>().LocalConnection);
+                    break;
+                }
+            }
+        }
+
 
         if (PlayerScript.instance != null)
         {
@@ -68,7 +90,7 @@ public class emptyPlayer : NetworkBehaviour
 
                 Destroy(PlayerScript.instance.SpawnedHud);
                 ServerManager.Despawn(SpawnedPlayer);
-                spawnMyPlayer();
+                spawnMyPlayer(userName, spawn.position, GetComponent<NetworkObject>().LocalConnection);
             }
         }
     }
