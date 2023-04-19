@@ -1,13 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
-using System.Linq;
 using FishNet.Object;
-using FishNet.Object.Synchronizing;
-using FishNet;
 using FishNet.Connection;
-using static UnityEditor.Progress;
 
 /// <summary>
 /// This should only show on host, so player has no access to his Inventory on his client

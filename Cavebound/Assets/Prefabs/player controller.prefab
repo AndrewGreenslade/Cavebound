@@ -98,4 +98,14 @@ MonoBehaviour:
   _componentIndexCache: 255
   _addedNetworkObject: {fileID: 268042560297130657}
   _networkObjectCache: {fileID: 0}
-  oresRetrieved: []
+  oresRetrieved:
+  - prefab: {fileID: 11400000, guid: 0af8d59873dc73d4ab914e049ef09602, type: 2}
+    amount: 0
+  - prefab: {fileID: 11400000, guid: b93175337e59b9948b27dd3134338230, type: 2}
+    amount: 0
+  - prefab: {fileID: 11400000, guid: 851f6022fec3dc541815eef61d8645e8, type: 2}
+    amount: 0
+  - prefab: {fileID: 11400000, guid: 0eaaea62926c6f2459761a451a207eb1, type: 2}
+    amount: 0
+  - prefab: {fileID: 11400000, guid: a82ba0bac7a8c57489d047f6f8a16232, type: 2}
+    amount: 0
