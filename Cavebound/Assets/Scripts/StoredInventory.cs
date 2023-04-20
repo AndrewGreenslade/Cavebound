@@ -22,7 +22,6 @@ public class StoredInventory : NetworkBehaviour
         }
     }
 
-    [ServerRpc]
     public void StoreOreinInventory(string oreName, int amount)
     {
         oresRetrieved.Find(x => x.prefab.OreName == oreName).amount += amount;

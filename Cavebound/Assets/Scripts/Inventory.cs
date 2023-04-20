@@ -4,7 +4,9 @@ using FishNet.Object;
 
 public class Inventory : NetworkBehaviour
 {
+    public List<GameObject> oresAssetsRecords = new List<GameObject>();
     public List<OreRecord> oresRetrieved = new List<OreRecord>();
+    
     private List<oreHud> oreHudList = new List<oreHud>();
     private List<StoredOreHud> oreStoredHudList = new List<StoredOreHud>();
 
@@ -18,8 +20,8 @@ public class Inventory : NetworkBehaviour
     {
         base.OnStartClient();
 
-        oresRetrieved = emptyPlayer.instance.GetComponent<StoredInventory>().oresRetrieved;
-        
+        spawnOres();
+
         if (!IsOwner)
         {
             return;
@@ -57,6 +59,14 @@ public class Inventory : NetworkBehaviour
 
             //then disable parent element
             paretnStoredUI.SetActive(false);
+        }
+    }
+
+    public void spawnOres()
+    {
+        foreach (var item in oresAssetsRecords)
+        {
+            oresRetrieved.Add(item.GetComponent<OreRecord>());
         }
     }
 

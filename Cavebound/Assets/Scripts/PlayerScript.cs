@@ -41,14 +41,13 @@ public class PlayerScript : NetworkBehaviour
     {
         base.OnStartClient();
 
-        if (!base.IsOwner)
+        if (!IsOwner)
         {
             Destroy(GetComponent<PlayerInput>());
             return;
         }
 
         instance = this;
-
         isLocalPlayer = true;
         SpawnedHud = Instantiate(hud);
         rb = GetComponent<Rigidbody2D>();
