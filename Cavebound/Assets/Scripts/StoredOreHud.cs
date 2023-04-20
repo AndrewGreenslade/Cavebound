@@ -46,13 +46,13 @@ public class StoredOreHud : MonoBehaviour
         {
             Debug.Log("Depositing " + oreName + " x" + 100.ToString());
             emptyPlayer.instance.GetComponent<StoredInventory>().StoreOreinInventory(oreName, 100);
-            playerInv.oresRetrieved.Find(x => x.prefab.OreName == oreName).amount -= 100;
+            record.amount -= 100;
         }
         else
         {
             Debug.Log("Depositing " + oreName + " x" + amount.ToString());
             emptyPlayer.instance.GetComponent<StoredInventory>().StoreOreinInventory(oreName, amount);
-            playerInv.oresRetrieved.Find(x => x.prefab.OreName == oreName).amount = 0;
+            record.amount = 0;
         }
 
         List<oreHud> hudList = FindObjectsOfType<oreHud>().ToList();
