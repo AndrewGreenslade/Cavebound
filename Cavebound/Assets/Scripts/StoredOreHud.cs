@@ -34,32 +34,22 @@ public class StoredOreHud : MonoBehaviour
     }
 
     
-    public void AddOreToAmount()
+    public void StoreOre()
     {
         Debug.Log("Pressed " + oreName + " ore button");
+        
+        Inventory worldPlayerInv = emptyPlayer.instance.SpawnedPlayer.GetComponent<Inventory>();
+        
+        int amountOfOres = worldPlayerInv.GetAndResetOreAmount(oreName);
 
-        Inventory playerInv = emptyPlayer.instance.SpawnedPlayer.GetComponent<Inventory>();
-        OreRecord record = playerInv.oresRetrieved.Find(x => x.prefab.OreName == oreName);
-        int amount = record.amount;
-
-        if (amount >= 100)
-        {
-            Debug.Log("Depositing " + oreName + " x" + 100.ToString());
-            emptyPlayer.instance.GetComponent<StoredInventory>().StoreOreinInventory(oreName, 100);
-            record.amount -= 100;
-        }
-        else
-        {
-            Debug.Log("Depositing " + oreName + " x" + amount.ToString());
-            emptyPlayer.instance.GetComponent<StoredInventory>().StoreOreinInventory(oreName, amount);
-            record.amount = 0;
-        }
+        StoredInventory StoredPlayerInv = emptyPlayer.instance.GetComponent<StoredInventory>();
+        StoredPlayerInv.AddOreToAmount(oreName, amountOfOres);
 
         List<oreHud> hudList = FindObjectsOfType<oreHud>().ToList();
         oreHud hudObj = hudList.Find(x => x.oreName == oreName);
-        hudObj.RemoveOreFromAmount(amount);
+        hudObj.RemoveOreFromAmount(amountOfOres);
 
-        oreAmount += amount;
+        oreAmount += amountOfOres;
         oreAmountText.text = oreAmount.ToString();
     }
 }

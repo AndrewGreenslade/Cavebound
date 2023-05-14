@@ -158,11 +158,6 @@ public class EnemyAI : NetworkBehaviour
     void Move()
     {
         Vector3 newPos = new Vector3(path[0].localX + 0.5f, path[0].localY + 0.5f, 0) - transform.position;
-        //if (newPos.y > 0.5f)
-        //{
-        //    GetComponent<Rigidbody2D>().AddForce(transform.up * newPos.y * jumpForce, ForceMode2D.Impulse);
-        //}
-        //newPos.y = 0;
 
         if (Vector3.Distance(target.transform.position, transform.position) >= StopDistance)
         {

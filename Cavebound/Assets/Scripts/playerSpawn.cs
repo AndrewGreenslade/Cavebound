@@ -6,7 +6,7 @@ public class playerSpawn : NetworkBehaviour
 {
     public Transform pos;
     [SyncVar]
-    public int playerID;
+    public int playerID = -999;
     [SyncVar]
     public bool isSet = false;
 

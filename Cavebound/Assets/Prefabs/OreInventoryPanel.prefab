@@ -623,8 +623,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 190824553}
-        m_TargetAssemblyTypeName: StoredOreHud, Assembly-CSharp
-        m_MethodName: AddOreToAmount
+        m_TargetAssemblyTypeName: StoredOreHud, AssemblyDef
+        m_MethodName: StoreOre
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

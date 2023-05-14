@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Cinemachine;
@@ -143,5 +141,21 @@ public class PlayerScript : NetworkBehaviour
     void OnJump(InputValue t_jumpVal)
     {
         jumpInput = t_jumpVal.Get<float>();
+    }
+
+    public override void OnStopClient()
+    {
+        base.OnStopClient();
+
+        Inventory myInv = GetComponent<Inventory>();
+
+        myInv.resetOres();
+
+        foreach (Transform item in myInv.oreUIPanel.transform)
+        {
+            Destroy(item.gameObject);
+        }
+
+        Destroy(SpawnedHud);
     }
 }

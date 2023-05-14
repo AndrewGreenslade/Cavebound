@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3843954937813671736
+--- !u!1 &226279338117627680
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,44 +8,44 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8337315244421198538}
-  - component: {fileID: 214362637094127086}
+  - component: {fileID: 9201265329989083240}
+  - component: {fileID: 3034516095970067923}
   m_Layer: 0
-  m_Name: OreRecordCopper
-  m_TagString: Untagged
+  m_Name: EmptyMenuPlayer
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8337315244421198538
+--- !u!4 &9201265329989083240
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3843954937813671736}
+  m_GameObject: {fileID: 226279338117627680}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 730.5002, y: 516.3507, z: -5.326461}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &214362637094127086
+--- !u!114 &3034516095970067923
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3843954937813671736}
+  m_GameObject: {fileID: 226279338117627680}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c368a55e3bea6494d81a96dfd2f8461a, type: 3}
+  m_Script: {fileID: 11500000, guid: 997c424a4e1d3e1428a18e96c258bb63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _componentIndexCache: 0
   _addedNetworkObject: {fileID: 0}
   _networkObjectCache: {fileID: 0}
-  prefab: {fileID: 11400000, guid: 0af8d59873dc73d4ab914e049ef09602, type: 2}
-  amount: 0
+  panel: {fileID: 0}
+  playerMenuComp: {fileID: 6563496236922731940, guid: 3ee5f7bcaffa0ee498faf8cb672e3c26, type: 3}

@@ -158,6 +158,8 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: -5108724726525272491}
   _networkObjectCache: {fileID: -5108724726525272491}
   oreName: 
+  isDespawning: 0
+  TodespawnTime: 10
 --- !u!114 &-5108724726525272491
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -172,15 +174,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <IsNested>k__BackingField: 0
   <ComponentIndex>k__BackingField: 0
-  _networkBehaviours:
-  - {fileID: -4915945438099936140}
+  <PredictedSpawn>k__BackingField: {fileID: 0}
+  _networkBehaviours: []
   <ParentNetworkObject>k__BackingField: {fileID: 0}
   <ChildNetworkObjects>k__BackingField: []
   _isNetworked: 1
   _isGlobal: 0
+  _initializeOrder: 0
   _defaultDespawnType: 0
   NetworkObserver: {fileID: 0}
-  <PrefabId>k__BackingField: 11
+  <PrefabId>k__BackingField: 0
+  <SpawnableCollectionId>k__BackingField: 0
   _scenePathHash: 0
   <SceneId>k__BackingField: 0
   <AssetPathHash>k__BackingField: 17946470267812300727

@@ -10,6 +10,11 @@ public class oreDepositer : NetworkBehaviour
 
     public GameObject oreStoredGameobject;
 
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+    }
+
     private void Update()
     {
         if (oreStoredGameobject != null)
@@ -33,7 +38,7 @@ public class oreDepositer : NetworkBehaviour
             {
                 if (oreStoredGameobject == null)
                 {
-                    oreStoredGameobject = collision.GetComponent<Inventory>().oreStoredUIPanel.transform.parent.gameObject;
+                    oreStoredGameobject = emptyPlayer.instance.GetComponent<StoredInventory>().oreStoredUIPanel.parent.gameObject;
                 }
 
                 collision.GetComponent<PlayerScript>().isInMenu= true;

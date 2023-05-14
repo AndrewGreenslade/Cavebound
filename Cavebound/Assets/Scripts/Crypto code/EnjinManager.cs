@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using static Enjin.SDK.ProjectClient;
 using Enjin.SDK;
@@ -7,31 +5,35 @@ using Enjin.SDK.ProjectSchema;
 using Enjin.SDK.Graphql;
 using Enjin.SDK.Models;
 using Enjin.SDK.Shared;
-using UnityEngine.UI;
-using TMPro;
 using UnityEngine.Networking;
+using UnityEngine.UI;
+using System.Collections;
+using TMPro;
 
 public class EnjinManager : MonoBehaviour
 {
     ProjectClientBuilder builder = Builder();
     System.Uri goerli = EnjinHosts.GOERLI;
 
-    public GameObject ConnectCanvas;
-    public GameObject EnjinCanvas;
-    public GameObject createButton;
-
     ProjectClient client = null;
-    public TMP_InputField nameField;
-    public TextMeshProUGUI nameDisplay;
-    public Image qrImage;
-    public TextMeshProUGUI LinkCodeText;
 
-    string uuid = "e05dfff6-6836-45cb-af1c-660f72d19651";
-    string secret = "ljO9M2hjpFPMj9bFF0LFw4SVuwda57TlnLeYS0YW";
+    [Header("Enjin App Vars")]
+    public string uuid;
+    public string secret;
+
+    [Header("New Player Vars")]
     public string playerID;
     public string code;
     public string qr;
-    public string ethAddress;
+    public Image qrImage;
+    public TMP_InputField nameField;
+    public GameObject createButton;
+    public TextMeshProUGUI LinkCodeText;
+    public TextMeshProUGUI nameDisplay;
+    
+    [Header("Canvar vars")]
+    public GameObject ConnectCanvas;
+    public GameObject EnjinCanvas;
 
     private void Start()
     {
@@ -64,47 +66,12 @@ public class EnjinManager : MonoBehaviour
         client.AuthClient(uuid, secret).Wait();
     }
 
-    private void Update()
-    {
-        updatePlayerID();
-    }
-
-    public void updatePlayerID()
-    {
-        playerID = nameField.text;
-    }
-
-    public void getPlayerRemote()
-    {
-        if (playerID != null)
-        {
-            GetPlayer req = new GetPlayer().Id(playerID).WithWallet();
-
-            GraphqlResponse<Player> res = client.GetPlayer(req).Result;
-
-            Player player = res.Result;
-
-            if (player != null)
-            {
-                Wallet wallet = player.Wallet;
-
-                ethAddress = wallet.EthAddress;
-
-                nameDisplay.text = "Welcome: " + playerID;
-
-                EnjinCanvas.SetActive(false);
-                ConnectCanvas.SetActive(true);
-            }
-        }
-    }
-
     public void createNewPlayer()
     {
         CreatePlayer reqCreate = new CreatePlayer().Id(playerID);
 
         // Using a authenticated ProjectClient
         GraphqlResponse<AccessToken> resCreate = client.CreatePlayer(reqCreate).Result;
-
         createButton.SetActive(false);
 
         GetPlayer req = new GetPlayer().Id(playerID).WithLinkingInfo();
@@ -122,10 +89,10 @@ public class EnjinManager : MonoBehaviour
                 code = linkingInfo.Code;
                 qr = linkingInfo.Qr;
                 StartCoroutine(DownloadImage(qr));
-                LinkCodeText.enabled= true;
-                LinkCodeText.text = "Link Code: " + code; 
+                LinkCodeText.enabled = true;
+                LinkCodeText.text = "Link Code: " + code;
             }
-            
+
             nameDisplay.text = "Welcome: " + playerID;
 
             EnjinCanvas.SetActive(false);
@@ -141,9 +108,21 @@ public class EnjinManager : MonoBehaviour
         yield return request.SendWebRequest();
         if (request.isNetworkError || request.isHttpError)
             Debug.Log(request.error);
-        else {
+        else
+        {
             Texture2D texture = ((DownloadHandlerTexture)request.downloadHandler).texture;
             qrImage.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2());
-        } 
+        }
     }
+
+    private void Update()
+    {
+        updatePlayerID();
+    }
+
+    public void updatePlayerID()
+    {
+        playerID = nameField.text;
+    }
+
 }

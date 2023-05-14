@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using FishNet.Object;
+using FishNet.Connection;
 
 public class Inventory : NetworkBehaviour
 {
@@ -8,31 +9,32 @@ public class Inventory : NetworkBehaviour
     public List<OreRecord> oresRetrieved = new List<OreRecord>();
     
     private List<oreHud> oreHudList = new List<oreHud>();
-    private List<StoredOreHud> oreStoredHudList = new List<StoredOreHud>();
 
     public GameObject oreUIPrefab;
     public Transform oreUIPanel;
-
-    public GameObject oreStoredUIPrefab;
-    public Transform oreStoredUIPanel;
     
     public override void OnStartClient()
     {
         base.OnStartClient();
-
-        spawnOres();
 
         if (!IsOwner)
         {
             return;
         }
 
+        if (!IsServer)
+        {
+            spawnOres();
+        }
+
+        Debug.Log("Player spawned again");
+
         if (GameObject.FindGameObjectWithTag("OreUI").transform.childCount <= 0)
         {
+            //gets nesesary components
             oreUIPanel = GameObject.FindGameObjectWithTag("OreUI").transform;
-            oreStoredUIPanel = GameObject.FindGameObjectWithTag("StoredOreUI").transform;
-            GameObject paretnStoredUI = oreStoredUIPanel.parent.gameObject;
 
+            //sets up hud items
             foreach (OreRecord item in oresRetrieved)
             {
                 GameObject ui = Instantiate(oreUIPrefab, oreUIPanel);
@@ -40,26 +42,19 @@ public class Inventory : NetworkBehaviour
 
                 oreHudList.Add(hud);
                 hud.setVars(item.prefab.OreName, item.prefab.droppedOre.GetComponent<SpriteRenderer>().color);
-
-                GameObject ui2 = Instantiate(oreStoredUIPrefab, oreStoredUIPanel);
-                StoredOreHud hud2 = ui2.GetComponent<StoredOreHud>();
-
-                oreStoredHudList.Add(hud2);
-                hud2.setVars(item.prefab.OreName, item.prefab.droppedOre.GetComponent<SpriteRenderer>().color);
             }
-
-            //set background element to be active
-            foreach (Transform item in paretnStoredUI.transform)
-            {
-                if (!item.gameObject.activeSelf)
-                {
-                    item.gameObject.SetActive(true);
-                }
-            }
-
-            //then disable parent element
-            paretnStoredUI.SetActive(false);
         }
+        else
+        {
+            //gets nesesary components
+            oreUIPanel = GameObject.FindGameObjectWithTag("OreUI").transform;
+        }
+    }
+
+    public override void OnStartServer()
+    {
+        base.OnStartServer();
+        spawnOres();
     }
 
     public void spawnOres()
@@ -81,7 +76,8 @@ public class Inventory : NetworkBehaviour
             }
         }
     }
-    
+
+    [Client]
     public void addOreToUI(string itemName)
     {
         foreach (var hudItem in oreHudList)
@@ -92,5 +88,25 @@ public class Inventory : NetworkBehaviour
                 break;
             }
         }
+    }
+
+    [TargetRpc]
+    public void resetOres(NetworkConnection conn = null)
+    {
+        foreach (OreRecord Item in oresRetrieved)
+        {
+            Item.amount = 0;
+        }
+    }
+
+    public int GetAndResetOreAmount(string oreName)
+    {
+        OreRecord record = oresRetrieved.Find(x => x.prefab.OreName == oreName);
+
+        int RecordAmount = record.amount;
+
+        record.amount = 0;
+
+        return RecordAmount;
     }
 }

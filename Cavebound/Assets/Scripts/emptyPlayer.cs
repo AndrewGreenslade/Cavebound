@@ -2,103 +2,110 @@ using FishNet.Object;
 using UnityEngine;
 using TMPro;
 using FishNet.Connection;
+using FishNet.Object.Synchronizing;
+using UnityEngine.Networking;
+using static UnityEditor.Progress;
 
 public class emptyPlayer : NetworkBehaviour
 {
+    private bool shouldSpawnPlayer = false;
     public GameObject player;
-    public int playerID;
-    public GameObject SpawnedPlayer;
 
+    [SyncVar]
+    public int playerID;
+
+    [SyncVar]
+    public NetworkObject SpawnedPlayer;
+    
+    [SyncVar]
     public bool spawnSet = false;
+
+    [SyncVar]
     public Transform spawn;
+
     public static emptyPlayer instance;
+
+    [SyncVar]
     public string userName;
+    
     spawnerManager manager;
+
+    public override void OnStartServer()
+    {
+        base.OnStartServer();
+
+        playerID = GetComponent<NetworkObject>().OwnerId;
+    }
 
     public override void OnStartClient()
     {
         base.OnStartClient();
 
-        playerID = GetComponent<NetworkObject>().OwnerId;
-
         if (IsOwner)
         {
             instance = this;
 
-            userName = FindObjectOfType<EnjinManager>().playerID;
+            //userName = FindObjectOfType<EnjinManager>().playerID;
 
             FindObjectOfType<MapGenUI>().clearMap();
-        }
-    }
 
-    [ServerRpc]
-    public void spawnMyPlayer(string name, Vector3 pos, NetworkConnection conn)
-    {
-        GameObject localPlayer = Instantiate(player, pos, Quaternion.identity);
-        localPlayer.transform.GetComponentInChildren<TextMeshProUGUI>().text = name;
-        ServerManager.Spawn(localPlayer,conn );
+            shouldSpawnPlayer = true;
+        }
     }
 
     void Update()
     {
-        if (!IsOwner)
+        if (IsOwner)
         {
-            return;
-        }
+            if (manager == null)
+            {
+                manager = FindObjectOfType<spawnerManager>();
 
-        if (manager == null)
-        {
-            manager = FindObjectOfType<spawnerManager>();
-            
-            if (!spawnSet && manager != null)
-            {
-                manager.setPlayerID(playerID);
-            }
-        }
-        else if(!spawnSet)
-        {
-            foreach (var item in manager.spawns)
-            {
-                if (item.playerID == playerID)
+                if (!spawnSet && manager != null)
                 {
-                    spawn = item.pos;
-                    spawnSet = true;
-                    spawnMyPlayer(userName, spawn.position, GetComponent<NetworkObject>().LocalConnection);
-                    break;
+                    manager.setPlayerID(playerID);
+                }
+            }
+            else if (!spawnSet && shouldSpawnPlayer)
+            {
+                foreach (var item in manager.spawns)
+                {
+                    if (item.playerID == playerID)
+                    {
+                        shouldSpawnPlayer = false;
+                        setSpawnVars(item.pos);
+                        SpawnPlayer();
+                        break;
+                    }
+                }
+            }
+
+            if (SpawnedPlayer != null)
+            {
+                PlayerScript ps = SpawnedPlayer.GetComponent<PlayerScript>();
+
+                if (ps.health <= 0)
+                {
+                    Debug.Log("Despawning player");
+                    Despawn(SpawnedPlayer.gameObject);
+                    SpawnPlayer();
                 }
             }
         }
+    }
 
+    [ServerRpc]
+    private void SpawnPlayer()
+    {
+        GameObject localPlayer = Instantiate(player, spawn.position, Quaternion.identity);
+        SpawnedPlayer = localPlayer.GetComponent<NetworkObject>();
+        ServerManager.Spawn(localPlayer, ClientManager.Clients[playerID]);
+    }
 
-        if (SpawnedPlayer == null)
-        {
-            foreach (var p in GameObject.FindGameObjectsWithTag("Player"))
-            {
-                if (p.GetComponent<PlayerScript>().isLocalPlayer)
-                {
-                    SpawnedPlayer = p;
-                }
-            }
-        }
-
-        if (PlayerScript.instance != null)
-        {
-            if (PlayerScript.instance.health <= 0)
-            {
-                foreach (OreRecord item in PlayerScript.instance.GetComponent<Inventory>().oresRetrieved)
-                {
-                    item.amount = 0;
-                }
-
-                foreach (Transform item in PlayerScript.instance.GetComponent<Inventory>().oreUIPanel.transform)
-                {
-                    item.GetComponent<oreHud>().Reset();
-                }
-
-                Destroy(PlayerScript.instance.SpawnedHud);
-                ServerManager.Despawn(SpawnedPlayer);
-                spawnMyPlayer(userName, spawn.position, GetComponent<NetworkObject>().LocalConnection);
-            }
-        }
+    [ServerRpc]
+    private void setSpawnVars(Transform t_spawnPos)
+    {
+        spawnSet = true;
+        spawn = t_spawnPos;
     }
 }
