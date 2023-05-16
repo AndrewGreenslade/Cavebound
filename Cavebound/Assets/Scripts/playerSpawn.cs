@@ -13,14 +13,13 @@ public class playerSpawn : NetworkBehaviour
     public override void OnStartClient()
     {
         base.OnStartClient();
-
         pos = transform;
     }
 
     [ServerRpc(RequireOwnership = false)]
     public void setSpawn(int t_id)
     {
-        playerID= t_id;
         isSet = true;
+        playerID = t_id;
     }
 }

@@ -42,7 +42,10 @@ public class PlayerScript : NetworkBehaviour
 
         if (!IsOwner)
         {
-            MyInput.DeactivateInput();
+            if (GetComponent<PlayerInput>().enabled == true)
+            {
+                GetComponent<PlayerInput>().enabled = false;
+            }
             return;
         }
 

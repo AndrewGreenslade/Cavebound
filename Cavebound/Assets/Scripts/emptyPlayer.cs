@@ -36,7 +36,7 @@ public class emptyPlayer : NetworkBehaviour
     {
         base.OnStartServer();
 
-        playerID = GetComponent<NetworkObject>().OwnerId;
+        playerID = OwnerId;
 
         shouldSpawnPlayer = true;
     }
@@ -48,7 +48,7 @@ public class emptyPlayer : NetworkBehaviour
         if (IsOwner)
         {
             instance = this;
-
+           
             //userName = FindObjectOfType<EnjinManager>().playerID;
         }
     }
