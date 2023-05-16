@@ -288,7 +288,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6563496236576758305
 RectTransform:
   m_ObjectHideFlags: 0
@@ -489,7 +489,8 @@ MonoBehaviour:
   _networkObjectCache: {fileID: 526797502538232091}
   isReady: 0
   MyReadyButton: {fileID: 6563496236576758304}
-  playerText: {fileID: 0}
+  playerText: {fileID: 6563496236125255744}
+  playerID: -999
 --- !u!114 &526797502538232091
 MonoBehaviour:
   m_ObjectHideFlags: 0

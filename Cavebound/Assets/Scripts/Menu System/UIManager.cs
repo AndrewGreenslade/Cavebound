@@ -1,12 +1,14 @@
 using FishNet.Managing;
 using FishNet.Transporting;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
     public NetworkManager networkManager;
-    public GameObject ServerButton;
-    public GameObject rootMenuCanvas;
+    public GameObject toDisable;
+    public GameObject toEnable;
+    public GameObject hostButton;
 
     private LocalConnectionState clientState = LocalConnectionState.Stopped;
    
@@ -24,8 +26,8 @@ public class UIManager : MonoBehaviour
         }
         else {
             networkManager.ServerManager.StartConnection();
-            serverState = LocalConnectionState.Started; 
-            ServerButton.SetActive(false);
+            serverState = LocalConnectionState.Started;
+            hostButton.SetActive(false);
         }
     }
 
@@ -38,13 +40,14 @@ public class UIManager : MonoBehaviour
         if (clientState != LocalConnectionState.Stopped)
         {
             networkManager.ClientManager.StopConnection();
-            serverState = LocalConnectionState.Stopped;
+            clientState = LocalConnectionState.Stopped;
         }
         else
         {
             networkManager.ClientManager.StartConnection();
-            serverState = LocalConnectionState.Started;
-            rootMenuCanvas.SetActive(false);
+            clientState = LocalConnectionState.Started;
+            toDisable.SetActive(false);
+            toEnable.SetActive(true);
         }
     }
 }

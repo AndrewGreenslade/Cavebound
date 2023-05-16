@@ -1,6 +1,7 @@
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerMenuComponent : NetworkBehaviour
@@ -9,19 +10,23 @@ public class PlayerMenuComponent : NetworkBehaviour
     public bool isReady = false;
     public Button MyReadyButton;
     public TextMeshProUGUI playerText;
+    
+    [SyncVar]
+    public int playerID = -999;
 
     public override void OnStartClient()
     {
         base.OnStartClient();
 
-        if(IsOwner)
-        {
-            MyReadyButton.onClick.AddListener(ReadyPlayerUp);
-        }
-        else
-        {
-            MyReadyButton.gameObject.SetActive(false);
-        }
+        MyReadyButton.onClick.AddListener(ReadyPlayerUp);
+
+        Transform panel = GameObject.FindGameObjectWithTag("PlayerPanel").transform;
+
+        transform.SetParent(panel);
+
+        transform.localScale = Vector3.one;
+
+        playerText.text = "Player: " + playerID.ToString();
     }
 
     public void ReadyPlayerUp()
@@ -30,7 +35,7 @@ public class PlayerMenuComponent : NetworkBehaviour
         MyReadyButton.gameObject.SetActive(false);
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     public void setReady()
     {
         isReady = true;
