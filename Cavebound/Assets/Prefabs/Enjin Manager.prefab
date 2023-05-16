@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3873189436373568575
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3873189436373568574}
+  - component: {fileID: 3873189436373568545}
+  - component: {fileID: 3873189436373568544}
+  m_Layer: 0
+  m_Name: Enjin Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &3873189436373568574
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3873189436373568575}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 537.5, y: 254.52814, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3873189436373568545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3873189436373568575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6133e1f796c3aac488c893b9cffa6eee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uuid: e05dfff6-6836-45cb-af1c-660f72d19651
+  secret: ljO9M2hjpFPMj9bFF0LFw4SVuwda57TlnLeYS0YW
+  playerID: 
+  code: 
+  qr: 
+  qrImage: {fileID: 0}
+  nameField: {fileID: 0}
+  createButton: {fileID: 0}
+  LinkCodeText: {fileID: 0}
+  nameDisplay: {fileID: 0}
+  ConnectCanvas: {fileID: 0}
+  EnjinCanvas: {fileID: 0}
+--- !u!114 &3873189436373568544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3873189436373568575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77c4a45ddb60d3e4599e4f89e41416ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ethAddress: 
+  nameDisplay: {fileID: 0}

@@ -371,7 +371,7 @@ GameObject:
   - component: {fileID: 7907160144105451201}
   - component: {fileID: 2367799599483138201}
   m_Layer: 0
-  m_Name: OreMenuGen
+  m_Name: BackgroundMenuGen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -405,9 +405,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a089844a0b19f5e4882e26a8137b98ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 255
-  _addedNetworkObject: {fileID: 0}
-  _networkObjectCache: {fileID: 0}
   seed: 0
   MapWidth: 350
   MapHieght: 200
@@ -417,7 +414,7 @@ MonoBehaviour:
   BackgroundMap: {fileID: 7128211913379813532}
   OreMap: {fileID: 2367799598508801206}
   GroundSquare: {fileID: 11400000, guid: 0e2ec155aa87bd74ab329f1adf7aa646, type: 2}
-  borderSquare: {fileID: 11400000, guid: 0e2ec155aa87bd74ab329f1adf7aa646, type: 2}
+  borderSquare: {fileID: 11400000, guid: cd48c53ee982a0d43a4c4dd05708573a, type: 2}
   BGSquare: {fileID: 11400000, guid: 329377310893bb34e9b71d961f2a1fa4, type: 2}
   playerHubPrefab: {fileID: 0}
   ores:

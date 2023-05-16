@@ -27,8 +27,6 @@ public class Inventory : NetworkBehaviour
             spawnOres();
         }
 
-        Debug.Log("Player spawned again");
-
         if (GameObject.FindGameObjectWithTag("OreUI").transform.childCount <= 0)
         {
             //gets nesesary components

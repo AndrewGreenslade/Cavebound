@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &226279338117627680
+--- !u!1 &1571753167463506151
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,60 +8,54 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 9201265329989083240}
-  - component: {fileID: 390448061}
-  - component: {fileID: 390448060}
+  - component: {fileID: 1571753167463506146}
+  - component: {fileID: 1571753167463506145}
+  - component: {fileID: 1571753167463506144}
   m_Layer: 0
-  m_Name: EmptyMenuPlayer
+  m_Name: SceneChangeCount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &9201265329989083240
+--- !u!4 &1571753167463506146
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 226279338117627680}
+  m_GameObject: {fileID: 1571753167463506151}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 730.5002, y: 516.3507, z: -5.326461}
+  m_LocalPosition: {x: 343.67264, y: 20.916143, z: -0.08424965}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &390448061
+--- !u!114 &1571753167463506145
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 226279338117627680}
+  m_GameObject: {fileID: 1571753167463506151}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 997c424a4e1d3e1428a18e96c258bb63, type: 3}
+  m_Script: {fileID: 11500000, guid: 2742c5f7956f65c4b8fbc27a13aa66b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _componentIndexCache: 0
-  _addedNetworkObject: {fileID: 390448060}
-  _networkObjectCache: {fileID: 390448060}
-  panel: {fileID: 0}
-  playerMenuComp: {fileID: 6563496236922731940, guid: 3ee5f7bcaffa0ee498faf8cb672e3c26, type: 3}
-  playerMenuCompForClientOnly: {fileID: 318004548208833764, guid: e40fc6869d6251f4bbf6c439f567e46e, type: 3}
-  ownerID: -999
-  obj: {fileID: 0}
-  countSceneLoad: {fileID: 1571753167463506151, guid: a31623e45cdd4ba48a73bed706f7307d, type: 3}
-  hasEnabledButton: 0
---- !u!114 &390448060
+  _addedNetworkObject: {fileID: 1571753167463506144}
+  _networkObjectCache: {fileID: 1571753167463506144}
+  totalPlayersLoadedScene: 0
+--- !u!114 &1571753167463506144
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 226279338117627680}
+  m_GameObject: {fileID: 1571753167463506151}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 26b716c41e9b56b4baafaf13a523ba2e, type: 3}
@@ -71,18 +65,19 @@ MonoBehaviour:
   <ComponentIndex>k__BackingField: 0
   <PredictedSpawn>k__BackingField: {fileID: 0}
   _networkBehaviours:
-  - {fileID: 390448061}
+  - {fileID: 1571753167463506145}
   <ParentNetworkObject>k__BackingField: {fileID: 0}
   <ChildNetworkObjects>k__BackingField: []
   _isNetworked: 1
-  _isGlobal: 0
+  _isGlobal: 1
   _initializeOrder: 0
   _defaultDespawnType: 0
   NetworkObserver: {fileID: 0}
-  <PrefabId>k__BackingField: 28
+  <PrefabId>k__BackingField: 27
   <SpawnableCollectionId>k__BackingField: 0
-  _scenePathHash: 0
+  _scenePathHash: 1016793478
   <SceneId>k__BackingField: 0
-  <AssetPathHash>k__BackingField: 17368383551497690746
+  <AssetPathHash>k__BackingField: 16836168107980054249
   _sceneNetworkObjects:
-  - {fileID: 390448060}
+  - {fileID: 1571753167463506144}
+  - {fileID: 0}

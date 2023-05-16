@@ -8,6 +8,7 @@ TagManager:
   - AI
   - StoredOreUI
   - PlayerPanel
+  - ReadyToPlay
   layers:
   - Default
   - TransparentFX

@@ -34,6 +34,7 @@ public class PlayerScript : NetworkBehaviour
     public Animator animController;
     public bool isLocalPlayer = false;
     public bool isInMenu = false;
+    public PlayerInput MyInput;
 
     public override void OnStartClient()
     {
@@ -41,7 +42,7 @@ public class PlayerScript : NetworkBehaviour
 
         if (!IsOwner)
         {
-            Destroy(GetComponent<PlayerInput>());
+            MyInput.DeactivateInput();
             return;
         }
 
@@ -56,6 +57,7 @@ public class PlayerScript : NetworkBehaviour
 
     private void Update()
     { 
+
         Debug.DrawRay(raycastPosition.position, Vector2.down * jumpRayCastDistance, Color.red);
 
         if(movementX > 0)
@@ -67,8 +69,8 @@ public class PlayerScript : NetworkBehaviour
             playerSprite.flipX = true;
         }
 
-        if (!base.IsOwner)
-        {
+        if (!IsOwner)
+        { 
             return;
         }
 

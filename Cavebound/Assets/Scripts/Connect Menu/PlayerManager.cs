@@ -4,6 +4,8 @@ using UnityEngine;
 using FishNet.Object;
 using UnityEngine.UI;
 using System.Linq;
+using FishNet.Managing.Scened;
+using FishNet.Utility;
 
 public class PlayerManager : NetworkBehaviour
 {
@@ -13,21 +15,37 @@ public class PlayerManager : NetworkBehaviour
     public int readyCount = 0;
     public int TotalPlayers = 0;
 
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+        startGameButton.gameObject.SetActive(false);
+    }
+
     public override void OnStartServer()
     {
         base.OnStartServer();
         startGameButton.onClick.AddListener(StartGame);
-        startGameButton.gameObject.SetActive(false);
     }
 
     private void Update()
     {
+     
         if (IsServer)
         {
+            if (startGameButton == null)
+            {
+                if (allPlayerButtons.Count > 0)
+                {
+                    allPlayerButtons.Clear();
+                }
+
+                return;
+            }
+
             allPlayerButtons = FindObjectsOfType<PlayerMenuComponent>().ToList();
 
             TotalPlayers = allPlayerButtons.Count;
-            readyCount= 0;
+            readyCount = 0;
 
             foreach (var item in allPlayerButtons)
             {
@@ -37,7 +55,7 @@ public class PlayerManager : NetworkBehaviour
                 }
             }
 
-            if(readyCount == TotalPlayers)
+            if (readyCount == TotalPlayers)
             {
                 startGameButton.gameObject.SetActive(true);
             }
@@ -54,6 +72,9 @@ public class PlayerManager : NetworkBehaviour
 
     public void StartGame()
     {
-        Debug.Log("Starting Game");
+        Debug.Log("Game loading");
+        SceneLoadData sld = new SceneLoadData("Game");
+        sld.ReplaceScenes = ReplaceOption.All;
+        base.SceneManager.LoadGlobalScenes(sld);
     }
 }

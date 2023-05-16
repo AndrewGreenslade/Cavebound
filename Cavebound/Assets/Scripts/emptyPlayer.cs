@@ -3,12 +3,13 @@ using UnityEngine;
 using TMPro;
 using FishNet.Connection;
 using FishNet.Object.Synchronizing;
-using UnityEngine.Networking;
-using static UnityEditor.Progress;
+using UnityEngine.SceneManagement;
 
 public class emptyPlayer : NetworkBehaviour
 {
-    private bool shouldSpawnPlayer = false;
+    [SyncVar]
+    public bool shouldSpawnPlayer = false;
+    
     public GameObject player;
 
     [SyncVar]
@@ -30,11 +31,14 @@ public class emptyPlayer : NetworkBehaviour
     
     spawnerManager manager;
 
+    
     public override void OnStartServer()
     {
         base.OnStartServer();
 
         playerID = GetComponent<NetworkObject>().OwnerId;
+
+        shouldSpawnPlayer = true;
     }
 
     public override void OnStartClient()
@@ -46,16 +50,12 @@ public class emptyPlayer : NetworkBehaviour
             instance = this;
 
             //userName = FindObjectOfType<EnjinManager>().playerID;
-
-            FindObjectOfType<MapGenUI>().clearMap();
-
-            shouldSpawnPlayer = true;
         }
     }
 
     void Update()
     {
-        if (IsOwner)
+        if (IsServer)
         {
             if (manager == null)
             {
@@ -72,9 +72,10 @@ public class emptyPlayer : NetworkBehaviour
                 {
                     if (item.playerID == playerID)
                     {
+                        spawnSet = true;
+                        spawn = item.pos;
+                        SpawnPlayer(Owner);
                         shouldSpawnPlayer = false;
-                        setSpawnVars(item.pos);
-                        SpawnPlayer();
                         break;
                     }
                 }
@@ -88,24 +89,17 @@ public class emptyPlayer : NetworkBehaviour
                 {
                     Debug.Log("Despawning player");
                     Despawn(SpawnedPlayer.gameObject);
-                    SpawnPlayer();
+                    SpawnPlayer(Owner);
                 }
             }
         }
     }
 
-    [ServerRpc]
-    private void SpawnPlayer()
+    [ServerRpc(RequireOwnership = false)]
+    private void SpawnPlayer(NetworkConnection conn)
     {
         GameObject localPlayer = Instantiate(player, spawn.position, Quaternion.identity);
+        ServerManager.Spawn(localPlayer, conn);
         SpawnedPlayer = localPlayer.GetComponent<NetworkObject>();
-        ServerManager.Spawn(localPlayer, ClientManager.Clients[playerID]);
-    }
-
-    [ServerRpc]
-    private void setSpawnVars(Transform t_spawnPos)
-    {
-        spawnSet = true;
-        spawn = t_spawnPos;
     }
 }

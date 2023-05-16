@@ -1,4 +1,5 @@
 using FishNet.Connection;
+using FishNet.Managing.Server;
 using FishNet.Object;
 using FishNet.Object.Synchronizing;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ public class playerMenuSpawner : NetworkBehaviour
 
     [SyncVar]
     public NetworkObject obj;
+    public GameObject countSceneLoad;
 
     public bool hasEnabledButton = false;
 
@@ -35,6 +37,17 @@ public class playerMenuSpawner : NetworkBehaviour
         else if (IsOwner && IsServer)
         {
             spawnComp(ownerID);
+        }
+    }
+
+    public override void OnStartServer()
+    {
+        base.OnStartServer();
+
+        if (FindObjectOfType<SceneChangeCount>() == null)
+        {
+            GameObject counter = Instantiate(countSceneLoad);
+            ServerManager.Spawn(counter);
         }
     }
 

@@ -21,7 +21,6 @@ public class MapGenUI : MonoBehaviour
     public Tile GroundSquare;
     public Tile borderSquare;
     public Tile BGSquare;
-    public GameObject playerHubPrefab;
 
     public List<Ore> ores = new List<Ore>();
 
