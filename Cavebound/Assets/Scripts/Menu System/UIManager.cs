@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour
     public GameObject toDisable;
     public GameObject toEnable;
     public GameObject hostButton;
+    public EnjinManager enjinManager;
 
     private LocalConnectionState clientState = LocalConnectionState.Stopped;
    
@@ -48,6 +49,10 @@ public class UIManager : MonoBehaviour
             clientState = LocalConnectionState.Started;
             toDisable.SetActive(false);
             toEnable.SetActive(true);
+            enjinManager.nameDisplay.gameObject.SetActive(false);
+            enjinManager.qrImage.gameObject.SetActive(false);
+            enjinManager.LinkCodeText.gameObject.SetActive(false);
+
         }
     }
 }

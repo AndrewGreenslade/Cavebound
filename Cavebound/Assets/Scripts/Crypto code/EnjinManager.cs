@@ -5,10 +5,13 @@ using Enjin.SDK.ProjectSchema;
 using Enjin.SDK.Graphql;
 using Enjin.SDK.Models;
 using Enjin.SDK.Shared;
+using Enjin.SDK.Events;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 using System.Collections;
 using TMPro;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 public class EnjinManager : MonoBehaviour
 {
@@ -16,6 +19,8 @@ public class EnjinManager : MonoBehaviour
     System.Uri goerli = EnjinHosts.GOERLI;
 
     ProjectClient client = null;
+    object mutex = new object();
+    PusherEventService eventService;
 
     [Header("Enjin App Vars")]
     public string uuid;
@@ -31,9 +36,17 @@ public class EnjinManager : MonoBehaviour
     public TextMeshProUGUI LinkCodeText;
     public TextMeshProUGUI nameDisplay;
     
-    [Header("Canvar vars")]
+    [Header("Canvas vars")]
     public GameObject ConnectCanvas;
     public GameObject EnjinCanvas;
+
+    [Header("Existing Player Vars")]
+    public string ethAddress;
+
+    [Header("Balances!")]
+    Dictionary<string, int> fungibleBalances;
+    Dictionary<string, ISet<string>> nonFungibleBalances;
+
 
     private void Start()
     {
@@ -64,6 +77,17 @@ public class EnjinManager : MonoBehaviour
         builder.EnableAutomaticReauthentication();
 
         client.AuthClient(uuid, secret).Wait();
+
+        //for setting up event service
+        GetPlatform req2 = new GetPlatform().WithNotificationDrivers();
+        GraphqlResponse<Platform> res2 = client.GetPlatform(req2).Result;
+        Platform platform = res2.Result;
+
+        eventService = PusherEventService.Builder().Platform(platform).Build();
+        Task task = eventService.Start();
+        bool result2 = eventService.IsConnected;
+
+        Debug.Log("Event service is started: " + result2.ToString());
     }
 
     public void createNewPlayer()
@@ -100,6 +124,64 @@ public class EnjinManager : MonoBehaviour
         }
     }
 
+    public void RetrievePlayerData()
+    {
+        GetPlayer req = new GetPlayer().Id(playerID).WithWallet().WithWalletBalance().WithLinkingInfo();
+
+        GraphqlResponse<Player> res = client.GetPlayer(req).Result;
+
+        Player player = res.Result;
+
+        if (player != null)
+        {
+            if (player.LinkingInfo != null)
+            {
+                LinkingInfo linkingInfo = player.LinkingInfo;
+
+                code = linkingInfo.Code;
+                qr = linkingInfo.Qr;
+                StartCoroutine(DownloadImage(qr));
+                LinkCodeText.enabled = true;
+                LinkCodeText.text = "Link Code: " + code;
+            }
+
+            ethAddress = player.Wallet.EthAddress;
+
+            eventService.SubscribeToWallet(ethAddress);
+
+            if (player.Wallet.Balances != null)
+            {
+                foreach (Balance balance in player.Wallet.Balances)
+                {
+                    string id = balance.Id;
+                    string index = balance.Index;
+                    int? value = balance.Value;
+
+                    if (index.Equals("0000000000000000"))
+                    {
+                        AddBalanceImpl(id, value.Value);
+                    }
+                    else
+                    {
+                        AddBalanceImpl(id, index);
+                    }
+                }
+            }
+
+            if (player.Wallet.EnjBalance.HasValue)
+            {
+                float value = player.Wallet.EnjBalance.Value;
+                Debug.Log("Player has: " + value + " Enj Balance Left");
+            }
+            
+            nameDisplay.text = "Welcome: " + playerID;
+
+            EnjinCanvas.SetActive(false);
+            ConnectCanvas.SetActive(true);
+        }
+    }
+
+
     IEnumerator DownloadImage(string MediaUrl)
     {
         qrImage.enabled = true;
@@ -125,4 +207,103 @@ public class EnjinManager : MonoBehaviour
         playerID = nameField.text;
     }
 
+    // ---------------------------------------------------
+    // adding ballances for Fungible assets
+    // ---------------------------------------------------
+
+    public void AddBalance(string id, int value)
+    {
+        lock (mutex)
+        {
+            AddBalanceImpl(id, value);
+        }
+    }
+
+    void AddBalanceImpl(string id, int value)
+    {
+        if (fungibleBalances.ContainsKey(id))
+        {
+            fungibleBalances[id] += value;
+        }
+        else
+        {
+            fungibleBalances.Add(id, value);
+        }
+    }
+
+    // ---------------------------------------------------
+    // adding ballances for non-Fungible assets
+    // ---------------------------------------------------
+
+    public void AddBalance(string id, string index)
+    {
+        lock (mutex)
+        {
+            AddBalanceImpl(id, index);
+        }
+    }
+
+    void AddBalanceImpl(string id, string index)
+    {
+        ISet<string> indices;
+
+        if (nonFungibleBalances.ContainsKey(id))
+        {
+            indices = nonFungibleBalances[id];
+        }
+        else
+        {
+            indices = new HashSet<string>();
+            nonFungibleBalances.Add(id, indices);
+        }
+
+        indices.Add(index);
+    }
+
+    // ---------------------------------------------------
+    // Subtracting ballances for Fungible assets
+    // ---------------------------------------------------
+
+    public void SubtractBalance(string id, int value)
+    {
+        lock (mutex)
+        {
+            if (!fungibleBalances.ContainsKey(id))
+            {
+                return;
+            }
+
+            int newValue = fungibleBalances[id] - value;
+
+            if (newValue > 0)
+            {
+                fungibleBalances[id] = newValue;
+            }
+            else
+            {
+                fungibleBalances.Remove(id);
+            }
+        }
+    }
+
+    // ---------------------------------------------------
+    // Subtracting ballances for non-Fungible assets
+    // ---------------------------------------------------
+
+    public void SubtractBalance(string id, string index)
+    {
+        lock (mutex)
+        {
+            if (nonFungibleBalances.ContainsKey(id))
+            {
+                nonFungibleBalances[id].Remove(index);
+            }
+        }
+    }
+
+    private void OnDestroy()
+    {
+        Task task = eventService.Shutdown();
+        task.Wait();
+    }
 }

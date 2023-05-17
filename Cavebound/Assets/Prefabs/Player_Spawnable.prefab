@@ -5373,7 +5373,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6362914541649577357
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6522,9 +6522,17 @@ PrefabInstance:
       value: 27
       objectReference: {fileID: 0}
     - target: {fileID: -6872524429006192591, guid: d280d074287d5314490214a9808370c9, type: 3}
+      propertyPath: _networkBehaviours.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -6872524429006192591, guid: d280d074287d5314490214a9808370c9, type: 3}
       propertyPath: <ComponentIndex>k__BackingField
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: -6872524429006192591, guid: d280d074287d5314490214a9808370c9, type: 3}
+      propertyPath: _networkBehaviours.Array.data[0]
+      value: 
+      objectReference: {fileID: 8412962372704173998}
     - target: {fileID: -6872524429006192591, guid: d280d074287d5314490214a9808370c9, type: 3}
       propertyPath: <ParentNetworkObject>k__BackingField
       value: 
@@ -6618,6 +6626,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 26b716c41e9b56b4baafaf13a523ba2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8412962372704173998 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 214362637094127086, guid: d280d074287d5314490214a9808370c9, type: 3}
+  m_PrefabInstance: {fileID: 8518920548328077888}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4855216560431752568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c368a55e3bea6494d81a96dfd2f8461a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &8679860271507059873
